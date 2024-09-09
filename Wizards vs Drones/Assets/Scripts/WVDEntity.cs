@@ -30,33 +30,17 @@ public class WVDEntity : MonoBehaviour
         } 
     }
 
+
     [Header("Speed")]
-    int _currentSpeed;
     [SerializeField]
-    int _maxSpeed;
-    [SerializeField]
-    int _minSpeed;
-    public int CurrentSpeed 
+    float _maxSpeed;
+    public float MaxSpeed 
     { 
-        get => _currentSpeed;
-        set
-        {
-            if (value > _maxSpeed)
-            {
-                _currentSpeed = _maxSpeed;
-            }
-            else if (value < _minSpeed)
-            {
-                _currentSpeed = _minSpeed;
-            }
-            else
-            {
-                _currentSpeed = value;
-            }
-        }
+        get => _maxSpeed; 
+        set => _maxSpeed = value; 
     }
 
-    void Start()
+    public virtual void Start()
     {
         _currentHealth = _maxHealth;
     }
