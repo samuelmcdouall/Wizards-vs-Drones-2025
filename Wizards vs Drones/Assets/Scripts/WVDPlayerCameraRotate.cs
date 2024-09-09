@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class WVDPlayerCameraRotate : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [Header("Rotation")]
+    float _mouseX;
+    float _mouseY;
+
+    [Header("Vertical Mouse Limits")]
+    readonly float _mouseYMinClamp = -35.0f;
+    readonly float _mouseYMaxClamp = 60.0f;
     void Start()
     {
         
@@ -13,6 +19,14 @@ public class WVDPlayerCameraRotate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        GetMouseInput();
+        transform.rotation = Quaternion.Euler(_mouseY, _mouseX, 0.0f);
+    }
+
+    void GetMouseInput()
+    {
+        _mouseX += Input.GetAxis("Mouse X") * 10.0f; // todo put in mouse sensitivity setting here
+        _mouseY -= Input.GetAxis("Mouse Y") * 10.0f; // todo put in mouse sensitivity setting here
+        _mouseY = Mathf.Clamp(_mouseY, _mouseYMinClamp, _mouseYMaxClamp);
     }
 }
