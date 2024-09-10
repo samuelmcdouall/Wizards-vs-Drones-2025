@@ -12,11 +12,15 @@ public class WVDPlayerMovement : MonoBehaviour
     Rigidbody _playerRB;
     Vector3 _movementInput;
     WVDPlayer _playerScript;
+    [SerializeField]
+    WVDGroundCheck _groundCheckScript;
+    bool _spacePressed;
+    readonly float _moveForce = 150.0f;
+    readonly float _jumpForce = 10.0f;
     void Start()
     {
         _playerRB = GetComponent<Rigidbody>();
         _playerScript = GetComponent<WVDPlayer>();
-        _playerRB.maxLinearVelocity = _playerScript.MaxSpeed;
         _movementInput = Vector3.zero;
     }
 
@@ -42,10 +46,31 @@ public class WVDPlayerMovement : MonoBehaviour
         {
             _movementInput += cameraRightYIndependent;
         }
+        if (Input.GetKeyDown(KeyCode.Space) && !_spacePressed && _groundCheckScript.IsGrounded)
+        {
+            _spacePressed = true;
+        }
     }
 
     void FixedUpdate()
     {
-        _playerRB.AddForce(_movementInput * 50, ForceMode.Acceleration);
+        LimitSpeedToMaximum();
+        _playerRB.AddForce(_movementInput * _moveForce, ForceMode.Force);
+        if (_spacePressed)
+        {
+            print("Jump!");
+            _spacePressed = false;
+            _playerRB.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+        }
+
+    }
+    void LimitSpeedToMaximum()
+    {
+        if (_playerRB.velocity.magnitude > _playerScript.MaxSpeed) // todo maybe times modifier
+        {
+            float originalYSpeed = _playerRB.velocity.y;
+            _playerRB.velocity = _playerRB.velocity.normalized * _playerScript.MaxSpeed;
+            _playerRB.velocity = new Vector3(_playerRB.velocity.x, originalYSpeed, _playerRB.velocity.z);
+        }
     }
 }

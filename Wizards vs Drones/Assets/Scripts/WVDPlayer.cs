@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class WVDPlayer : WVDEntity
 {
-    // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
@@ -13,6 +12,6 @@ public class WVDPlayer : WVDEntity
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
