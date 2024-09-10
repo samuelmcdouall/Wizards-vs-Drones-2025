@@ -11,12 +11,8 @@ public class WVDPlayerCameraRotate : MonoBehaviour
     [Header("Vertical Mouse Limits")]
     readonly float _mouseYMinClamp = -35.0f;
     readonly float _mouseYMaxClamp = 60.0f;
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
+    
     void Update()
     {
         GetMouseInput();
