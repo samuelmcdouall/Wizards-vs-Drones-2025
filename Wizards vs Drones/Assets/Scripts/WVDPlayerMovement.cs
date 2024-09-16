@@ -9,68 +9,82 @@ public class WVDPlayerMovement : MonoBehaviour
     Transform _cameraRotationObject;
 
     [Header("Movement")]
-    Rigidbody _playerRB;
+    CharacterController _playerCC;
     Vector3 _movementInput;
     WVDPlayer _playerScript;
     [SerializeField]
     WVDGroundCheck _groundCheckScript;
     bool _spacePressed;
-    readonly float _moveForce = 150.0f;
-    readonly float _jumpForce = 10.0f;
+    [SerializeField]
+    float _jumpHeight;
+    readonly float _gravity = -9.81f;
+    Vector3 _velocity;
+    float _initialJumpVelocity;
     void Start()
     {
-        _playerRB = GetComponent<Rigidbody>();
+        _playerCC = GetComponent<CharacterController>();
         _playerScript = GetComponent<WVDPlayer>();
         _movementInput = Vector3.zero;
+        _velocity = Vector3.zero;
+        _initialJumpVelocity = Mathf.Sqrt(_jumpHeight * -2.0f * _gravity);
     }
 
     void Update()
     {
-        _movementInput = Vector3.zero;
+        HandleMovement();
+    }
+
+    private void HandleMovement()
+    {
+        // Horizontal movement
+        Vector3 movementInput = GetHorizontalInput();
+
+        _playerCC.Move(movementInput * _playerScript.MaxSpeed * Time.deltaTime);
+
+        // Vertical movement
+        HandleJumping();
+
+        _playerCC.Move(_velocity * Time.deltaTime);
+    }
+
+    void HandleJumping()
+    {
+        if (_groundCheckScript.IsGrounded && _velocity.y < -2.0f)
+        {
+            _velocity.y = -2.0f;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && _groundCheckScript.IsGrounded)
+        {
+            _velocity.y = _initialJumpVelocity;
+            print("Jump!");
+        }
+
+        _velocity.y += _gravity * Time.deltaTime;
+    }
+
+    Vector3 GetHorizontalInput()
+    {
+        Vector3 movementInput = Vector3.zero;
         Vector3 cameraForwardYIndependent = new Vector3(_cameraRotationObject.forward.x, 0.0f, _cameraRotationObject.forward.z).normalized;
         Vector3 cameraRightYIndependent = new Vector3(_cameraRotationObject.right.x, 0.0f, _cameraRotationObject.right.z).normalized;
 
         if (Input.GetKey(KeyCode.W))
         {
-            _movementInput += cameraForwardYIndependent;
+            movementInput += cameraForwardYIndependent;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            _movementInput -= cameraRightYIndependent;
+            movementInput -= cameraRightYIndependent;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            _movementInput -= cameraForwardYIndependent;
+            movementInput -= cameraForwardYIndependent;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            _movementInput += cameraRightYIndependent;
+            movementInput += cameraRightYIndependent;
         }
-        if (Input.GetKeyDown(KeyCode.Space) && !_spacePressed && _groundCheckScript.IsGrounded)
-        {
-            _spacePressed = true;
-        }
-    }
-
-    void FixedUpdate()
-    {
-        LimitSpeedToMaximum();
-        _playerRB.AddForce(_movementInput * _moveForce, ForceMode.Force);
-        if (_spacePressed)
-        {
-            print("Jump!");
-            _spacePressed = false;
-            _playerRB.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
-        }
-
-    }
-    void LimitSpeedToMaximum()
-    {
-        if (_playerRB.velocity.magnitude > _playerScript.MaxSpeed) // todo maybe times modifier
-        {
-            float originalYSpeed = _playerRB.velocity.y;
-            _playerRB.velocity = _playerRB.velocity.normalized * _playerScript.MaxSpeed;
-            _playerRB.velocity = new Vector3(_playerRB.velocity.x, originalYSpeed, _playerRB.velocity.z);
-        }
+        return movementInput;
     }
 }
