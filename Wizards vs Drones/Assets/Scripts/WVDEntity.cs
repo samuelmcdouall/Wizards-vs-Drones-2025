@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WVDEntity : MonoBehaviour
+public abstract class WVDEntity : MonoBehaviour
 {
     [Header("Health")]
     int _currentHealth;
