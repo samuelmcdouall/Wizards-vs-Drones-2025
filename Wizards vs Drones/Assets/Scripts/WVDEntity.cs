@@ -40,6 +40,16 @@ public abstract class WVDEntity : MonoBehaviour
         set => _maxSpeed = value; 
     }
 
+    [Header("Animations")]
+    [SerializeField]
+    Animator _animator;
+    string _currentPlayingAnimation;
+    public string CurrentPlayingAnimation 
+    { 
+        get => _currentPlayingAnimation; 
+        set => _currentPlayingAnimation = value; 
+    }
+
     public virtual void Start()
     {
         _currentHealth = _maxHealth;
@@ -49,5 +59,14 @@ public abstract class WVDEntity : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SwitchToAnimation(string animation)
+    {
+        if (animation != _currentPlayingAnimation)
+        {
+            _currentPlayingAnimation = animation;
+            _animator.Play(animation);
+        }
     }
 }

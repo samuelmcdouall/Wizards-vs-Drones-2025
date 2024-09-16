@@ -69,21 +69,33 @@ public class WVDPlayerMovement : MonoBehaviour
         Vector3 cameraForwardYIndependent = new Vector3(_cameraRotationObject.forward.x, 0.0f, _cameraRotationObject.forward.z).normalized;
         Vector3 cameraRightYIndependent = new Vector3(_cameraRotationObject.right.x, 0.0f, _cameraRotationObject.right.z).normalized;
 
+        // try an input vector for the movement animation next
+        bool isIdle = true;
         if (Input.GetKey(KeyCode.W))
         {
             movementInput += cameraForwardYIndependent;
+            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerForwardAnimation);
+            isIdle = false;
         }
         if (Input.GetKey(KeyCode.A))
         {
             movementInput -= cameraRightYIndependent;
+            isIdle = false;
         }
         if (Input.GetKey(KeyCode.S))
         {
             movementInput -= cameraForwardYIndependent;
+            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerBackwardAnimation);
+            isIdle = false;
         }
         if (Input.GetKey(KeyCode.D))
         {
             movementInput += cameraRightYIndependent;
+            isIdle = false;
+        }
+        if (isIdle)
+        {
+            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerIdleAnimation);
         }
         return movementInput;
     }

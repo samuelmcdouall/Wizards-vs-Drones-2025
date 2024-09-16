@@ -767,6 +767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 3
   _maxSpeed: 10
+  _animator: {fileID: 95538262977338867}
 --- !u!143 &1975454023
 CharacterController:
   m_ObjectHideFlags: 0
@@ -3385,7 +3386,7 @@ Animator:
   m_GameObject: {fileID: 1248815032337115}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: bed7a092d53e7c748bd65db98cebf9d6, type: 3}
-  m_Controller: {fileID: 9100000, guid: 2890c9060ce4f6b45b4082d87f47b27e, type: 2}
+  m_Controller: {fileID: 9100000, guid: fef0e8fc84a1cb54ca8ec0d2ba7383fb, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
