@@ -766,7 +766,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 3
-  _maxSpeed: 10
+  _maxNormalSpeed: 5
+  _maxSideBackSpeed: 2
   _animator: {fileID: 95538262977338867}
 --- !u!143 &1975454023
 CharacterController:

@@ -37,14 +37,24 @@ public class WVDPlayerMovement : MonoBehaviour
     private void HandleMovement()
     {
         // Horizontal movement
-        Vector3 movementInput = GetHorizontalInput();
+        WVDPlayerDirection playerDirection = GetPlayerDirection();
 
-        _playerCC.Move(movementInput * _playerScript.MaxSpeed * Time.deltaTime);
+        if (playerDirection.InputVector.z == 1) // forward
+        {
+            _playerCC.Move(playerDirection.DirectionVector * _playerScript.MaxNormalSpeed * Time.deltaTime);
+        }
+        else // sideways/backward
+        {
+            _playerCC.Move(playerDirection.DirectionVector * _playerScript.MaxSideBackSpeed * Time.deltaTime);
+        }
 
         // Vertical movement
         HandleJumping();
 
         _playerCC.Move(_velocity * Time.deltaTime);
+
+        // Play corresponding animation
+        PlayAnimationBasedOnInput(playerDirection.InputVector);
     }
 
     void HandleJumping()
@@ -63,40 +73,60 @@ public class WVDPlayerMovement : MonoBehaviour
         _velocity.y += _gravity * Time.deltaTime;
     }
 
-    Vector3 GetHorizontalInput()
+    WVDPlayerDirection GetPlayerDirection()
     {
-        Vector3 movementInput = Vector3.zero;
+        Vector3 movement = Vector3.zero;
         Vector3 cameraForwardYIndependent = new Vector3(_cameraRotationObject.forward.x, 0.0f, _cameraRotationObject.forward.z).normalized;
         Vector3 cameraRightYIndependent = new Vector3(_cameraRotationObject.right.x, 0.0f, _cameraRotationObject.right.z).normalized;
 
-        // try an input vector for the movement animation next
-        bool isIdle = true;
+        // Separate input vector because movementInput will be dependant on camera rotation
+        Vector3 inputVector = Vector3.zero;
+
         if (Input.GetKey(KeyCode.W))
         {
-            movementInput += cameraForwardYIndependent;
-            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerForwardAnimation);
-            isIdle = false;
+            movement += cameraForwardYIndependent;
+            inputVector += Vector3.forward;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            movementInput -= cameraRightYIndependent;
-            isIdle = false;
+            movement -= cameraRightYIndependent;
+            inputVector += Vector3.left;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            movementInput -= cameraForwardYIndependent;
-            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerBackwardAnimation);
-            isIdle = false;
+            movement -= cameraForwardYIndependent;
+            inputVector += Vector3.back;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            movementInput += cameraRightYIndependent;
-            isIdle = false;
+            movement += cameraRightYIndependent;
+            inputVector += Vector3.right;
         }
-        if (isIdle)
+
+        return new WVDPlayerDirection(movement, inputVector);
+    }
+
+    void PlayAnimationBasedOnInput(Vector3 inputVector)
+    {
+        if (inputVector.z == 1)
+        {
+            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerForwardAnimation);
+        }
+        else if (inputVector.z == -1)
+        {
+            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerBackwardAnimation);
+        }
+        else if (inputVector.x == 1)
+        {
+            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerRightAnimation);
+        }
+        else if (inputVector.x == -1)
+        {
+            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerLeftAnimation);
+        }
+        else
         {
             _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerIdleAnimation);
         }
-        return movementInput;
     }
 }
