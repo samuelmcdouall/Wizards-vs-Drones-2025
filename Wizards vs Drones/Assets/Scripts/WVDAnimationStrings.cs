@@ -5,4 +5,6 @@ public class WVDAnimationStrings
     public static string PlayerBackwardAnimation = "MoveBackward";
     public static string PlayerLeftAnimation = "MoveLeft";
     public static string PlayerRightAnimation = "MoveRight";
+
+    public static string PlayerBlockAnimation = "Block";
 }

@@ -31,10 +31,21 @@ public class WVDPlayerMovement : MonoBehaviour
 
     void Update()
     {
-        HandleMovement();
+        // If blocking just do that and don't take any movement input
+        if (Input.GetMouseButton(1))
+        {
+            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerBlockAnimation);
+        }
+        else
+        {
+            HandleMovement();
+        }
+
+        // Regardless still need to apply gravity
+        ApplyVerticalMovement();
     }
 
-    private void HandleMovement()
+    void HandleMovement()
     {
         // Horizontal movement
         WVDPlayerDirection playerDirection = GetPlayerDirection();
@@ -49,28 +60,10 @@ public class WVDPlayerMovement : MonoBehaviour
         }
 
         // Vertical movement
-        HandleJumping();
-
-        _playerCC.Move(_velocity * Time.deltaTime);
+        HandleJumpingInput();
 
         // Play corresponding animation
-        PlayAnimationBasedOnInput(playerDirection.InputVector);
-    }
-
-    void HandleJumping()
-    {
-        if (_groundCheckScript.IsGrounded && _velocity.y < -2.0f)
-        {
-            _velocity.y = -2.0f;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && _groundCheckScript.IsGrounded)
-        {
-            _velocity.y = _initialJumpVelocity;
-            print("Jump!");
-        }
-
-        _velocity.y += _gravity * Time.deltaTime;
+        PlayMovementAnimation(playerDirection.InputVector);
     }
 
     WVDPlayerDirection GetPlayerDirection()
@@ -106,7 +99,16 @@ public class WVDPlayerMovement : MonoBehaviour
         return new WVDPlayerDirection(movement, inputVector);
     }
 
-    void PlayAnimationBasedOnInput(Vector3 inputVector)
+    void HandleJumpingInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && _groundCheckScript.IsGrounded)
+        {
+            _velocity.y = _initialJumpVelocity;
+            print("Jump!");
+        }
+    }
+
+    void PlayMovementAnimation(Vector3 inputVector)
     {
         if (inputVector.z == 1)
         {
@@ -128,5 +130,21 @@ public class WVDPlayerMovement : MonoBehaviour
         {
             _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerIdleAnimation);
         }
+    }
+
+    void ApplyVerticalMovement()
+    {
+        ApplyGravity();
+        _playerCC.Move(_velocity * Time.deltaTime);
+    }
+
+    void ApplyGravity()
+    {
+        if (_groundCheckScript.IsGrounded && _velocity.y < -2.0f)
+        {
+            _velocity.y = -2.0f;
+        }
+
+        _velocity.y += _gravity * Time.deltaTime;
     }
 }
