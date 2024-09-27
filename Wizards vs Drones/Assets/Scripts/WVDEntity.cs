@@ -13,22 +13,42 @@ public abstract class WVDEntity : MonoBehaviour
     { 
         get => _currentHealth; 
         set 
-        { 
-            if (value > _maxHealth)
+        {
+            if (_invulnerable) // Cannot go down, but go up, staying within max bound
             {
-                _currentHealth = _maxHealth;
+                if (value > _currentHealth)
+                {
+                    _currentHealth = value;
+                }
+                if (value > _maxHealth)
+                {
+                    _currentHealth = _maxHealth;
+                }
             }
-            else if (value <= 0)
+            else // Otherwise can go up or down, but stays within bounds
             {
-                _currentHealth = 0;
-                OnKilled();
-                // todo trigger is dead code here later on
-            }
-            else
-            {
-                _currentHealth = value;
+                if (value > _maxHealth)
+                {
+                    _currentHealth = _maxHealth;
+                }
+                else if (value <= 0)
+                {
+                    _currentHealth = 0;
+                    OnKilled();
+                    // todo trigger is dead code here later on
+                }
             }
         } 
+    }
+    bool _invulnerable;
+    [SerializeField] public bool Invulnerable 
+    { 
+        get => _invulnerable;
+        set
+        {
+            print($"Invulnerable: {value}");
+            _invulnerable = value;
+        }
     }
 
 

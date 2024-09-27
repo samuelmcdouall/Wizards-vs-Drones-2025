@@ -93,8 +93,12 @@ public class WVDPlayer : WVDEntity
 
     public bool ShieldFXOn 
     { 
-        get => _shieldFX.activeSelf; 
-        set => _shieldFX.SetActive(value); 
+        get => _shieldFX.activeSelf;
+        set
+        {
+            _shieldFX.SetActive(value);
+            Invulnerable = value;
+        }
     }
     public bool PlayerModelOn
     {
@@ -131,7 +135,7 @@ public class WVDPlayer : WVDEntity
                 if (_activateShield)
                 {
                     _currentShieldState = ShieldState.Using;
-                    _shieldFX.SetActive(true);
+                    ShieldFXOn = true;
                 }
                 break;
             case ShieldState.Using:
@@ -139,7 +143,7 @@ public class WVDPlayer : WVDEntity
                 {
                     _currentShield = 0.0f;
                     _currentShieldState = ShieldState.WaitingToRecharge;
-                    _shieldFX.SetActive(false);
+                    ShieldFXOn = false;
                 }
                 else
                 {
@@ -153,7 +157,7 @@ public class WVDPlayer : WVDEntity
                     {
                         _rechargeShieldIntervalTimer = _rechargeShieldInterval;
                         _currentShieldState = ShieldState.Using;
-                        _shieldFX.SetActive(true);
+                        ShieldFXOn = true;
                     }
                     else
                     {
@@ -175,7 +179,7 @@ public class WVDPlayer : WVDEntity
                 {
                     _rechargeShieldIntervalTimer = _rechargeShieldInterval; // this line may not be needed
                     _currentShieldState = ShieldState.Using;
-                    _shieldFX.SetActive(true);
+                    ShieldFXOn = true;
                 }
                 else if (_currentShield >= _maxShield)
                 {
@@ -188,11 +192,6 @@ public class WVDPlayer : WVDEntity
                 }
                 break;
         }
-    }
-
-    public bool IsShieldOn()
-    {
-        return _shieldFX.activeSelf;
     }
 
     public enum ShieldState
