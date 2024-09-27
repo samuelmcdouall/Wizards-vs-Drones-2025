@@ -55,15 +55,19 @@ public class WVDPlayer : WVDEntity
         get => _activateShield;
         set
         {
+            if (_activateShield != value)
+            {
+                if (value)
+                {
+                    print("Activate shield");
+                }
+
+                else
+                {
+                    print("Deactivate shield");
+                }
+            }
             _activateShield = value;
-            if (_activateShield)
-            {
-                print("Shield on");
-            }
-            else
-            {
-                print("Shield off");
-            }
         }
     }
 
