@@ -21,6 +21,7 @@ public abstract class WVDEntity : MonoBehaviour
             else if (value <= 0)
             {
                 _currentHealth = 0;
+                OnKilled();
                 // todo trigger is dead code here later on
             }
             else
@@ -75,5 +76,10 @@ public abstract class WVDEntity : MonoBehaviour
             _currentPlayingAnimation = animation;
             _animator.Play(animation);
         }
+    }
+
+    public virtual void OnKilled()
+    {
+
     }
 }
