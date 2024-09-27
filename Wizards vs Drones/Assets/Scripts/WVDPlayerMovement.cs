@@ -34,10 +34,12 @@ public class WVDPlayerMovement : MonoBehaviour
         // If blocking just do that and don't take any movement input
         if (Input.GetMouseButton(1))
         {
+            _playerScript.ActivateShield = true;
             _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerBlockAnimation);
         }
         else
         {
+            _playerScript.ActivateShield = false;
             HandleMovement();
         }
 
