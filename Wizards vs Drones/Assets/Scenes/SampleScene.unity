@@ -471,6 +471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be9f4df50c603ce4b8e79ded911e98e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerMovementScript: {fileID: 1975454021}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,6 +860,9 @@ MonoBehaviour:
   _cameraRotationObject: {fileID: 794603497}
   _groundCheckScript: {fileID: 2118052191}
   _jumpHeight: 3
+  _currentPlayerMovementState: 0
+  _dashInterval: 0.5
+  _dashRechargeInterval: 2
 --- !u!114 &1975454022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -873,14 +877,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 3
   _maxNormalSpeed: 5
-  _maxSideBackSpeed: 2
   _animator: {fileID: 95538262977338867}
+  _playerModel: {fileID: 1248815032337115}
   _currentShield: 0
   _maxShield: 5
   _rechargeShieldInterval: 3
   _rechargeShieldRate: 1
   _currentShieldState: 0
   _shieldFX: {fileID: 1128563795}
+  _maxSideBackSpeed: 2
+  _dashSpeed: 20
 --- !u!143 &1975454023
 CharacterController:
   m_ObjectHideFlags: 0

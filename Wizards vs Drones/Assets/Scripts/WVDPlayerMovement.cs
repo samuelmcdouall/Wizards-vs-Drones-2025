@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class WVDPlayerMovement : MonoBehaviour
@@ -20,6 +21,20 @@ public class WVDPlayerMovement : MonoBehaviour
     readonly float _gravity = -9.81f;
     Vector3 _velocity;
     float _initialJumpVelocity;
+    [SerializeField]
+    PlayerMovementState _currentPlayerMovementState;
+    [SerializeField]
+    float _dashInterval;
+    [SerializeField]
+    float _dashRechargeInterval;
+    bool _canDash;
+
+    public PlayerMovementState CurrentPlayerMovementState 
+    { 
+        get => _currentPlayerMovementState; 
+        set => _currentPlayerMovementState = value; 
+    }
+
     void Start()
     {
         _playerCC = GetComponent<CharacterController>();
@@ -27,24 +42,43 @@ public class WVDPlayerMovement : MonoBehaviour
         _movementInput = Vector3.zero;
         _velocity = Vector3.zero;
         _initialJumpVelocity = Mathf.Sqrt(_jumpHeight * -2.0f * _gravity);
+        CurrentPlayerMovementState = PlayerMovementState.Still;
+        _canDash = true;
     }
 
     void Update()
+    {
+        switch (CurrentPlayerMovementState)
+        {
+            case PlayerMovementState.Still:
+                HandleMouseAndKeyInputs();
+                break;
+            case PlayerMovementState.Moving:
+                HandleMouseAndKeyInputs();
+                break;
+            case PlayerMovementState.Dashing:
+                // Doing the dash, ignore key inputs
+                break;
+        }
+
+        // Regardless still need to apply gravity
+        ApplyVerticalMovement();
+    }
+
+    void HandleMouseAndKeyInputs()
     {
         // If blocking just do that and don't take any movement input
         if (Input.GetMouseButton(1))
         {
             _playerScript.ActivateShield = true;
             _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerBlockAnimation);
+            CurrentPlayerMovementState = PlayerMovementState.Still;
         }
         else
         {
             _playerScript.ActivateShield = false;
             HandleMovement();
         }
-
-        // Regardless still need to apply gravity
-        ApplyVerticalMovement();
     }
 
     void HandleMovement()
@@ -61,11 +95,56 @@ public class WVDPlayerMovement : MonoBehaviour
             _playerCC.Move(playerDirection.DirectionVector * _playerScript.MaxSideBackSpeed * Time.deltaTime);
         }
 
-        // Vertical movement
-        HandleJumpingInput();
+        // Vertical movement this is for jumping which may include later but not for now
+        //HandleJumpingInput();
 
         // Play corresponding animation
         PlayMovementAnimation(playerDirection.InputVector);
+
+        if (playerDirection.InputVector == Vector3.zero)
+        {
+            CurrentPlayerMovementState = PlayerMovementState.Still;
+        }
+        else if (GivenDashInput())
+        {
+            _playerScript.ShieldFXOn = false;
+            _playerScript.ActivateShield = false;
+            _playerScript.PlayerModelOn = false;
+            _canDash = false;
+            CurrentPlayerMovementState = PlayerMovementState.Dashing;
+            DashInDirection(playerDirection.DirectionVector);
+
+
+        }
+        else
+        {
+            CurrentPlayerMovementState = PlayerMovementState.Moving;
+        }
+    }
+
+    public async void DashInDirection(Vector3 dashDirection)
+    {
+        float endDashTime = Time.time + _dashInterval;
+        while (Time.time < endDashTime)
+        {
+            _playerCC.Move(dashDirection * _playerScript.DashSpeed * Time.deltaTime);
+            await Task.Yield();
+        }
+        print("done dashing");
+        RechargeDash();
+        _playerScript.PlayerModelOn = true;
+        CurrentPlayerMovementState = PlayerMovementState.Moving;
+        _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerIdleAnimation); // This is so that input after the dash allows the animation to change back to running
+    }
+    public async void RechargeDash()
+    {
+        float endRechargeTime = Time.time + _dashRechargeInterval;
+        while (Time.time < endRechargeTime)
+        {
+            await Task.Yield();
+        }
+        print("done recharging dash");
+        _canDash = true;
     }
 
     WVDPlayerDirection GetPlayerDirection()
@@ -110,6 +189,16 @@ public class WVDPlayerMovement : MonoBehaviour
         }
     }
 
+    bool GivenDashInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && _groundCheckScript.IsGrounded && _canDash)
+        {
+            print("Dash!");
+            return true;
+        }
+        return false;
+    }
+
     void PlayMovementAnimation(Vector3 inputVector)
     {
         if (inputVector.z == 1)
@@ -148,5 +237,12 @@ public class WVDPlayerMovement : MonoBehaviour
         }
 
         _velocity.y += _gravity * Time.deltaTime;
+    }
+
+    public enum PlayerMovementState
+    {
+        Still,
+        Moving,
+        Dashing
     }
 }

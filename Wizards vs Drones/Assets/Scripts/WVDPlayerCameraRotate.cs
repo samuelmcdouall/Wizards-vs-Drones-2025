@@ -12,11 +12,17 @@ public class WVDPlayerCameraRotate : MonoBehaviour
     readonly float _mouseYMinClamp = -35.0f;
     readonly float _mouseYMaxClamp = 60.0f;
 
+    [SerializeField]
+    WVDPlayerMovement _playerMovementScript;
+
     
     void Update()
     {
-        GetMouseInput();
-        transform.rotation = Quaternion.Euler(_mouseY, _mouseX, 0.0f);
+        if (_playerMovementScript.CurrentPlayerMovementState != WVDPlayerMovement.PlayerMovementState.Dashing)
+        {
+            GetMouseInput();
+            transform.rotation = Quaternion.Euler(_mouseY, _mouseX, 0.0f);
+        }
     }
 
     void GetMouseInput()

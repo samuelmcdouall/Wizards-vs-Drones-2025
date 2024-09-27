@@ -40,13 +40,6 @@ public abstract class WVDEntity : MonoBehaviour
         get => _maxNormalSpeed; 
         set => _maxNormalSpeed = value; 
     }
-    [SerializeField]
-    float _maxSideBackSpeed;
-    public float MaxSideBackSpeed
-    {
-        get => _maxSideBackSpeed;
-        set => _maxSideBackSpeed = value;
-    }
 
     [Header("Animations")]
     [SerializeField]

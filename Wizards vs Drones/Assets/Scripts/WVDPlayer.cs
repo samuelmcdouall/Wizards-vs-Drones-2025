@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class WVDPlayer : WVDEntity
 {
+    [Header("Model")]
+    [SerializeField]
+    GameObject _playerModel;
+
     [Header("Shield")]
     [SerializeField]
     float _currentShield;
@@ -19,6 +23,22 @@ public class WVDPlayer : WVDEntity
     ShieldState _currentShieldState;
     [SerializeField]
     GameObject _shieldFX;
+
+    [Header("Speed - Player")]
+    [SerializeField]
+    float _maxSideBackSpeed;
+    public float MaxSideBackSpeed
+    {
+        get => _maxSideBackSpeed;
+        set => _maxSideBackSpeed = value;
+    }
+    [SerializeField]
+    float _dashSpeed;
+    public float DashSpeed
+    {
+        get => _dashSpeed;
+        set => _dashSpeed = value;
+    }
 
     public float CurrentShield
     {
@@ -69,6 +89,17 @@ public class WVDPlayer : WVDEntity
             }
             _activateShield = value;
         }
+    }
+
+    public bool ShieldFXOn 
+    { 
+        get => _shieldFX.activeSelf; 
+        set => _shieldFX.SetActive(value); 
+    }
+    public bool PlayerModelOn
+    {
+        get => _playerModel.activeSelf;
+        set => _playerModel.SetActive(value);
     }
 
     public override void Start()
