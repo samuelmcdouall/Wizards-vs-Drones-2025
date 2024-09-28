@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WVDPlayer : WVDEntity
+public class WVDPlayer : WVDEntity, IWVDDestroyableObject
 {
     [Header("Model")]
     [SerializeField]
@@ -124,7 +124,14 @@ public class WVDPlayer : WVDEntity
     // Update is called once per frame
     void Update()
     {
-        HandleShieldState();
+        if (ShouldDestroyObject())
+        {
+            OnDestroyObject();
+        }
+        else
+        {
+            HandleShieldState();
+        }
     }
 
     private void HandleShieldState()
@@ -192,6 +199,21 @@ public class WVDPlayer : WVDEntity
                 }
                 break;
         }
+    }
+
+    public bool ShouldDestroyObject()
+    {
+        if (CurrentHealth <= 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void OnDestroyObject()
+    {
+        print("Destroyed!");
+        // Do other things
     }
 
     public enum ShieldState
