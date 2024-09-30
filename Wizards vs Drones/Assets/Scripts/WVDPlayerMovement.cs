@@ -28,11 +28,22 @@ public class WVDPlayerMovement : MonoBehaviour
     [SerializeField]
     float _dashRechargeInterval;
     bool _canDash;
+    [SerializeField]
+    GameObject _dashUI;
 
     public PlayerMovementState CurrentPlayerMovementState 
     { 
         get => _currentPlayerMovementState; 
         set => _currentPlayerMovementState = value; 
+    }
+    public bool CanDash 
+    { 
+        get => _canDash;
+        set
+        {
+            _canDash = value;
+            _dashUI.SetActive(_canDash);
+        }
     }
 
     void Start()
@@ -43,7 +54,7 @@ public class WVDPlayerMovement : MonoBehaviour
         _velocity = Vector3.zero;
         _initialJumpVelocity = Mathf.Sqrt(_jumpHeight * -2.0f * _gravity);
         CurrentPlayerMovementState = PlayerMovementState.Still;
-        _canDash = true;
+        CanDash = true;
     }
 
     void Update()
@@ -110,7 +121,7 @@ public class WVDPlayerMovement : MonoBehaviour
             _playerScript.ShieldFXOn = false;
             _playerScript.ActivateShield = false;
             _playerScript.PlayerModelOn = false;
-            _canDash = false;
+            CanDash = false;
             CurrentPlayerMovementState = PlayerMovementState.Dashing;
             DashInDirection(playerDirection.DirectionVector);
 
@@ -144,7 +155,7 @@ public class WVDPlayerMovement : MonoBehaviour
             await Task.Yield();
         }
         print("done recharging dash");
-        _canDash = true;
+        CanDash = true;
     }
 
     WVDPlayerDirection GetPlayerDirection()
@@ -191,7 +202,7 @@ public class WVDPlayerMovement : MonoBehaviour
 
     bool GivenDashInput()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _groundCheckScript.IsGrounded && _canDash)
+        if (Input.GetKeyDown(KeyCode.Space) && _groundCheckScript.IsGrounded && CanDash)
         {
             print("Dash!");
             return true;

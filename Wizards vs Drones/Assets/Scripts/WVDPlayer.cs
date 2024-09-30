@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WVDPlayer : WVDEntity, IWVDDestroyableObject
 {
@@ -23,6 +24,8 @@ public class WVDPlayer : WVDEntity, IWVDDestroyableObject
     ShieldState _currentShieldState;
     [SerializeField]
     GameObject _shieldFX;
+    [SerializeField]
+    Slider _shieldUI;
 
     [Header("Speed - Player")]
     [SerializeField]
@@ -57,6 +60,7 @@ public class WVDPlayer : WVDEntity, IWVDDestroyableObject
             {
                 _currentShield = value;
             }
+            _shieldUI.value = _currentShield / _maxShield;
         }
     }
 
@@ -115,7 +119,7 @@ public class WVDPlayer : WVDEntity, IWVDDestroyableObject
 
     private void InitialShieldSetup()
     {
-        _currentShield = _maxShield;
+        CurrentShield = _maxShield;
         _rechargeShieldIntervalTimer = _rechargeShieldInterval;
         _currentShieldState = ShieldState.FullyCharged;
         _shieldFX.SetActive(false);
@@ -146,21 +150,20 @@ public class WVDPlayer : WVDEntity, IWVDDestroyableObject
                 }
                 break;
             case ShieldState.Using:
-                if (!_activateShield || _currentShield <= 0.0f)
+                if (!_activateShield || CurrentShield <= 0.0f)
                 {
-                    _currentShield = 0.0f;
                     _currentShieldState = ShieldState.WaitingToRecharge;
                     ShieldFXOn = false;
                 }
                 else
                 {
-                    _currentShield -= Time.deltaTime;
+                    CurrentShield -= Time.deltaTime;
                 }
                 break;
             case ShieldState.WaitingToRecharge:
                 if (_activateShield)
                 {
-                    if (_currentShield > 0.0f)
+                    if (CurrentShield > 0.0f)
                     {
                         _rechargeShieldIntervalTimer = _rechargeShieldInterval;
                         _currentShieldState = ShieldState.Using;
@@ -182,20 +185,20 @@ public class WVDPlayer : WVDEntity, IWVDDestroyableObject
                 }
                 break;
             case ShieldState.Recharging:
-                if (_activateShield && _currentShield > 0.0f)
+                if (_activateShield && CurrentShield > 0.0f)
                 {
                     _rechargeShieldIntervalTimer = _rechargeShieldInterval; // this line may not be needed
                     _currentShieldState = ShieldState.Using;
                     ShieldFXOn = true;
                 }
-                else if (_currentShield >= _maxShield)
+                else if (CurrentShield >= _maxShield)
                 {
-                    _currentShield = _maxShield;
+                    CurrentShield = _maxShield;
                     _currentShieldState = ShieldState.FullyCharged;
                 }
                 else
                 {
-                    _currentShield += Time.deltaTime * _rechargeShieldRate;
+                    CurrentShield += Time.deltaTime * _rechargeShieldRate;
                 }
                 break;
         }
