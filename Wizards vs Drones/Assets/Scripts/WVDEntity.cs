@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class WVDEntity : MonoBehaviour
 {
-    [Header("Health")]
+    [Header("Health - General")]
     int _currentHealth;
     [SerializeField]
     int _maxHealth;
@@ -51,7 +51,7 @@ public abstract class WVDEntity : MonoBehaviour
     }
 
 
-    [Header("Speed")]
+    [Header("Speed - General")]
     [SerializeField]
     float _maxNormalSpeed;
     public float MaxNormalSpeed 
@@ -60,7 +60,7 @@ public abstract class WVDEntity : MonoBehaviour
         set => _maxNormalSpeed = value; 
     }
 
-    [Header("Animations")]
+    [Header("Animations - General")]
     [SerializeField]
     Animator _animator;
     string _currentPlayingAnimation;
@@ -70,9 +70,14 @@ public abstract class WVDEntity : MonoBehaviour
         set => _currentPlayingAnimation = value; 
     }
 
+    [Header("Other - General")]
+    [System.NonSerialized]
+    public GameObject Player;
+
     public virtual void Start()
     {
         _currentHealth = _maxHealth;
+        Player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
