@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class WVDPlayer : WVDEntity, IWVDDestroyableObject
 {
-    [Header("Model")]
+    [Header("Model - Player")]
     [SerializeField]
     GameObject _playerModel;
 
-    [Header("Shield")]
+    [Header("Shield - Player")]
     [SerializeField]
     float _currentShield;
     [SerializeField]
