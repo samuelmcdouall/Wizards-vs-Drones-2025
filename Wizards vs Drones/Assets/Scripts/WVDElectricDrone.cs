@@ -8,10 +8,12 @@ public class WVDElectricDrone : WVDEntity, IWVDDestroyableObject
     ElectricDroneState _currentElectricDroneState;
 
     [Header("Movement - Electric Drone")]
-    NavMeshAgent _electricDroneNMA;
     [SerializeField]
-    float _attackDistanceThreshold;
-    readonly float _chargingTurnFactor = 1.25f;
+    float _attackRayCastDistance;
+    [SerializeField]
+    Transform[] _rayCastPoints;
+    NavMeshAgent _electricDroneNMA;
+    readonly float _chargingTurnFactor = 2.5f;
 
     [Header("Attacking - Electric Drone")]
     [SerializeField]
@@ -56,9 +58,28 @@ public class WVDElectricDrone : WVDEntity, IWVDDestroyableObject
     // Update is called once per frame
     void Update()
     {
+        //print(Vector3.Distance(transform.position, Player.transform.position));
+        for (int i = 0; i < _rayCastPoints.Length; i++)
+        {
+            Debug.DrawRay(_rayCastPoints[i].position, _rayCastPoints[i].forward * _attackRayCastDistance, Color.magenta);
+        }
+
         if (CurrentElectricDroneState == ElectricDroneState.Chasing)
         {
-            if (Vector3.Distance(transform.position, Player.transform.position) <= _attackDistanceThreshold)
+            bool hitPlayer = false;
+            for (int i = 0; i < _rayCastPoints.Length; i++) 
+            {
+                RaycastHit hit;
+                if (Physics.Raycast(_rayCastPoints[i].position, _rayCastPoints[i].forward, out hit, _attackRayCastDistance))
+                {
+                    if (hit.transform.gameObject.CompareTag("Player"))
+                    {
+                        hitPlayer = true;
+                        break;
+                    }
+                }
+            }
+            if (hitPlayer)
             {
                 CurrentElectricDroneState = ElectricDroneState.ChargingUp;
                 _electricDroneNMA.isStopped = true;
