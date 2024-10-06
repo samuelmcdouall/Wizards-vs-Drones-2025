@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class WVDEntity : MonoBehaviour
+public abstract class WVDBaseEntity : MonoBehaviour
 {
     [Header("Health - General")]
     int _currentHealth;
@@ -80,12 +80,6 @@ public abstract class WVDEntity : MonoBehaviour
         Player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void SwitchToAnimation(string animation)
     {
         if (animation != _currentPlayingAnimation)
@@ -94,6 +88,4 @@ public abstract class WVDEntity : MonoBehaviour
             _animator.Play(animation);
         }
     }
-
-    
 }
