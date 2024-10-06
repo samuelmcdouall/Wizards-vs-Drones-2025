@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class WVDPlayerMovement : MonoBehaviour
+public class WVDPlayerInputs : MonoBehaviour
 {
     [Header("Camera Object")]
     [SerializeField]
@@ -30,6 +30,12 @@ public class WVDPlayerMovement : MonoBehaviour
     bool _canDash;
     [SerializeField]
     GameObject _dashUI;
+
+    [Header("Attacking")]
+    [SerializeField]
+    Transform _attackFirePoint;
+    [SerializeField]
+    GameObject _magicMissilePrefab;
 
     public PlayerMovementState CurrentPlayerMovementState 
     { 
@@ -78,7 +84,7 @@ public class WVDPlayerMovement : MonoBehaviour
 
     void HandleMouseAndKeyInputs()
     {
-        // If blocking just do that and don't take any movement input
+        // If blocking just do that and don't take any movement/attacking input
         if (Input.GetMouseButton(1))
         {
             _playerScript.ActivateShield = true;
@@ -87,6 +93,11 @@ public class WVDPlayerMovement : MonoBehaviour
         }
         else
         {
+            if (Input.GetMouseButtonDown(0)) // todo change back to MouseButton once got cooldown in
+            {
+                GameObject magicMissile = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation);
+                magicMissile.GetComponent<WVDPlayerProjectile>().SetProjectileDirection(_attackFirePoint.forward);
+            }
             _playerScript.ActivateShield = false;
             HandleMovement();
         }
