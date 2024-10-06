@@ -2,9 +2,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class WVDElectricDrone : WVDEntity, IWVDDestroyableObject
+public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
 {
     [Header("General - Electric Drone")]
+    [SerializeField]
+    GameObject _explodePrefab;
     ElectricDroneState _currentElectricDroneState;
 
     [Header("Movement - Electric Drone")]
@@ -35,14 +37,28 @@ public class WVDElectricDrone : WVDEntity, IWVDDestroyableObject
         }
     }
 
-    public void OnDestroyObject()
+    public void DestroyFullyDamaged()
     {
-        throw new System.NotImplementedException();
+        // todo add in fx
+        print("Electric drone destroyed");
+        Destroy(gameObject);
+    }
+    public void TakeDamage(int damage)
+    {
+        CurrentHealth -= damage;
+        if (IsFullyDamaged())
+        {
+            DestroyFullyDamaged();
+        }
     }
 
-    public bool ShouldDestroyObject()
+    public bool IsFullyDamaged()
     {
-        throw new System.NotImplementedException();
+        if (CurrentHealth <= 0.0f)
+        {
+            return true;
+        }
+        return false;
     }
 
     // Start is called before the first frame update
@@ -58,7 +74,6 @@ public class WVDElectricDrone : WVDEntity, IWVDDestroyableObject
     // Update is called once per frame
     void Update()
     {
-        //print(Vector3.Distance(transform.position, Player.transform.position));
         for (int i = 0; i < _rayCastPoints.Length; i++)
         {
             Debug.DrawRay(_rayCastPoints[i].position, _rayCastPoints[i].forward * _attackRayCastDistance, Color.magenta);

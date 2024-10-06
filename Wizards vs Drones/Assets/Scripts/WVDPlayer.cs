@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WVDPlayer : WVDEntity, IWVDDestroyableObject
+public class WVDPlayer : WVDBaseEntity, IWVDDamageable
 {
     [Header("Model - Player")]
     [SerializeField]
@@ -128,11 +128,11 @@ public class WVDPlayer : WVDEntity, IWVDDestroyableObject
     // Update is called once per frame
     void Update()
     {
-        if (ShouldDestroyObject())
-        {
-            OnDestroyObject();
-        }
-        else
+        //if (IsFullyDamaged())
+        //{
+        //    DestroyFullyDamaged();
+        //}
+        //else
         {
             HandleShieldState();
         }
@@ -204,7 +204,7 @@ public class WVDPlayer : WVDEntity, IWVDDestroyableObject
         }
     }
 
-    public bool ShouldDestroyObject()
+    public bool IsFullyDamaged()
     {
         if (CurrentHealth <= 0)
         {
@@ -213,11 +213,19 @@ public class WVDPlayer : WVDEntity, IWVDDestroyableObject
         return false;
     }
 
-    public void OnDestroyObject()
+    public void DestroyFullyDamaged()
     {
         print("Destroyed!");
         // Do other things
     }
+
+    // todo implement this
+    public void TakeDamage(int damage)
+    {
+        throw new System.NotImplementedException();
+    }
+
+
 
     public enum ShieldState
     {
