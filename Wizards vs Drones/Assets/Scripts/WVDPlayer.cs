@@ -9,6 +9,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     [SerializeField]
     GameObject _playerModel;
 
+
     [Header("Shield - Player")]
     [SerializeField]
     float _currentShield;
@@ -215,14 +216,20 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
 
     public void DestroyFullyDamaged()
     {
-        print("Destroyed!");
+        print("PLAYER DEAD!");
         // Do other things
     }
 
-    // todo implement this
+    // todo implement this, this is next
     public void TakeDamage(int damage)
     {
-        throw new System.NotImplementedException();
+        print($"Player took {damage} damage");
+        CurrentHealth -= damage;
+        print($"Player on {CurrentHealth} health");
+        if (IsFullyDamaged())
+        {
+            DestroyFullyDamaged();
+        }
     }
 
 

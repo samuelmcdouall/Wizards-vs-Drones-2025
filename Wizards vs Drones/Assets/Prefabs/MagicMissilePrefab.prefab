@@ -148,5 +148,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 15
   _lifeTime: 5
-  _damage: 0
+  Damage: 1
   _impactFX: {fileID: 0}

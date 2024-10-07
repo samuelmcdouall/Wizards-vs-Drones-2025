@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class WVDBaseEntity : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public abstract class WVDBaseEntity : MonoBehaviour
     int _currentHealth;
     [SerializeField]
     int _maxHealth;
+    [SerializeField]
+    Slider _healthUI;
 
     public int CurrentHealth 
     { 
@@ -34,8 +37,15 @@ public abstract class WVDBaseEntity : MonoBehaviour
                 else if (value <= 0)
                 {
                     _currentHealth = 0;
-                    // todo trigger is dead code here later on
                 }
+                else
+                {
+                    _currentHealth = value;
+                }
+            }
+            if (_healthUI)
+            {
+                _healthUI.value = (float)_currentHealth / (float)_maxHealth;
             }
         } 
     }
@@ -77,6 +87,7 @@ public abstract class WVDBaseEntity : MonoBehaviour
     public virtual void Start()
     {
         _currentHealth = _maxHealth;
+        _invulnerable = false;
         Player = GameObject.FindGameObjectWithTag("Player");
     }
 

@@ -7,6 +7,7 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
     [Header("General - Electric Drone")]
     [SerializeField]
     GameObject _explodePrefab;
+    readonly Vector3 _explodeOffset = new Vector3(0.0f, 1.0f, 0.0f); 
     ElectricDroneState _currentElectricDroneState;
 
     [Header("Movement - Electric Drone")]
@@ -26,6 +27,10 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
     float _attackDischargeDuration;
     [SerializeField]
     GameObject _attackHitBox;
+    [SerializeField]
+    WVDElectricDroneHitBox _attackHitBoxScript;
+    [SerializeField]
+    int _zapDamage;
 
     public ElectricDroneState CurrentElectricDroneState 
     { 
@@ -37,14 +42,22 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
         }
     }
 
+    public int ZapDamage 
+    { 
+        get => _zapDamage; 
+        set => _zapDamage = value; 
+    }
+
     public void DestroyFullyDamaged()
     {
         // todo add in fx
         print("Electric drone destroyed");
+        Instantiate(_explodePrefab, transform.position + _explodeOffset, _explodePrefab.transform.rotation);
         Destroy(gameObject);
     }
     public void TakeDamage(int damage)
     {
+        print($"Electric drone took {damage} damage");
         CurrentHealth -= damage;
         if (IsFullyDamaged())
         {
@@ -135,6 +148,7 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
             case ElectricDroneState.ChargingUp:
                 CurrentElectricDroneState = ElectricDroneState.Attacking;
                 _attackHitBox.SetActive(true);
+                _attackHitBoxScript.CanDamage = true;
                 StartCoroutine(TransitionToStateAfterDelay(_attackDuration));
                 break;
             case ElectricDroneState.Attacking:
