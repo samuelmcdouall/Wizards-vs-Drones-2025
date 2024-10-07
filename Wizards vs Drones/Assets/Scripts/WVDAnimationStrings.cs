@@ -7,4 +7,5 @@ public class WVDAnimationStrings
     public static string PlayerRightAnimation = "MoveRight";
 
     public static string PlayerBlockAnimation = "Block";
+    public static string PlayerAttackAnimation = "PlayerAttack";
 }

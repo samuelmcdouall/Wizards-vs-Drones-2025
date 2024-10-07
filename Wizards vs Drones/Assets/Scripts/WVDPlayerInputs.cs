@@ -97,6 +97,8 @@ public class WVDPlayerInputs : MonoBehaviour
             {
                 GameObject magicMissile = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation);
                 magicMissile.GetComponent<WVDPlayerProjectile>().SetProjectileDirection(_attackFirePoint.forward);
+                CurrentPlayerMovementState = PlayerMovementState.Attacking;
+                _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerAttackAnimation);
             }
             _playerScript.ActivateShield = false;
             HandleMovement();
@@ -265,6 +267,7 @@ public class WVDPlayerInputs : MonoBehaviour
     {
         Still,
         Moving,
-        Dashing
+        Dashing,
+        Attacking
     }
 }
