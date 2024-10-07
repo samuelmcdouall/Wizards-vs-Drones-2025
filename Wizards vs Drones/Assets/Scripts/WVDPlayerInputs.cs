@@ -36,6 +36,9 @@ public class WVDPlayerInputs : MonoBehaviour
     Transform _attackFirePoint;
     [SerializeField]
     GameObject _magicMissilePrefab;
+    bool _canAttack;
+    [SerializeField]
+    float _attackRechargeInterval;
 
     public PlayerMovementState CurrentPlayerMovementState 
     { 
@@ -61,6 +64,7 @@ public class WVDPlayerInputs : MonoBehaviour
         _initialJumpVelocity = Mathf.Sqrt(_jumpHeight * -2.0f * _gravity);
         CurrentPlayerMovementState = PlayerMovementState.Still;
         CanDash = true;
+        _canAttack = true;
     }
 
     void Update()
@@ -93,12 +97,14 @@ public class WVDPlayerInputs : MonoBehaviour
         }
         else
         {
-            if (Input.GetMouseButtonDown(0)) // todo change back to MouseButton once got cooldown in
+            if (_canAttack && Input.GetMouseButtonDown(0)) // todo change back to MouseButton once got cooldown in
             {
                 GameObject magicMissile = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation);
                 magicMissile.GetComponent<WVDPlayerProjectile>().SetProjectileDirection(_attackFirePoint.forward);
                 CurrentPlayerMovementState = PlayerMovementState.Attacking;
                 _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerAttackAnimation);
+                _canAttack = false;
+                RechargeAttack();
             }
             _playerScript.ActivateShield = false;
             HandleMovement();
@@ -169,6 +175,15 @@ public class WVDPlayerInputs : MonoBehaviour
         }
         print("done recharging dash");
         CanDash = true;
+    }
+    public async void RechargeAttack()
+    {
+        float endRechargeTime = Time.time + _attackRechargeInterval;
+        while (Time.time < endRechargeTime)
+        {
+            await Task.Yield();
+        }
+        _canAttack = true;
     }
 
     WVDPlayerDirection GetPlayerDirection()

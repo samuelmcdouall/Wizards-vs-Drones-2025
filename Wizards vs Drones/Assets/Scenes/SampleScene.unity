@@ -2800,6 +2800,7 @@ MonoBehaviour:
   _dashUI: {fileID: 922197768}
   _attackFirePoint: {fileID: 403381177}
   _magicMissilePrefab: {fileID: 5432368540722010777, guid: 0d68059e7e32dc04ca3e16b67817a645, type: 3}
+  _attackRechargeInterval: 2
 --- !u!114 &1975454022
 MonoBehaviour:
   m_ObjectHideFlags: 0
