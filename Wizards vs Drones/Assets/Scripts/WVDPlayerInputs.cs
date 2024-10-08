@@ -88,12 +88,12 @@ public class WVDPlayerInputs : MonoBehaviour
 
     void HandleMouseAndKeyInputs()
     {
-        // If blocking just do that and don't take any movement/attacking input
+        // If blocking just do that and don't take any movement/attacking input, todo leave this here in case come back to it, but shield would be better as a power up
         if (Input.GetMouseButton(1))
         {
-            _playerScript.ActivateShield = true;
-            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerBlockAnimation);
-            CurrentPlayerMovementState = PlayerMovementState.Still;
+            //_playerScript.ActivateShield = true;
+            //_playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerBlockAnimation);
+            //CurrentPlayerMovementState = PlayerMovementState.Still;
         }
         else
         {
