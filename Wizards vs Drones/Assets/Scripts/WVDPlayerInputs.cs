@@ -106,7 +106,7 @@ public class WVDPlayerInputs : MonoBehaviour
                 _canAttack = false;
                 RechargeAttack();
             }
-            _playerScript.ActivateShield = false;
+            //_playerScript.ActivateShield = false;
             HandleMovement();
         }
     }
@@ -137,8 +137,8 @@ public class WVDPlayerInputs : MonoBehaviour
         }
         else if (GivenDashInput())
         {
-            _playerScript.ShieldFXOn = false;
-            _playerScript.ActivateShield = false;
+            //_playerScript.ShieldFXOn = false;
+            //_playerScript.ActivateShield = false;
             _playerScript.PlayerModelOn = false;
             CanDash = false;
             CurrentPlayerMovementState = PlayerMovementState.Dashing;
