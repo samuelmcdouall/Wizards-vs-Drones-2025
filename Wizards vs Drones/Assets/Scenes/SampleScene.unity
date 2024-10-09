@@ -2710,7 +2710,7 @@ GameObject:
   - component: {fileID: 639570474}
   m_Layer: 6
   m_Name: ShieldDeflectFX
-  m_TagString: Untagged
+  m_TagString: ShieldDeflect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4281,7 +4281,7 @@ GameObject:
   - component: {fileID: 1128563797}
   m_Layer: 6
   m_Name: ShieldRegularFX
-  m_TagString: Untagged
+  m_TagString: ShieldRegular
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5949,7 +5949,7 @@ GameObject:
   - component: {fileID: 1634313348}
   m_Layer: 6
   m_Name: ShieldElectricFX
-  m_TagString: Untagged
+  m_TagString: ShieldElectric
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
