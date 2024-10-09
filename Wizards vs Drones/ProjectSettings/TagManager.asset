@@ -8,6 +8,9 @@ TagManager:
   - Projectile
   - Enemy
   - PowerUp
+  - ShieldRegular
+  - ShieldDeflect
+  - ShieldElectric
   layers:
   - Default
   - TransparentFX
