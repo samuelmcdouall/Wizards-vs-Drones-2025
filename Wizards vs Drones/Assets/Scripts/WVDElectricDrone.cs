@@ -31,6 +31,7 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
     WVDElectricDroneHitBox _attackHitBoxScript;
     [SerializeField]
     int _zapDamage;
+    readonly int _layerMask = 1 << 2;
 
     public ElectricDroneState CurrentElectricDroneState 
     { 
@@ -53,6 +54,7 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
         // todo add in fx
         print("Electric drone destroyed");
         Instantiate(_explodePrefab, transform.position + _explodeOffset, _explodePrefab.transform.rotation);
+        Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this);
         Destroy(gameObject);
     }
     public void TakeDamage(int damage)
@@ -82,6 +84,7 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
         _electricDroneNMA = GetComponent<NavMeshAgent>();
         _electricDroneNMA.speed = MaxNormalSpeed;
         _attackHitBox.SetActive(false);
+        Player.GetComponent<WVDPlayer>().AddDroneToPlayerList(this);
     }
 
     // Update is called once per frame
@@ -98,7 +101,7 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
             for (int i = 0; i < _rayCastPoints.Length; i++) 
             {
                 RaycastHit hit;
-                if (Physics.Raycast(_rayCastPoints[i].position, _rayCastPoints[i].forward, out hit, _attackRayCastDistance))
+                if (Physics.Raycast(_rayCastPoints[i].position, _rayCastPoints[i].forward, out hit, _attackRayCastDistance, ~_layerMask))
                 {
                     if (hit.transform.gameObject.CompareTag("Player"))
                     {
@@ -164,7 +167,12 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
                 Debug.LogError("ERROR: Should not be broken");
                 break;
         }
-        
+
+    }
+
+    public Transform GetTransform()
+    {
+        return gameObject.transform;
     }
 
 

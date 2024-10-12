@@ -17,6 +17,12 @@ public abstract class WVDBaseProjectile : MonoBehaviour
     [SerializeField]
     GameObject _impactFX; // todo change this to public and access in other classes
 
+    public Vector3 Direction 
+    { 
+        get => _direction; 
+        set => _direction = value; 
+    }
+
     public virtual void Start()
     {
         _rb = GetComponent<Rigidbody>();
@@ -27,5 +33,10 @@ public abstract class WVDBaseProjectile : MonoBehaviour
     public void SetProjectileDirection(Vector3 direction)
     {
         _direction = direction.normalized;
+        // If it changes later on (when we've been given the RB) then change the velocity as well
+        if (_rb)
+        {
+            _rb.velocity = _direction * _speed;
+        }
     }
 }

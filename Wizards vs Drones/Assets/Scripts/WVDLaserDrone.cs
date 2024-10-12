@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable
+public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if theres common code in this and ElectricDrone and make a base drone class that inherits from base entity
 {
     [Header("General - Laser Drone")]
     [SerializeField]
@@ -28,6 +28,7 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable
     GameObject _laserProjectilePrefab;
     [SerializeField]
     Transform _projectileFirePoint;
+    readonly int _layerMask = 1 << 2;
 
     public LaserDroneState CurrentLaserDroneState
     {
@@ -44,6 +45,7 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable
         // todo add in fx
         print("Laser drone destroyed");
         Instantiate(_explodePrefab, transform.position + _explodeOffset, _explodePrefab.transform.rotation);
+        Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this);
         Destroy(gameObject);
     }
     public void TakeDamage(int damage)
@@ -72,6 +74,7 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable
         _currentLaserDroneState = LaserDroneState.Chasing;
         _laserDroneNMA = GetComponent<NavMeshAgent>();
         _laserDroneNMA.speed = MaxNormalSpeed;
+        Player.GetComponent<WVDPlayer>().AddDroneToPlayerList(this);   
     }
 
     // Update is called once per frame
@@ -88,7 +91,7 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable
             for (int i = 0; i < _rayCastPoints.Length; i++)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(_rayCastPoints[i].position, _rayCastPoints[i].forward, out hit, _attackRayCastDistance))
+                if (Physics.Raycast(_rayCastPoints[i].position, _rayCastPoints[i].forward, out hit, _attackRayCastDistance, ~_layerMask))
                 {
                     if (hit.transform.gameObject.CompareTag("Player"))
                     {
@@ -153,6 +156,11 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable
                 break;
         }
 
+    }
+
+    public Transform GetTransform()
+    {
+        return gameObject.transform;
     }
 
 

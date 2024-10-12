@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,6 +34,8 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     GameObject _shieldReflectFX;
     [SerializeField]
     GameObject _shieldElectricFX;
+    [SerializeField]
+    float _shieldElectricDamageThreshold;
 
     [Header("Speed - Player")]
     [SerializeField]
@@ -49,6 +52,10 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         get => _dashSpeed;
         set => _dashSpeed = value;
     }
+
+    [Header("General - Player")]
+    List<IWVDDamageable> _drones = new List<IWVDDamageable>();
+    
 
     //public float CurrentShield
     //{
@@ -139,6 +146,16 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     // Update is called once per frame
     void Update()
     {
+        if (_shieldElectricFX.activeSelf)
+        {
+            foreach (IWVDDamageable drone in _drones.ToList()) // copy value to a separate list, so if something disappears from the list mid forloop shouldn't be an issue. Possible issue if drone gets destroyed before its checked in the list in same update cycle
+            {
+                if (Vector3.Distance(drone.GetTransform().position, transform.position) <= _shieldElectricDamageThreshold)
+                {
+                    drone.TakeDamage(1000); // Insta-kill, something stupidly high
+                }
+            }
+        }
         //if (IsFullyDamaged())
         //{
         //    DestroyFullyDamaged();
@@ -215,6 +232,18 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     //    }
     //}
 
+    public void AddDroneToPlayerList(IWVDDamageable drone)
+    {
+        _drones.Add(drone);
+        print($"Drone added, currently keeping track of {_drones.Count}");
+    }
+
+    public void RemoveDroneFromPlayerList(IWVDDamageable drone)
+    {
+        _drones.Remove(drone);
+        print($"Drone removed, currently keeping track of {_drones.Count}");
+    }
+
     public bool IsFullyDamaged()
     {
         if (CurrentHealth <= 0)
@@ -274,6 +303,11 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         _shieldReflectFX.SetActive(false);
         _shieldElectricFX.SetActive(false);
         Invulnerable = false;
+    }
+
+    public Transform GetTransform()
+    {
+        return gameObject.transform;
     }
 
     public enum ShieldVersion
