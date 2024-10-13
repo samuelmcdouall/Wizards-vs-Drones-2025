@@ -12,6 +12,7 @@ public abstract class WVDBaseProjectile : MonoBehaviour
 
     [Header("Damage - General")]
     public int Damage;
+    public WVDAttackEffects Effects;
 
     [Header("SFX/FX - General")]
     [SerializeField]
@@ -27,6 +28,7 @@ public abstract class WVDBaseProjectile : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _rb.velocity = _direction * _speed;
+        Effects.SetToDefault();
         Destroy(gameObject, _lifeTime);
     }
 

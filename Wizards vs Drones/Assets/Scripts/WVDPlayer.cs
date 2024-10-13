@@ -37,6 +37,15 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     [SerializeField]
     float _shieldElectricDamageThreshold;
 
+    [Header("Traps - Player")]
+    [SerializeField]
+    GameObject _trapSlowPrefab;
+    [SerializeField]
+    GameObject _trapDamagePrefab;
+    [SerializeField]
+    GameObject _trapExplosivePrefab;
+    readonly float _trapDeploymentOffset = 2.0f;
+
     [Header("Speed - Player")]
     [SerializeField]
     float _maxSideBackSpeed;
@@ -144,8 +153,9 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     //}
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
+        base.Update();
         if (_shieldElectricFX.activeSelf)
         {
             foreach (IWVDDamageable drone in _drones.ToList()) // copy value to a separate list, so if something disappears from the list mid forloop shouldn't be an issue. Possible issue if drone gets destroyed before its checked in the list in same update cycle
@@ -279,7 +289,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     //    FullyCharged
     //}
 
-    public async void SwitchOnShieldForSeconds(ShieldVersion version, float seconds)
+    public async void SwitchOnShieldForSeconds(ShieldVersion version, float seconds) // todo maybe stuff like this should be put in the power up manager
     {
         switch (version)
         {
@@ -310,10 +320,38 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         return gameObject.transform;
     }
 
+    public void DeployTrap(TrapVersion trap)
+    {
+        GameObject chosenTrap = _trapSlowPrefab; // set to default
+        if (trap == TrapVersion.Damage)
+        {
+            chosenTrap = _trapDamagePrefab;
+        }
+        else if (trap == TrapVersion.Explosive)
+        {
+            chosenTrap = _trapExplosivePrefab;
+        }
+
+        Instantiate(chosenTrap, transform.position + _playerModel.transform.forward * _trapDeploymentOffset, _playerModel.transform.rotation);
+    }
+
+    public void ResolveAttack(int damage, WVDAttackEffects effects)
+    {
+        TakeDamage(damage);
+        ApplyEffects(effects);
+    }
+
     public enum ShieldVersion
     {
         Regular,
         Reflect,
         Electric
+    }
+
+    public enum TrapVersion
+    {
+        Slow,
+        Damage,
+        Explosive
     }
 }

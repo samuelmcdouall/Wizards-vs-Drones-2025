@@ -2534,7 +2534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856a18d18db95704f9c3455b3450a809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10
+  _maxHealth: 1
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4
   _animator: {fileID: 1354730918}
@@ -4609,7 +4609,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1226640493
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4684,7 +4684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550f568fb5538454aa9735e1f1fdb0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10
+  _maxHealth: 1
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 5
   _animator: {fileID: 2070657986}
@@ -6572,6 +6572,9 @@ MonoBehaviour:
   _shieldReflectFX: {fileID: 639570472}
   _shieldElectricFX: {fileID: 1634313346}
   _shieldElectricDamageThreshold: 4
+  _trapSlowPrefab: {fileID: 3100678737985389441, guid: 000618a85876b9e428b8cf5fd1e87834, type: 3}
+  _trapDamagePrefab: {fileID: 8611904704282592497, guid: 1602c5611cf90834bb252a1b27a8297d, type: 3}
+  _trapExplosivePrefab: {fileID: 7450529797947933823, guid: ec1fed263ece1ed4eafc01b487107982, type: 3}
   _maxSideBackSpeed: 2
   _dashSpeed: 20
 --- !u!143 &1975454023

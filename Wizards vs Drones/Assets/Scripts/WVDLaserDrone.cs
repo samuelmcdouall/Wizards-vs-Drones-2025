@@ -78,8 +78,10 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
     }
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
+        base.Update();
+        _laserDroneNMA.speed = MaxNormalSpeed;
         for (int i = 0; i < _rayCastPoints.Length; i++)
         {
             Debug.DrawRay(_rayCastPoints[i].position, _rayCastPoints[i].forward * _attackRayCastDistance, Color.magenta);
@@ -163,6 +165,11 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
         return gameObject.transform;
     }
 
+    public void ResolveAttack(int damage, WVDAttackEffects effects)
+    {
+        TakeDamage(damage);
+        ApplyEffects(effects);
+    }
 
     public enum LaserDroneState
     {

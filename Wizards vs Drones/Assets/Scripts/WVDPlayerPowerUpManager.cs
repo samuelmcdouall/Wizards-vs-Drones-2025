@@ -124,6 +124,21 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
                         break;
                 }
             }
+            else if (_primaryPowerUpHeld == PowerUpType.Trap)
+            {
+                switch (_secondaryPowerUpCountHeld)
+                {
+                    case 0:
+                        _playerScript.DeployTrap(WVDPlayer.TrapVersion.Slow);
+                        break;
+                    case 1:
+                        _playerScript.DeployTrap(WVDPlayer.TrapVersion.Damage);
+                        break;
+                    case 2:
+                        _playerScript.DeployTrap(WVDPlayer.TrapVersion.Explosive);
+                        break;
+                }
+            }
             ResetPowerUps();
         }    
     }

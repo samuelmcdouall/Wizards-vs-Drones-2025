@@ -11,7 +11,7 @@ public class WVDPlayerProjectile : WVDBaseProjectile
     {
         if (other.gameObject.CompareTag("Enemy") && other.gameObject.GetComponent<IWVDDamageable>() != null)
         {
-            other.gameObject.GetComponent<IWVDDamageable>().TakeDamage(Damage);
+            other.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
             print("hit enemy");
         }
         Destroy(gameObject);

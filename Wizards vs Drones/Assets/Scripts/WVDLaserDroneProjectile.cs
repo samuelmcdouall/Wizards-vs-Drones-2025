@@ -20,12 +20,12 @@ public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if th
         {
             if (other.gameObject.CompareTag("Player"))
             {
-                other.gameObject.GetComponent<WVDPlayer>().TakeDamage(Damage);
+                other.gameObject.GetComponent<WVDPlayer>().ResolveAttack(Damage, Effects); // todo might just use IWVDDamageable here as well
                 print("hit player");
             }
             else if (other.gameObject.CompareTag("Enemy") && other.gameObject.GetComponent<IWVDDamageable>() != null)
             {
-                other.gameObject.GetComponent<IWVDDamageable>().TakeDamage(Damage);
+                other.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
                 print("hit enemy");
             }
             Destroy(gameObject);

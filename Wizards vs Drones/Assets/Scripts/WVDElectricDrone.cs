@@ -88,8 +88,10 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
     }
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
+        base.Update();
+        _electricDroneNMA.speed = MaxNormalSpeed;
         for (int i = 0; i < _rayCastPoints.Length; i++)
         {
             Debug.DrawRay(_rayCastPoints[i].position, _rayCastPoints[i].forward * _attackRayCastDistance, Color.magenta);
@@ -175,6 +177,11 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
         return gameObject.transform;
     }
 
+    public void ResolveAttack(int damage, WVDAttackEffects effects)
+    {
+        TakeDamage(damage);
+        ApplyEffects(effects);
+    }
 
     public enum ElectricDroneState
     {

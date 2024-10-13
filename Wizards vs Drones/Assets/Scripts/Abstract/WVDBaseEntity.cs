@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
-public abstract class WVDBaseEntity : MonoBehaviour
+public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
 {
     [Header("Health - General")]
     int _currentHealth;
@@ -64,6 +66,9 @@ public abstract class WVDBaseEntity : MonoBehaviour
     [Header("Speed - General")]
     [SerializeField]
     float _maxNormalSpeed;
+    float _initialMaxNormalSpeed;
+    float _slowedTimer;
+    bool _slowed;
     public float MaxNormalSpeed 
     { 
         get => _maxNormalSpeed; 
@@ -88,7 +93,25 @@ public abstract class WVDBaseEntity : MonoBehaviour
     {
         _currentHealth = _maxHealth;
         _invulnerable = false;
+        _initialMaxNormalSpeed = _maxNormalSpeed;
         Player = GameObject.FindGameObjectWithTag("Player");
+    }
+
+    public virtual void Update()
+    {
+        if (_slowed)
+        {
+            if (_slowedTimer <= 0.0f)
+            {
+                print("Entity no longer slowed");
+                _slowed = false;
+                _maxNormalSpeed = _initialMaxNormalSpeed;
+            }
+            else
+            {
+                _slowedTimer -= Time.deltaTime;
+            }
+        }
     }
 
     public void SwitchToAnimation(string animation)
@@ -97,6 +120,31 @@ public abstract class WVDBaseEntity : MonoBehaviour
         {
             _currentPlayingAnimation = animation;
             _animator.Play(animation);
+        }
+    }
+
+    public void ApplyEffects(WVDAttackEffects effects)
+    {
+        if (effects.Slow)
+        {
+            ApplySlow(effects.SlowPercentage, effects.SlowDuration);
+        }
+    }
+
+    public void ApplySlow(float percentage, float time)
+    {
+        // If a slow is applied that would reduce the speed to lower (accounting for multiple slow sources) then apply new slow
+        if (_maxNormalSpeed > _initialMaxNormalSpeed * percentage)
+        {
+            print($"Entity set to {percentage} speed");
+            _maxNormalSpeed = _initialMaxNormalSpeed * percentage;
+            _slowed = true;
+        }
+
+        // If a time is applied that would be larger than the time remaining then apply new time
+        if (time > _slowedTimer)
+        {
+            _slowedTimer = time;
         }
     }
 }
