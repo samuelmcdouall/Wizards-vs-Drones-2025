@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8539571824685614408}
   - component: {fileID: 2894697663770633799}
   m_Layer: 0
-  m_Name: TrapExplosion
+  m_Name: GrenadeExplosionPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5090,7 +5090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lifetime: 0.5
-  _damage: 1
+  _damage: 2
   _canDamageEnemies: 1
   _canDamagePlayer: 0
 --- !u!135 &8539571824685614408

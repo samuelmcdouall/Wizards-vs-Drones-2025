@@ -19,11 +19,15 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
     [SerializeField]
     int _healValueUpgrade2;
 
-    [Header("Shield")]
+    [Header("Shield")] // todo should probably move the shield + other power up deploying here
     [SerializeField]
     float _shieldDuration;
     [Header("Traps")]
     [Header("Attack")]
+    [SerializeField]
+    GameObject _grenadePrefab;
+    [SerializeField]
+    Transform _grenadeFirePoint;
     [Header("Explosion")]
 
     [Header("UI")]
@@ -139,8 +143,29 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
                         break;
                 }
             }
+            else if (_primaryPowerUpHeld == PowerUpType.Attack)
+            {
+                switch (_secondaryPowerUpCountHeld)
+                {
+                    case 0:
+                        DeployGrenade();
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                }
+            }
             ResetPowerUps();
         }    
+    }
+
+    void DeployGrenade()
+    {
+        GameObject grenade = Instantiate(_grenadePrefab, _grenadeFirePoint.position, _grenadePrefab.transform.rotation);
+        Vector3 arcDirection = new Vector3(_grenadeFirePoint.forward.x, 0.5f, _grenadeFirePoint.forward.z);
+        grenade.GetComponent<WVDGrenadePowerUpProjectile>().SetProjectileDirection(arcDirection);
+        // model transform forwards, slight elevation, gravity on to give arc
     }
 
     void ResetPowerUps()

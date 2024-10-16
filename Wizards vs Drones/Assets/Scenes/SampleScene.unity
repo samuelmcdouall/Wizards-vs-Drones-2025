@@ -6620,6 +6620,8 @@ MonoBehaviour:
   _healValueUpgrade1: 2
   _healValueUpgrade2: 5
   _shieldDuration: 5
+  _grenadePrefab: {fileID: 5432368540722010777, guid: 64f0f8b455b3d594ab645f6132561ec8, type: 3}
+  _grenadeFirePoint: {fileID: 403381177}
   _primaryPowerUpIcon: {fileID: 1354483909}
   _secondaryPowerUpIcons:
   - {fileID: 1147873161}
