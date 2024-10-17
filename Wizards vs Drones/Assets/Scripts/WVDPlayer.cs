@@ -64,6 +64,9 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
 
     [Header("General - Player")]
     List<IWVDDamageable> _drones = new List<IWVDDamageable>();
+
+    [Header("Upgrades")]
+    int _batteryCount;
     
 
     //public float CurrentShield
@@ -136,6 +139,11 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     { 
         get => _drones; 
         set => _drones = value; 
+    }
+    public int BatteryCount 
+    { 
+        get => _batteryCount; 
+        set => _batteryCount = value; 
     }
 
     public override void Start()

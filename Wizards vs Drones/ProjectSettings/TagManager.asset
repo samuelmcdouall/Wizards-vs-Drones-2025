@@ -11,6 +11,8 @@ TagManager:
   - ShieldRegular
   - ShieldDeflect
   - ShieldElectric
+  - PickUpTrigger
+  - Battery
   layers:
   - Default
   - TransparentFX
