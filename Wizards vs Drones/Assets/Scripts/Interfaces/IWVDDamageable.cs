@@ -8,4 +8,6 @@ public interface IWVDDamageable
     void DestroyFullyDamaged();
 
     Transform GetTransform();
+
+    Transform GetModelTransform();
 }

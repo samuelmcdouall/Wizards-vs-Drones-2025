@@ -18,6 +18,8 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
     Transform[] _rayCastPoints;
     NavMeshAgent _laserDroneNMA;
     readonly float _chargingTurnFactor = 2.5f;
+    [SerializeField]
+    GameObject _droneModel;
 
     [Header("Attacking - Laser Drone")]
     [SerializeField]
@@ -169,6 +171,11 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
     {
         TakeDamage(damage);
         ApplyEffects(effects);
+    }
+
+    public Transform GetModelTransform()
+    {
+        return _droneModel.transform;
     }
 
     public enum LaserDroneState

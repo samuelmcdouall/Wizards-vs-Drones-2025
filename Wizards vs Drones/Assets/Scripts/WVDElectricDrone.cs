@@ -17,6 +17,8 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
     Transform[] _rayCastPoints;
     NavMeshAgent _electricDroneNMA;
     readonly float _chargingTurnFactor = 2.5f;
+    [SerializeField]
+    GameObject _droneModel;
 
     [Header("Attacking - Electric Drone")]
     [SerializeField]
@@ -181,6 +183,11 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
     {
         TakeDamage(damage);
         ApplyEffects(effects);
+    }
+
+    public Transform GetModelTransform()
+    {
+        return _droneModel.transform;
     }
 
     public enum ElectricDroneState

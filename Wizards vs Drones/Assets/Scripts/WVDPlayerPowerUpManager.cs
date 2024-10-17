@@ -28,6 +28,14 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
     GameObject _grenadePrefab;
     [SerializeField]
     Transform _grenadeFirePoint;
+    [SerializeField]
+    GameObject _circleAttackPrefab;
+    [SerializeField]
+    int _numAttacksInCircle;
+    [SerializeField]
+    float _circleSpawnOffset;
+    [SerializeField]
+    GameObject _homingAttackPrefab;
     [Header("Explosion")]
 
     [Header("UI")]
@@ -151,8 +159,10 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
                         DeployGrenade();
                         break;
                     case 1:
+                        FullCircleAttack();
                         break;
                     case 2:
+                        DeployHomingAttack();
                         break;
                 }
             }
@@ -166,6 +176,25 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
         Vector3 arcDirection = new Vector3(_grenadeFirePoint.forward.x, 0.5f, _grenadeFirePoint.forward.z);
         grenade.GetComponent<WVDGrenadePowerUpProjectile>().SetProjectileDirection(arcDirection);
         // model transform forwards, slight elevation, gravity on to give arc
+    }
+
+    void FullCircleAttack()
+    {
+        float degreeIncrement = 360.0f / (float)_numAttacksInCircle;
+        for (int i = 0; i < _numAttacksInCircle; i++)
+        {
+            Vector3 projectileDirection = Quaternion.Euler(0.0f, i * degreeIncrement, 0.0f) * _grenadeFirePoint.forward;
+            Vector3 spawnPoint = transform.position + projectileDirection * _circleSpawnOffset;
+            GameObject projectile = Instantiate(_circleAttackPrefab, spawnPoint, Quaternion.identity);
+            projectile.GetComponent<WVDPlayerProjectile>().SetProjectileDirection(projectileDirection);
+        }
+    }
+
+    void DeployHomingAttack()
+    {
+        GameObject homingAttack = Instantiate(_homingAttackPrefab, _grenadeFirePoint.position, _homingAttackPrefab.transform.rotation);
+        homingAttack.GetComponent<WVDHomingProjectile>().DroneTargets = _playerScript.Drones;
+        homingAttack.GetComponent<WVDHomingProjectile>().SetProjectileDirection(_grenadeFirePoint.forward); // unless there are no enemies currently out, this will immediately change, but just gives it something so it doesn't sit there in this scenario
     }
 
     void ResetPowerUps()

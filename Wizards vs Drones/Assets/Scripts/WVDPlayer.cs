@@ -132,6 +132,11 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         get => _playerModel.activeSelf;
         set => _playerModel.SetActive(value);
     }
+    public List<IWVDDamageable> Drones 
+    { 
+        get => _drones; 
+        set => _drones = value; 
+    }
 
     public override void Start()
     {
@@ -339,6 +344,11 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     {
         TakeDamage(damage);
         ApplyEffects(effects);
+    }
+
+    public Transform GetModelTransform()
+    {
+        return _playerModel.transform;
     }
 
     public enum ShieldVersion
