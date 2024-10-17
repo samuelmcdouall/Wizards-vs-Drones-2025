@@ -10,6 +10,8 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
     GameObject _explodePrefab;
     readonly Vector3 _explodeOffset = new Vector3(0.0f, 1.0f, 0.0f);
     LaserDroneState _currentLaserDroneState;
+    [SerializeField]
+    GameObject _batteryPickUp;
 
     [Header("Movement - Laser Drone")]
     [SerializeField]
@@ -47,6 +49,7 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
         // todo add in fx
         print("Laser drone destroyed");
         Instantiate(_explodePrefab, transform.position + _explodeOffset, _explodePrefab.transform.rotation);
+        Instantiate(_batteryPickUp, transform.position + _explodeOffset, _batteryPickUp.transform.rotation);
         Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this);
         Destroy(gameObject);
     }

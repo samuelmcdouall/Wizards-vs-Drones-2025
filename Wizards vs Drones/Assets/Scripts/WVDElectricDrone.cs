@@ -9,6 +9,8 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
     GameObject _explodePrefab;
     readonly Vector3 _explodeOffset = new Vector3(0.0f, 1.0f, 0.0f); 
     ElectricDroneState _currentElectricDroneState;
+    [SerializeField]
+    GameObject _batteryPickUp;
 
     [Header("Movement - Electric Drone")]
     [SerializeField]
@@ -56,6 +58,7 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
         // todo add in fx
         print("Electric drone destroyed");
         Instantiate(_explodePrefab, transform.position + _explodeOffset, _explodePrefab.transform.rotation);
+        Instantiate(_batteryPickUp, transform.position + _explodeOffset, _batteryPickUp.transform.rotation);
         Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this);
         Destroy(gameObject);
     }
