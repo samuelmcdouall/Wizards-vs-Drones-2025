@@ -69,10 +69,17 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
     float _initialMaxNormalSpeed;
     float _slowedTimer;
     bool _slowed;
+    float _stunnedTimer;
+    bool _stunned;
     public float MaxNormalSpeed 
     { 
         get => _maxNormalSpeed; 
-        set => _maxNormalSpeed = value; 
+        set => _maxNormalSpeed = value;
+    }
+    public bool Stunned
+    {
+        get => _stunned;
+        set => _stunned = value;
     }
 
     [Header("Animations - General")]
@@ -112,6 +119,18 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
                 _slowedTimer -= Time.deltaTime;
             }
         }
+        if (_stunned)
+        {
+            if (_stunnedTimer <= 0.0f)
+            {
+                print("Entity no longer stunned");
+                _stunned = false;
+            }
+            else
+            {
+                _stunnedTimer -= Time.deltaTime;
+            }
+        }
     }
 
     public void SwitchToAnimation(string animation)
@@ -129,6 +148,10 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
         {
             ApplySlow(effects.SlowPercentage, effects.SlowDuration);
         }
+        if (effects.Stun)
+        {
+            ApplyStun(effects.StunDuration);
+        }
     }
 
     public void ApplySlow(float percentage, float time)
@@ -145,6 +168,16 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
         if (time > _slowedTimer)
         {
             _slowedTimer = time;
+        }
+    }
+    public void ApplyStun(float time)
+    {
+        // If a time is applied that would be larger than the time remaining then apply new time
+        if (time > _stunnedTimer)
+        {
+            print("Stunned!");
+            _stunned = true;
+            _stunnedTimer = time;
         }
     }
 }

@@ -2729,7 +2729,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &571650194
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2764,7 +2764,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856a18d18db95704f9c3455b3450a809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 1
+  _maxHealth: 10
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4
   _animator: {fileID: 1354730918}
@@ -2971,7 +2971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856a18d18db95704f9c3455b3450a809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 1
+  _maxHealth: 10
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4
   _animator: {fileID: 1555018256}
@@ -5611,7 +5611,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1226640493
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6090,7 +6090,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1307401970
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7564,7 +7564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856a18d18db95704f9c3455b3450a809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 1
+  _maxHealth: 10
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4
   _animator: {fileID: 1999342607}
@@ -7650,7 +7650,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1760456216
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8400,7 +8400,7 @@ MonoBehaviour:
   _dashUI: {fileID: 922197768}
   _attackFirePoint: {fileID: 403381177}
   _magicMissilePrefab: {fileID: 5432368540722010777, guid: 0d68059e7e32dc04ca3e16b67817a645, type: 3}
-  _attackRechargeInterval: 2
+  _attackRechargeInterval: 1
 --- !u!114 &1975454022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8429,8 +8429,8 @@ MonoBehaviour:
   _dashSpeed: 20
   PurchasedUpgrades:
     ShootThreeArc: 0
-    StunAttacks: 0
-    StunAttackDuration: 0
+    StunAttacks: 1
+    StunAttackDuration: 2
     DropRateIncrease: 0
     SlowAttacks: 0
     SlowAttackPercentage: 0

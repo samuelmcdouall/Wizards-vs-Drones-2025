@@ -97,6 +97,15 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
             Debug.DrawRay(_rayCastPoints[i].position, _rayCastPoints[i].forward * _attackRayCastDistance, Color.magenta);
         }
 
+        if (Stunned)
+        {
+            _laserDroneNMA.isStopped = true;
+            return;
+        }
+        else
+        {
+            _laserDroneNMA.isStopped = false;
+        }
         if (CurrentLaserDroneState == LaserDroneState.Chasing)
         {
             bool hitPlayer = false;
@@ -154,8 +163,11 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
                 CurrentLaserDroneState = LaserDroneState.Discharge;
 
                 // Fire projectile here
-                GameObject laserDrone = Instantiate(_laserProjectilePrefab, _projectileFirePoint.position, _laserProjectilePrefab.transform.rotation);
-                laserDrone.GetComponent<WVDLaserDroneProjectile>().SetProjectileDirection(_projectileFirePoint.forward);
+                if (!Stunned)
+                {
+                    GameObject laserDrone = Instantiate(_laserProjectilePrefab, _projectileFirePoint.position, _laserProjectilePrefab.transform.rotation);
+                    laserDrone.GetComponent<WVDLaserDroneProjectile>().SetProjectileDirection(_projectileFirePoint.forward);
+                }
 
                 StartCoroutine(TransitionToStateAfterDelay(_attackDischargeDuration));
                 break;

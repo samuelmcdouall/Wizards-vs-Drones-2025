@@ -12,23 +12,22 @@ public abstract class WVDBaseProjectile : MonoBehaviour
 
     [Header("Damage - General")]
     public int Damage;
-    public WVDAttackEffects Effects;
+    protected WVDAttackEffects Effects;
 
     [Header("SFX/FX - General")]
     [SerializeField]
     GameObject _impactFX; // todo change this to public and access in other classes
 
-    public Vector3 Direction 
-    { 
-        get => _direction; 
-        set => _direction = value; 
+    public Vector3 Direction
+    {
+        get => _direction;
+        set => _direction = value;
     }
 
     public virtual void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _rb.velocity = _direction * _speed;
-        Effects.SetToDefault();
         Destroy(gameObject, _lifeTime);
     }
 
@@ -40,5 +39,10 @@ public abstract class WVDBaseProjectile : MonoBehaviour
         {
             _rb.velocity = _direction * _speed;
         }
+    }
+
+    public void SetProjectileEffects(WVDAttackEffects effects)
+    {
+        Effects = effects;
     }
 }

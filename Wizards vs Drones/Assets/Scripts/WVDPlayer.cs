@@ -154,7 +154,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         _shieldRegularFX.SetActive(false);
         _shieldReflectFX.SetActive(false);
         _shieldElectricFX.SetActive(false);
-        PurchasedUpgrades.SetToDefault();
+        //PurchasedUpgrades.SetToDefault(); todo put back in here
         //_currentShieldVersion = CurrentShieldVersion.None;
         //InitialShieldSetup();
     }

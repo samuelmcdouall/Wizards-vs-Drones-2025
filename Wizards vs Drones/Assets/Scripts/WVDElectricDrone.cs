@@ -107,6 +107,15 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
             Debug.DrawRay(_rayCastPoints[i].position, _rayCastPoints[i].forward * _attackRayCastDistance, Color.magenta);
         }
 
+        if (Stunned)
+        {
+            _electricDroneNMA.isStopped = true;
+            return;
+        }
+        else
+        {
+            _electricDroneNMA.isStopped = false;
+        }
         if (CurrentElectricDroneState == ElectricDroneState.Chasing)
         {
             bool hitPlayer = false;
@@ -162,8 +171,11 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
         {
             case ElectricDroneState.ChargingUp:
                 CurrentElectricDroneState = ElectricDroneState.Attacking;
-                _attackHitBox.SetActive(true);
-                _attackHitBoxScript.CanDamage = true;
+                if (!Stunned)
+                {
+                    _attackHitBox.SetActive(true);
+                    _attackHitBoxScript.CanDamage = true;
+                }
                 StartCoroutine(TransitionToStateAfterDelay(_attackDuration));
                 break;
             case ElectricDroneState.Attacking:

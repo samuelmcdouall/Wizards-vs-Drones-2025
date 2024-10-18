@@ -102,13 +102,17 @@ public class WVDPlayerInputs : MonoBehaviour
             {
                 GameObject magicMissile = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation);
                 magicMissile.GetComponent<WVDPlayerProjectile>().SetProjectileDirection(_attackFirePoint.forward);
+                WVDAttackEffects currentEffects = GetActiveAttackEffects();
+                magicMissile.GetComponent<WVDPlayerProjectile>().SetProjectileEffects(currentEffects);
 
                 if (_playerScript.PurchasedUpgrades.ShootThreeArc)
                 {
                     GameObject magicMissileLeft = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation);
                     magicMissileLeft.GetComponent<WVDPlayerProjectile>().SetProjectileDirection(Quaternion.Euler(0.0f,-30.0f,0.0f) * _attackFirePoint.forward);
+                    magicMissileLeft.GetComponent<WVDPlayerProjectile>().SetProjectileEffects(currentEffects);
                     GameObject magicMissileRight = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation);
                     magicMissileRight.GetComponent<WVDPlayerProjectile>().SetProjectileDirection(Quaternion.Euler(0.0f, 30.0f, 0.0f) * _attackFirePoint.forward);
+                    magicMissileRight.GetComponent<WVDPlayerProjectile>().SetProjectileEffects(currentEffects);
                 }
 
                 CurrentPlayerMovementState = PlayerMovementState.Attacking;
@@ -194,6 +198,16 @@ public class WVDPlayerInputs : MonoBehaviour
             await Task.Yield();
         }
         _canAttack = true;
+    }
+
+    WVDAttackEffects GetActiveAttackEffects()
+    {
+        WVDAttackEffects effects = new WVDAttackEffects();
+        effects.SetToDefault();
+        WVDPlayerUpgrades currentUpgrades = _playerScript.PurchasedUpgrades;
+        effects.Stun = currentUpgrades.StunAttacks;
+        effects.StunDuration = currentUpgrades.StunAttackDuration;
+        return effects;
     }
 
     WVDPlayerDirection GetPlayerDirection()
