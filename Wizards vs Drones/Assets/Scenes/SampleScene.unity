@@ -2729,7 +2729,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!195 &571650194
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2764,7 +2764,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856a18d18db95704f9c3455b3450a809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10
+  _maxHealth: 1
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4
   _animator: {fileID: 1354730918}
@@ -2915,7 +2915,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &605936135
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2971,7 +2971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856a18d18db95704f9c3455b3450a809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10
+  _maxHealth: 1
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4
   _animator: {fileID: 1555018256}
@@ -5686,7 +5686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550f568fb5538454aa9735e1f1fdb0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10
+  _maxHealth: 1
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 5
   _animator: {fileID: 2070657986}
@@ -6146,7 +6146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550f568fb5538454aa9735e1f1fdb0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10
+  _maxHealth: 1
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 5
   _animator: {fileID: 2091987912}
@@ -7508,7 +7508,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1693015925
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7564,7 +7564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856a18d18db95704f9c3455b3450a809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10
+  _maxHealth: 1
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4
   _animator: {fileID: 1999342607}
@@ -7706,7 +7706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550f568fb5538454aa9735e1f1fdb0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10
+  _maxHealth: 1
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 5
   _animator: {fileID: 31758706}
@@ -8427,6 +8427,28 @@ MonoBehaviour:
   _trapExplosivePrefab: {fileID: 7450529797947933823, guid: ec1fed263ece1ed4eafc01b487107982, type: 3}
   _maxSideBackSpeed: 2
   _dashSpeed: 20
+  PurchasedUpgrades:
+    ShootThreeArc: 0
+    StunAttacks: 0
+    StunAttackDuration: 0
+    DropRateIncrease: 0
+    SlowAttacks: 0
+    SlowAttackPercentage: 0
+    SlowAttackDuration: 0
+    DOTAttacks: 0
+    DOTAttackDamage: 0
+    DOTAttackInterval: 0
+    DOTAttackDuration: 0
+    Pierce: 0
+    DamageNearby: 0
+    DamageNearbyTargetsNumber: 0
+    ExplodeOnDeath: 0
+    ExplodeOnDeathChance: 0
+    Critical: 0
+    CriticalChance: 0
+    HealthIncrease: 0
+    AttackSpeedIncrease: 0
+    LowHealthDamageBonus: 0
 --- !u!143 &1975454023
 CharacterController:
   m_ObjectHideFlags: 0

@@ -9,6 +9,10 @@ public class WVDPlayerProjectile : WVDBaseProjectile
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.CompareTag("Projectile"))
+        {
+            return;
+        }
         if (other.gameObject.CompareTag("Enemy") && other.gameObject.GetComponent<IWVDDamageable>() != null)
         {
             other.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);

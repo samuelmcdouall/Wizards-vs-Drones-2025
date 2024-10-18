@@ -67,7 +67,8 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
 
     [Header("Upgrades")]
     int _batteryCount;
-    
+    public WVDPlayerUpgrades PurchasedUpgrades;
+
 
     //public float CurrentShield
     //{
@@ -153,6 +154,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         _shieldRegularFX.SetActive(false);
         _shieldReflectFX.SetActive(false);
         _shieldElectricFX.SetActive(false);
+        PurchasedUpgrades.SetToDefault();
         //_currentShieldVersion = CurrentShieldVersion.None;
         //InitialShieldSetup();
     }

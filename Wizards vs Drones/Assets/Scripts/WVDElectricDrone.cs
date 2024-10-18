@@ -11,6 +11,7 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
     ElectricDroneState _currentElectricDroneState;
     [SerializeField]
     GameObject _batteryPickUp;
+    bool _destroySequenceCompleted;
 
     [Header("Movement - Electric Drone")]
     [SerializeField]
@@ -68,7 +69,11 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
         CurrentHealth -= damage;
         if (IsFullyDamaged())
         {
-            DestroyFullyDamaged();
+            if (!_destroySequenceCompleted)
+            {
+                DestroyFullyDamaged();
+                _destroySequenceCompleted = true;
+            }
         }
     }
 

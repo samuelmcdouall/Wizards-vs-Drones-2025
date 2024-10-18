@@ -40,6 +40,7 @@ public class WVDPlayerInputs : MonoBehaviour
     [SerializeField]
     float _attackRechargeInterval;
 
+
     public PlayerMovementState CurrentPlayerMovementState 
     { 
         get => _currentPlayerMovementState; 
@@ -101,6 +102,15 @@ public class WVDPlayerInputs : MonoBehaviour
             {
                 GameObject magicMissile = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation);
                 magicMissile.GetComponent<WVDPlayerProjectile>().SetProjectileDirection(_attackFirePoint.forward);
+
+                if (_playerScript.PurchasedUpgrades.ShootThreeArc)
+                {
+                    GameObject magicMissileLeft = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation);
+                    magicMissileLeft.GetComponent<WVDPlayerProjectile>().SetProjectileDirection(Quaternion.Euler(0.0f,-30.0f,0.0f) * _attackFirePoint.forward);
+                    GameObject magicMissileRight = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation);
+                    magicMissileRight.GetComponent<WVDPlayerProjectile>().SetProjectileDirection(Quaternion.Euler(0.0f, 30.0f, 0.0f) * _attackFirePoint.forward);
+                }
+
                 CurrentPlayerMovementState = PlayerMovementState.Attacking;
                 _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerAttackAnimation);
                 _canAttack = false;

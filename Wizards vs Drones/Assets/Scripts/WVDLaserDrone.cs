@@ -12,6 +12,7 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
     LaserDroneState _currentLaserDroneState;
     [SerializeField]
     GameObject _batteryPickUp;
+    bool _destroySequenceCompleted;
 
     [Header("Movement - Laser Drone")]
     [SerializeField]
@@ -59,7 +60,11 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
         CurrentHealth -= damage;
         if (IsFullyDamaged())
         {
-            DestroyFullyDamaged();
+            if (!_destroySequenceCompleted)
+            {
+                DestroyFullyDamaged();
+                _destroySequenceCompleted = true;
+            }
         }
     }
 
