@@ -2,51 +2,46 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
+public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
 {
     [Header("General - Electric Drone")]
-    [SerializeField]
-    GameObject _explodePrefab;
-    readonly Vector3 _explodeOffset = new Vector3(0.0f, 1.0f, 0.0f); 
-    ElectricDroneState _currentElectricDroneState;
-    [SerializeField]
-    GameObject _batteryPickUp;
-    bool _destroySequenceCompleted;
+    //Vector3 _explodeOffset = new Vector3(0.0f, 1.0f, 0.0f); 
+    //ElectricDroneState _currentElectricDroneState;
 
     [Header("Movement - Electric Drone")]
-    [SerializeField]
-    float _attackRayCastDistance;
-    [SerializeField]
-    Transform[] _rayCastPoints;
-    NavMeshAgent _electricDroneNMA;
-    readonly float _chargingTurnFactor = 2.5f;
-    [SerializeField]
-    GameObject _droneModel;
+    //[SerializeField]
+    //float _attackRayCastDistance;
+    //[SerializeField]
+    //Transform[] _rayCastPoints;
+    //NavMeshAgent _electricDroneNMA;
+    //readonly float _chargingTurnFactor = 2.5f;
+    //[SerializeField]
+    //GameObject _droneModel;
 
     [Header("Attacking - Electric Drone")]
-    [SerializeField]
-    float _attackChargeUpDuration;
-    [SerializeField]
-    float _attackDuration;
-    [SerializeField]
-    float _attackDischargeDuration;
+    //[SerializeField]
+    //float _attackChargeUpDuration;
+    //[SerializeField]
+    //float _attackDuration;
+    //[SerializeField]
+    //float _attackDischargeDuration;
     [SerializeField]
     GameObject _attackHitBox;
     [SerializeField]
     WVDElectricDroneHitBox _attackHitBoxScript;
     [SerializeField]
     int _zapDamage;
-    readonly int _layerMask = 1 << 2;
+    //readonly int _layerMask = 1 << 2;
 
-    public ElectricDroneState CurrentElectricDroneState 
-    { 
-        get => _currentElectricDroneState;
-        set
-        {
-            _currentElectricDroneState = value;
-            print($"Electric Drone State now set to: {_currentElectricDroneState}");
-        }
-    }
+    //public ElectricDroneState CurrentElectricDroneState 
+    //{ 
+    //    get => _currentElectricDroneState;
+    //    set
+    //    {
+    //        _currentElectricDroneState = value;
+    //        print($"Electric Drone State now set to: {_currentElectricDroneState}");
+    //    }
+    //}
 
     public int ZapDamage 
     { 
@@ -58,8 +53,8 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
     {
         // todo add in fx
         print("Electric drone destroyed");
-        Instantiate(_explodePrefab, transform.position + _explodeOffset, _explodePrefab.transform.rotation);
-        Instantiate(_batteryPickUp, transform.position + _explodeOffset, _batteryPickUp.transform.rotation);
+        Instantiate(ExplodePrefab, transform.position + ExplodeOffset, ExplodePrefab.transform.rotation);
+        Instantiate(BatteryPickUp, transform.position + ExplodeOffset, BatteryPickUp.transform.rotation);
         Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this);
         Destroy(gameObject);
     }
@@ -69,30 +64,30 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
         CurrentHealth -= damage;
         if (IsFullyDamaged())
         {
-            if (!_destroySequenceCompleted)
+            if (!DestroySequenceCompleted)
             {
                 DestroyFullyDamaged();
-                _destroySequenceCompleted = true;
+                DestroySequenceCompleted = true;
             }
         }
     }
 
-    public bool IsFullyDamaged()
-    {
-        if (CurrentHealth <= 0.0f)
-        {
-            return true;
-        }
-        return false;
-    }
+    //public bool IsFullyDamaged()
+    //{
+    //    if (CurrentHealth <= 0.0f)
+    //    {
+    //        return true;
+    //    }
+    //    return false;
+    //}
 
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
-        _currentElectricDroneState = ElectricDroneState.Chasing;
-        _electricDroneNMA = GetComponent<NavMeshAgent>();
-        _electricDroneNMA.speed = MaxNormalSpeed;
+        //_currentElectricDroneState = ElectricDroneState.Chasing;
+        //_electricDroneNMA = GetComponent<NavMeshAgent>();
+        //_electricDroneNMA.speed = MaxNormalSpeed;
         _attackHitBox.SetActive(false);
         Player.GetComponent<WVDPlayer>().AddDroneToPlayerList(this);
     }
@@ -101,29 +96,30 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
     public override void Update()
     {
         base.Update();
-        _electricDroneNMA.speed = MaxNormalSpeed;
-        for (int i = 0; i < _rayCastPoints.Length; i++)
-        {
-            Debug.DrawRay(_rayCastPoints[i].position, _rayCastPoints[i].forward * _attackRayCastDistance, Color.magenta);
-        }
+        //_electricDroneNMA.speed = MaxNormalSpeed;
+        //for (int i = 0; i < _rayCastPoints.Length; i++)
+        //{
+        //    Debug.DrawRay(_rayCastPoints[i].position, _rayCastPoints[i].forward * _attackRayCastDistance, Color.magenta);
+        //}
 
-        if (Stunned)
-        {
-            _electricDroneNMA.isStopped = true;
-            return;
-        }
-        else
-        {
-            _electricDroneNMA.isStopped = false;
-        }
-        if (CurrentElectricDroneState == ElectricDroneState.Chasing)
+        //if (Stunned)
+        //{
+        //    _electricDroneNMA.isStopped = true;
+        //    return;
+        //}
+        //else
+        //{
+        //    _electricDroneNMA.isStopped = false;
+        //}
+        if (CurrentDroneState == DroneState.Chasing)
         {
             bool hitPlayer = false;
-            for (int i = 0; i < _rayCastPoints.Length; i++) 
+            for (int i = 0; i < RayCastPoints.Length; i++)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(_rayCastPoints[i].position, _rayCastPoints[i].forward, out hit, _attackRayCastDistance, ~_layerMask))
+                if (Physics.Raycast(RayCastPoints[i].position, RayCastPoints[i].forward, out hit, AttackRayCastDistance, ~LayerMask))
                 {
+                    print(hit.transform.gameObject.tag);
                     if (hit.transform.gameObject.CompareTag("Player"))
                     {
                         hitPlayer = true;
@@ -133,13 +129,13 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
             }
             if (hitPlayer)
             {
-                CurrentElectricDroneState = ElectricDroneState.ChargingUp;
-                _electricDroneNMA.isStopped = true;
-                StartCoroutine(TransitionToStateAfterDelay(_attackChargeUpDuration));
+                CurrentDroneState = DroneState.ChargingUp;
+                DroneNMA.isStopped = true;
+                StartCoroutine(TransitionToStateAfterDelay(AttackChargeUpDuration));
             }
             else
             {
-                _electricDroneNMA.SetDestination(Player.transform.position);
+                DroneNMA.SetDestination(Player.transform.position);
             }
         }
     }
@@ -152,14 +148,14 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
         float endTime = Time.time + delay;
         while (Time.time < endTime)
         {
-            if (CurrentElectricDroneState == ElectricDroneState.ChargingUp)
+            if (CurrentDroneState == DroneState.ChargingUp)
             {
                 // this turns the drone gradually over time, looks more natural
                 Vector3 yIndepPlayerPos = new Vector3(Player.transform.position.x, 0.0f, Player.transform.position.z);
                 Vector3 yIndepDronePos = new Vector3(transform.position.x, 0.0f, transform.position.z);
                 Vector3 direction = (yIndepPlayerPos - yIndepDronePos).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * _chargingTurnFactor);
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * ChargingTurnFactor);
 
 
                 // this snaps immediately to face the player and doesn't look natural
@@ -167,28 +163,28 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
             }
             yield return null;
         }
-        switch (CurrentElectricDroneState)
+        switch (CurrentDroneState)
         {
-            case ElectricDroneState.ChargingUp:
-                CurrentElectricDroneState = ElectricDroneState.Attacking;
+            case DroneState.ChargingUp:
+                CurrentDroneState = DroneState.Attacking;
                 if (!Stunned)
                 {
                     _attackHitBox.SetActive(true);
                     _attackHitBoxScript.CanDamage = true;
                 }
-                StartCoroutine(TransitionToStateAfterDelay(_attackDuration));
+                StartCoroutine(TransitionToStateAfterDelay(AttackDuration));
                 break;
-            case ElectricDroneState.Attacking:
-                CurrentElectricDroneState = ElectricDroneState.Discharge;
+            case DroneState.Attacking:
+                CurrentDroneState = DroneState.Discharge;
                 _attackHitBox.SetActive(false);
-                StartCoroutine(TransitionToStateAfterDelay(_attackDischargeDuration));
+                StartCoroutine(TransitionToStateAfterDelay(AttackDischargeDuration));
                 break;
-            case ElectricDroneState.Discharge:
-                CurrentElectricDroneState = ElectricDroneState.Chasing;
-                _electricDroneNMA.isStopped = false;
+            case DroneState.Discharge:
+                CurrentDroneState = DroneState.Chasing;
+                DroneNMA.isStopped = false;
                 break;
             default:
-                Debug.LogError("ERROR: Should not be broken");
+                Debug.LogError("ERROR: Invalid state for Electric Drone");
                 break;
         }
 
@@ -207,14 +203,14 @@ public class WVDElectricDrone : WVDBaseEntity, IWVDDamageable
 
     public Transform GetModelTransform()
     {
-        return _droneModel.transform;
+        return DroneModel.transform;
     }
 
-    public enum ElectricDroneState
-    {
-        Chasing,
-        ChargingUp,
-        Attacking,
-        Discharge // stand still just after attack
-    }
+    //public enum ElectricDroneState
+    //{
+    //    Chasing,
+    //    ChargingUp,
+    //    Attacking,
+    //    Discharge // stand still just after attack
+    //}
 }

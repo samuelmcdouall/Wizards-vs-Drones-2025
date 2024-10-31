@@ -269,15 +269,6 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         print($"Drone removed, currently keeping track of {_drones.Count}");
     }
 
-    public bool IsFullyDamaged()
-    {
-        if (CurrentHealth <= 0)
-        {
-            return true;
-        }
-        return false;
-    }
-
     public void DestroyFullyDamaged()
     {
         print("PLAYER DEAD!");

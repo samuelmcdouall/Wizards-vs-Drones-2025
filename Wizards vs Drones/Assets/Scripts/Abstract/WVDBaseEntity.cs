@@ -180,4 +180,13 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
             _stunnedTimer = time;
         }
     }
+
+    protected virtual bool IsFullyDamaged()
+    {
+        if (CurrentHealth <= 0.0f)
+        {
+            return true;
+        }
+        return false;
+    }
 }

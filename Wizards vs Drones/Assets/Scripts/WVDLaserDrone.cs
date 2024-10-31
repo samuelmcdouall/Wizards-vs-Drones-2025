@@ -1,56 +1,50 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if theres common code in this and ElectricDrone and make a base drone class that inherits from base entity
+public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
 {
     [Header("General - Laser Drone")]
-    [SerializeField]
-    GameObject _explodePrefab;
-    readonly Vector3 _explodeOffset = new Vector3(0.0f, 1.0f, 0.0f);
-    LaserDroneState _currentLaserDroneState;
-    [SerializeField]
-    GameObject _batteryPickUp;
-    bool _destroySequenceCompleted;
+    //readonly Vector3 _explodeOffset = new Vector3(0.0f, 1.0f, 0.0f);
+    //LaserDroneState _currentLaserDroneState;
 
     [Header("Movement - Laser Drone")]
-    [SerializeField]
-    float _attackRayCastDistance;
-    [SerializeField]
-    Transform[] _rayCastPoints;
-    NavMeshAgent _laserDroneNMA;
-    readonly float _chargingTurnFactor = 2.5f;
-    [SerializeField]
-    GameObject _droneModel;
+    //[SerializeField]
+    //float _attackRayCastDistance;
+    //[SerializeField]
+    //Transform[] _rayCastPoints;
+    //NavMeshAgent _laserDroneNMA;
+    //readonly float _chargingTurnFactor = 2.5f;
+    //[SerializeField]
+    //GameObject _droneModel;
 
     [Header("Attacking - Laser Drone")]
-    [SerializeField]
-    float _attackChargeUpDuration;
-    [SerializeField]
-    float _attackDischargeDuration;
+    //[SerializeField]
+    //float _attackChargeUpDuration;
+    //[SerializeField]
+    //float _attackDischargeDuration;
     [SerializeField]
     GameObject _laserProjectilePrefab;
     [SerializeField]
     Transform _projectileFirePoint;
-    readonly int _layerMask = 1 << 2;
+    //readonly int _layerMask = 1 << 2;
 
-    public LaserDroneState CurrentLaserDroneState
-    {
-        get => _currentLaserDroneState;
-        set
-        {
-            _currentLaserDroneState = value;
-            print($"Laser Drone State now set to: {_currentLaserDroneState}");
-        }
-    }
+    //public LaserDroneState CurrentLaserDroneState
+    //{
+    //    get => _currentLaserDroneState;
+    //    set
+    //    {
+    //        _currentLaserDroneState = value;
+    //        print($"Laser Drone State now set to: {_currentLaserDroneState}");
+    //    }
+    //}
 
     public void DestroyFullyDamaged()
     {
         // todo add in fx
         print("Laser drone destroyed");
-        Instantiate(_explodePrefab, transform.position + _explodeOffset, _explodePrefab.transform.rotation);
-        Instantiate(_batteryPickUp, transform.position + _explodeOffset, _batteryPickUp.transform.rotation);
+        Instantiate(ExplodePrefab, transform.position + ExplodeOffset, ExplodePrefab.transform.rotation);
+        Instantiate(BatteryPickUp, transform.position + ExplodeOffset, BatteryPickUp.transform.rotation);
         Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this);
         Destroy(gameObject);
     }
@@ -60,30 +54,30 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
         CurrentHealth -= damage;
         if (IsFullyDamaged())
         {
-            if (!_destroySequenceCompleted)
+            if (!DestroySequenceCompleted)
             {
                 DestroyFullyDamaged();
-                _destroySequenceCompleted = true;
+                DestroySequenceCompleted = true;
             }
         }
     }
 
-    public bool IsFullyDamaged()
-    {
-        if (CurrentHealth <= 0.0f)
-        {
-            return true;
-        }
-        return false;
-    }
+    //public bool IsFullyDamaged()
+    //{
+    //    if (CurrentHealth <= 0.0f)
+    //    {
+    //        return true;
+    //    }
+    //    return false;
+    //}
 
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
-        _currentLaserDroneState = LaserDroneState.Chasing;
-        _laserDroneNMA = GetComponent<NavMeshAgent>();
-        _laserDroneNMA.speed = MaxNormalSpeed;
+        //_currentLaserDroneState = LaserDroneState.Chasing;
+        //_laserDroneNMA = GetComponent<NavMeshAgent>();
+        //_laserDroneNMA.speed = MaxNormalSpeed;
         Player.GetComponent<WVDPlayer>().AddDroneToPlayerList(this);   
     }
 
@@ -91,28 +85,28 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
     public override void Update()
     {
         base.Update();
-        _laserDroneNMA.speed = MaxNormalSpeed;
-        for (int i = 0; i < _rayCastPoints.Length; i++)
-        {
-            Debug.DrawRay(_rayCastPoints[i].position, _rayCastPoints[i].forward * _attackRayCastDistance, Color.magenta);
-        }
+        //_laserDroneNMA.speed = MaxNormalSpeed;
+        //for (int i = 0; i < _rayCastPoints.Length; i++)
+        //{
+        //    Debug.DrawRay(_rayCastPoints[i].position, _rayCastPoints[i].forward * _attackRayCastDistance, Color.magenta);
+        //}
 
-        if (Stunned)
-        {
-            _laserDroneNMA.isStopped = true;
-            return;
-        }
-        else
-        {
-            _laserDroneNMA.isStopped = false;
-        }
-        if (CurrentLaserDroneState == LaserDroneState.Chasing)
+        //if (Stunned)
+        //{
+        //    _laserDroneNMA.isStopped = true;
+        //    return;
+        //}
+        //else
+        //{
+        //    _laserDroneNMA.isStopped = false;
+        //}
+        if (CurrentDroneState == DroneState.Chasing)
         {
             bool hitPlayer = false;
-            for (int i = 0; i < _rayCastPoints.Length; i++)
+            for (int i = 0; i < RayCastPoints.Length; i++)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(_rayCastPoints[i].position, _rayCastPoints[i].forward, out hit, _attackRayCastDistance, ~_layerMask))
+                if (Physics.Raycast(RayCastPoints[i].position, RayCastPoints[i].forward, out hit, AttackRayCastDistance, ~LayerMask))
                 {
                     if (hit.transform.gameObject.CompareTag("Player"))
                     {
@@ -123,13 +117,13 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
             }
             if (hitPlayer)
             {
-                CurrentLaserDroneState = LaserDroneState.ChargingUp;
-                _laserDroneNMA.isStopped = true;
-                StartCoroutine(TransitionToStateAfterDelay(_attackChargeUpDuration));
+                CurrentDroneState = DroneState.ChargingUp;
+                DroneNMA.isStopped = true;
+                StartCoroutine(TransitionToStateAfterDelay(AttackChargeUpDuration));
             }
             else
             {
-                _laserDroneNMA.SetDestination(Player.transform.position);
+                DroneNMA.SetDestination(Player.transform.position);
             }
         }
     }
@@ -142,14 +136,14 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
         float endTime = Time.time + delay;
         while (Time.time < endTime)
         {
-            if (CurrentLaserDroneState == LaserDroneState.ChargingUp)
+            if (CurrentDroneState == DroneState.ChargingUp)
             {
                 // this turns the drone gradually over time, looks more natural
                 Vector3 yIndepPlayerPos = new Vector3(Player.transform.position.x, 0.0f, Player.transform.position.z);
                 Vector3 yIndepDronePos = new Vector3(transform.position.x, 0.0f, transform.position.z);
                 Vector3 direction = (yIndepPlayerPos - yIndepDronePos).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * _chargingTurnFactor);
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * ChargingTurnFactor);
 
 
                 // this snaps immediately to face the player and doesn't look natural
@@ -157,10 +151,10 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
             }
             yield return null;
         }
-        switch (CurrentLaserDroneState)
+        switch (CurrentDroneState)
         {
-            case LaserDroneState.ChargingUp:
-                CurrentLaserDroneState = LaserDroneState.Discharge;
+            case DroneState.ChargingUp:
+                CurrentDroneState = DroneState.Discharge;
 
                 // Fire projectile here
                 if (!Stunned)
@@ -169,14 +163,14 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
                     laserDrone.GetComponent<WVDLaserDroneProjectile>().SetProjectileDirection(_projectileFirePoint.forward);
                 }
 
-                StartCoroutine(TransitionToStateAfterDelay(_attackDischargeDuration));
+                StartCoroutine(TransitionToStateAfterDelay(AttackDischargeDuration));
                 break;
-            case LaserDroneState.Discharge:
-                CurrentLaserDroneState = LaserDroneState.Chasing;
-                _laserDroneNMA.isStopped = false;
+            case DroneState.Discharge:
+                CurrentDroneState = DroneState.Chasing;
+                DroneNMA.isStopped = false;
                 break;
             default:
-                Debug.LogError("ERROR: Should not be broken");
+                Debug.LogError("ERROR: Invalid state for Laser Drone");
                 break;
         }
 
@@ -195,13 +189,13 @@ public class WVDLaserDrone : WVDBaseEntity, IWVDDamageable // todo maybe see if 
 
     public Transform GetModelTransform()
     {
-        return _droneModel.transform;
+        return DroneModel.transform;
     }
 
-    public enum LaserDroneState
-    {
-        Chasing,
-        ChargingUp, // Just before going into Discharge state, do the attack
-        Discharge // stand still just after attack
-    }
+    //public enum LaserDroneState
+    //{
+    //    Chasing,
+    //    ChargingUp, // Just before going into Discharge state, do the attack
+    //    Discharge // stand still just after attack
+    //}
 }
