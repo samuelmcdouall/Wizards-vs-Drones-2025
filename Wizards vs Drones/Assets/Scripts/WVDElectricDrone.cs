@@ -1,47 +1,19 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
 {
     [Header("General - Electric Drone")]
-    //Vector3 _explodeOffset = new Vector3(0.0f, 1.0f, 0.0f); 
-    //ElectricDroneState _currentElectricDroneState;
 
     [Header("Movement - Electric Drone")]
-    //[SerializeField]
-    //float _attackRayCastDistance;
-    //[SerializeField]
-    //Transform[] _rayCastPoints;
-    //NavMeshAgent _electricDroneNMA;
-    //readonly float _chargingTurnFactor = 2.5f;
-    //[SerializeField]
-    //GameObject _droneModel;
 
     [Header("Attacking - Electric Drone")]
-    //[SerializeField]
-    //float _attackChargeUpDuration;
-    //[SerializeField]
-    //float _attackDuration;
-    //[SerializeField]
-    //float _attackDischargeDuration;
     [SerializeField]
     GameObject _attackHitBox;
     [SerializeField]
     WVDElectricDroneHitBox _attackHitBoxScript;
     [SerializeField]
     int _zapDamage;
-    //readonly int _layerMask = 1 << 2;
-
-    //public ElectricDroneState CurrentElectricDroneState 
-    //{ 
-    //    get => _currentElectricDroneState;
-    //    set
-    //    {
-    //        _currentElectricDroneState = value;
-    //        print($"Electric Drone State now set to: {_currentElectricDroneState}");
-    //    }
-    //}
 
     public int ZapDamage 
     { 
@@ -71,46 +43,16 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
             }
         }
     }
-
-    //public bool IsFullyDamaged()
-    //{
-    //    if (CurrentHealth <= 0.0f)
-    //    {
-    //        return true;
-    //    }
-    //    return false;
-    //}
-
-    // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
-        //_currentElectricDroneState = ElectricDroneState.Chasing;
-        //_electricDroneNMA = GetComponent<NavMeshAgent>();
-        //_electricDroneNMA.speed = MaxNormalSpeed;
         _attackHitBox.SetActive(false);
         Player.GetComponent<WVDPlayer>().AddDroneToPlayerList(this);
     }
 
-    // Update is called once per frame
     public override void Update()
     {
         base.Update();
-        //_electricDroneNMA.speed = MaxNormalSpeed;
-        //for (int i = 0; i < _rayCastPoints.Length; i++)
-        //{
-        //    Debug.DrawRay(_rayCastPoints[i].position, _rayCastPoints[i].forward * _attackRayCastDistance, Color.magenta);
-        //}
-
-        //if (Stunned)
-        //{
-        //    _electricDroneNMA.isStopped = true;
-        //    return;
-        //}
-        //else
-        //{
-        //    _electricDroneNMA.isStopped = false;
-        //}
         if (CurrentDroneState == DroneState.Chasing)
         {
             bool hitPlayer = false;
@@ -205,12 +147,4 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
     {
         return DroneModel.transform;
     }
-
-    //public enum ElectricDroneState
-    //{
-    //    Chasing,
-    //    ChargingUp,
-    //    Attacking,
-    //    Discharge // stand still just after attack
-    //}
 }

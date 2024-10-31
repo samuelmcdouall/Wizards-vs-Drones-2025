@@ -1,43 +1,17 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
 {
     [Header("General - Laser Drone")]
-    //readonly Vector3 _explodeOffset = new Vector3(0.0f, 1.0f, 0.0f);
-    //LaserDroneState _currentLaserDroneState;
 
     [Header("Movement - Laser Drone")]
-    //[SerializeField]
-    //float _attackRayCastDistance;
-    //[SerializeField]
-    //Transform[] _rayCastPoints;
-    //NavMeshAgent _laserDroneNMA;
-    //readonly float _chargingTurnFactor = 2.5f;
-    //[SerializeField]
-    //GameObject _droneModel;
 
     [Header("Attacking - Laser Drone")]
-    //[SerializeField]
-    //float _attackChargeUpDuration;
-    //[SerializeField]
-    //float _attackDischargeDuration;
     [SerializeField]
     GameObject _laserProjectilePrefab;
     [SerializeField]
     Transform _projectileFirePoint;
-    //readonly int _layerMask = 1 << 2;
-
-    //public LaserDroneState CurrentLaserDroneState
-    //{
-    //    get => _currentLaserDroneState;
-    //    set
-    //    {
-    //        _currentLaserDroneState = value;
-    //        print($"Laser Drone State now set to: {_currentLaserDroneState}");
-    //    }
-    //}
 
     public void DestroyFullyDamaged()
     {
@@ -61,23 +35,9 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
             }
         }
     }
-
-    //public bool IsFullyDamaged()
-    //{
-    //    if (CurrentHealth <= 0.0f)
-    //    {
-    //        return true;
-    //    }
-    //    return false;
-    //}
-
-    // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
-        //_currentLaserDroneState = LaserDroneState.Chasing;
-        //_laserDroneNMA = GetComponent<NavMeshAgent>();
-        //_laserDroneNMA.speed = MaxNormalSpeed;
         Player.GetComponent<WVDPlayer>().AddDroneToPlayerList(this);   
     }
 
@@ -85,21 +45,6 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
     public override void Update()
     {
         base.Update();
-        //_laserDroneNMA.speed = MaxNormalSpeed;
-        //for (int i = 0; i < _rayCastPoints.Length; i++)
-        //{
-        //    Debug.DrawRay(_rayCastPoints[i].position, _rayCastPoints[i].forward * _attackRayCastDistance, Color.magenta);
-        //}
-
-        //if (Stunned)
-        //{
-        //    _laserDroneNMA.isStopped = true;
-        //    return;
-        //}
-        //else
-        //{
-        //    _laserDroneNMA.isStopped = false;
-        //}
         if (CurrentDroneState == DroneState.Chasing)
         {
             bool hitPlayer = false;
@@ -191,11 +136,4 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
     {
         return DroneModel.transform;
     }
-
-    //public enum LaserDroneState
-    //{
-    //    Chasing,
-    //    ChargingUp, // Just before going into Discharge state, do the attack
-    //    Discharge // stand still just after attack
-    //}
 }
