@@ -157,10 +157,10 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
             {
                 TakeDamage(damage);
                 intervalTime = Time.time + interval;
-
             }
             await Task.Yield();
         }
+        TakeDamage(damage); // Final damage to make the last damaging tick of damage
     }
 
     public Transform GetModelTransform()

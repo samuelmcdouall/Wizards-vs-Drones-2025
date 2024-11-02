@@ -171,7 +171,6 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
             await Task.Yield();
         }
         TakeDamage(damage); // Final damage to make the last damaging tick of damage
-        print("after dotssss");
     }
 
     public Transform GetModelTransform()
