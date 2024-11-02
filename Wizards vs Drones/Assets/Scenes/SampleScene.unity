@@ -323,7 +323,7 @@ MonoBehaviour:
   _animator: {fileID: 1801935910}
   ExplodePrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
   BatteryPickUp: {fileID: 291795202343636061, guid: a192c1e4f9336b34eb83019ca895833a, type: 3}
-  BatteryPickUpChance: 0
+  PickUpChance: 0
   AttackRayCastDistance: 10
   RayCastPoints:
   - {fileID: 593811841}
@@ -3321,13 +3321,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856a18d18db95704f9c3455b3450a809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 1
+  _maxHealth: 10
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4
   _animator: {fileID: 1354730918}
   ExplodePrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
   BatteryPickUp: {fileID: 291795202343636061, guid: a192c1e4f9336b34eb83019ca895833a, type: 3}
-  BatteryPickUpChance: 0.5
+  PickUpChance: 0
   AttackRayCastDistance: 0.3
   RayCastPoints:
   - {fileID: 1128288905}
@@ -4932,7 +4932,7 @@ MonoBehaviour:
   _animator: {fileID: 1999061628}
   ExplodePrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
   BatteryPickUp: {fileID: 291795202343636061, guid: a192c1e4f9336b34eb83019ca895833a, type: 3}
-  BatteryPickUpChance: 0
+  PickUpChance: 0
   AttackRayCastDistance: 0.3
   RayCastPoints:
   - {fileID: 1531846112}
@@ -5822,7 +5822,7 @@ MonoBehaviour:
   _animator: {fileID: 2070657986}
   ExplodePrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
   BatteryPickUp: {fileID: 291795202343636061, guid: a192c1e4f9336b34eb83019ca895833a, type: 3}
-  BatteryPickUpChance: 0
+  PickUpChance: 0
   AttackRayCastDistance: 10
   RayCastPoints:
   - {fileID: 1566286063}
@@ -7314,7 +7314,7 @@ MonoBehaviour:
   _animator: {fileID: 1002038407}
   ExplodePrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
   BatteryPickUp: {fileID: 291795202343636061, guid: a192c1e4f9336b34eb83019ca895833a, type: 3}
-  BatteryPickUpChance: 0
+  PickUpChance: 0
   AttackRayCastDistance: 10
   RayCastPoints:
   - {fileID: 1951721409}
@@ -8443,9 +8443,9 @@ MonoBehaviour:
     StunAttacks: 0
     StunAttackDuration: 0
     DropRateIncrease: 0
-    SlowAttacks: 0
-    SlowAttackPercentage: 0
-    SlowAttackDuration: 0
+    SlowAttacks: 1
+    SlowAttackPercentage: 0.5
+    SlowAttackDuration: 2
     DOTAttacks: 0
     DOTAttackDamage: 0
     DOTAttackInterval: 0
@@ -9036,7 +9036,7 @@ MonoBehaviour:
   _animator: {fileID: 1782186023}
   ExplodePrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
   BatteryPickUp: {fileID: 291795202343636061, guid: a192c1e4f9336b34eb83019ca895833a, type: 3}
-  BatteryPickUpChance: 0
+  PickUpChance: 0
   AttackRayCastDistance: 0.3
   RayCastPoints:
   - {fileID: 36900599}
