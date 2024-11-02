@@ -3323,7 +3323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentHealth: 0
-  _maxHealth: 10
+  _maxHealth: 1
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4
   _animator: {fileID: 1354730918}
@@ -4872,7 +4872,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &942816652
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4929,7 +4929,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentHealth: 0
-  _maxHealth: 10
+  _maxHealth: 1
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4
   _animator: {fileID: 1999061628}
@@ -8452,11 +8452,11 @@ MonoBehaviour:
     SlowAttacks: 0
     SlowAttackPercentage: 0
     SlowAttackDuration: 0
-    DOTAttacks: 1
-    DOTAttackDamage: 1
-    DOTAttackInterval: 1
-    DOTAttackDuration: 3
-    Pierce: 0
+    DOTAttacks: 0
+    DOTAttackDamage: 0
+    DOTAttackInterval: 0
+    DOTAttackDuration: 0
+    Pierce: 1
     DamageNearby: 0
     DamageNearbyTargetsNumber: 0
     ExplodeOnDeath: 0

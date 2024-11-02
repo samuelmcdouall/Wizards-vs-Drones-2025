@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class WVDPlayerProjectile : WVDBaseProjectile
 {
+    bool _canPierce;
     public override void Start()
     {
         base.Start();
+        _canPierce = Effects.Pierce;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -17,6 +19,11 @@ public class WVDPlayerProjectile : WVDBaseProjectile
         {
             other.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
             print("hit enemy");
+            if (_canPierce)
+            {
+                _canPierce = false;
+                return;
+            }
         }
         Destroy(gameObject);
     }

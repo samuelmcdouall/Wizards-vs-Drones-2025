@@ -215,6 +215,7 @@ public class WVDPlayerInputs : MonoBehaviour
         effects.DOTDamage = currentUpgrades.DOTAttackDamage;
         effects.DOTInterval = currentUpgrades.DOTAttackInterval;
         effects.DOTDuration = currentUpgrades.DOTAttackDuration;
+        effects.Pierce = currentUpgrades.Pierce;
         return effects;
     }
 
