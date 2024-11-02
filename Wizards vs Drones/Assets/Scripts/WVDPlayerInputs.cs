@@ -211,6 +211,10 @@ public class WVDPlayerInputs : MonoBehaviour
         effects.Slow = currentUpgrades.SlowAttacks;
         effects.SlowDuration = currentUpgrades.SlowAttackDuration;
         effects.SlowPercentage = currentUpgrades.SlowAttackPercentage;
+        effects.DOT = currentUpgrades.DOTAttacks;
+        effects.DOTDamage = currentUpgrades.DOTAttackDamage;
+        effects.DOTInterval = currentUpgrades.DOTAttackInterval;
+        effects.DOTDuration = currentUpgrades.DOTAttackDuration;
         return effects;
     }
 

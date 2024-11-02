@@ -347,6 +347,31 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         ApplyEffects(effects);
     }
 
+    public override void ApplyEffects(WVDAttackEffects effects)
+    {
+        base.ApplyEffects(effects);
+        if (effects.DOT)
+        {
+            ApplyDOT(effects.DOTDamage, effects.DOTInterval, effects.DOTDuration);
+        }
+    }
+
+    public async void ApplyDOT(int damage, float interval, float duration)
+    {
+        float endTime = Time.time + duration;
+        float intervalTime = Time.time + interval;
+        while (Time.time < endTime)
+        {
+            if (Time.time > intervalTime)
+            {
+                TakeDamage(damage);
+                intervalTime = Time.time + interval;
+
+            }
+            await Task.Yield();
+        }
+    }
+
     public Transform GetModelTransform()
     {
         return _playerModel.transform;

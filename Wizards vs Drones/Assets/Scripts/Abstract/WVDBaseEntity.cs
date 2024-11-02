@@ -8,6 +8,7 @@ using UnityEngine.Video;
 public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
 {
     [Header("Health - General")]
+    [SerializeField] // just to see in inspector
     int _currentHealth;
     [SerializeField]
     int _maxHealth;
@@ -142,7 +143,7 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
         }
     }
 
-    public void ApplyEffects(WVDAttackEffects effects)
+    public virtual void ApplyEffects(WVDAttackEffects effects)
     {
         if (effects.Slow)
         {

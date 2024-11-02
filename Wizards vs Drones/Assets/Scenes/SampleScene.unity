@@ -317,6 +317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550f568fb5538454aa9735e1f1fdb0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentHealth: 0
   _maxHealth: 1
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 5
@@ -3321,6 +3322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856a18d18db95704f9c3455b3450a809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentHealth: 0
   _maxHealth: 10
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4
@@ -4926,6 +4928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856a18d18db95704f9c3455b3450a809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentHealth: 0
   _maxHealth: 10
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4
@@ -5816,6 +5819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550f568fb5538454aa9735e1f1fdb0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentHealth: 0
   _maxHealth: 1
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 5
@@ -7308,6 +7312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550f568fb5538454aa9735e1f1fdb0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentHealth: 0
   _maxHealth: 1
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 5
@@ -8411,7 +8416,7 @@ MonoBehaviour:
   _dashUI: {fileID: 922197768}
   _attackFirePoint: {fileID: 403381177}
   _magicMissilePrefab: {fileID: 5432368540722010777, guid: 0d68059e7e32dc04ca3e16b67817a645, type: 3}
-  _attackRechargeInterval: 1
+  _attackRechargeInterval: 0.5
 --- !u!114 &1975454022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8424,6 +8429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7459a200948b56846a03eeec80d98f44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentHealth: 0
   _maxHealth: 5
   _healthUI: {fileID: 379911077}
   _maxNormalSpeed: 5
@@ -8443,13 +8449,13 @@ MonoBehaviour:
     StunAttacks: 0
     StunAttackDuration: 0
     DropRateIncrease: 0
-    SlowAttacks: 1
-    SlowAttackPercentage: 0.5
-    SlowAttackDuration: 2
-    DOTAttacks: 0
-    DOTAttackDamage: 0
-    DOTAttackInterval: 0
-    DOTAttackDuration: 0
+    SlowAttacks: 0
+    SlowAttackPercentage: 0
+    SlowAttackDuration: 0
+    DOTAttacks: 1
+    DOTAttackDamage: 1
+    DOTAttackInterval: 1
+    DOTAttackDuration: 3
     Pierce: 0
     DamageNearby: 0
     DamageNearbyTargetsNumber: 0
@@ -9030,6 +9036,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856a18d18db95704f9c3455b3450a809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentHealth: 0
   _maxHealth: 10
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4

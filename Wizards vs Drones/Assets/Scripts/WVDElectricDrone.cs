@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
@@ -31,7 +32,7 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
         {
             Instantiate(BatteryPickUp, transform.position + ExplodeOffset, BatteryPickUp.transform.rotation);
         }
-        Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this);
+        Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this); // todo apart from this line, could probably put the base function of this into the base drone function. Still have each drone implementing the Damageable interface, and an override function here
         Destroy(gameObject);
     }
     public void TakeDamage(int damage)
@@ -65,7 +66,6 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
                 RaycastHit hit;
                 if (Physics.Raycast(RayCastPoints[i].position, RayCastPoints[i].forward, out hit, AttackRayCastDistance, ~LayerMask))
                 {
-                    print(hit.transform.gameObject.tag);
                     if (hit.transform.gameObject.CompareTag("Player"))
                     {
                         hitPlayer = true;
@@ -146,6 +146,32 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
         BonusPickUpChance = effects.DropRateIncrease; // todo this is drone specific, maybe later on combine this into the base drone class, or possibly put into the apply effects
         TakeDamage(damage);
         ApplyEffects(effects);
+    }
+
+    public override void ApplyEffects(WVDAttackEffects effects) // todo look at again but because of TakeDamage, this might have to remain in each drone class
+    {
+        base.ApplyEffects(effects);
+        if (effects.DOT)
+        {
+            ApplyDOT(effects.DOTDamage, effects.DOTInterval, effects.DOTDuration);
+        }
+    }
+
+    public async void ApplyDOT(int damage, float interval, float duration)
+    {
+        float endTime = Time.time + duration;
+        float intervalTime = Time.time + interval;
+        while (Time.time < endTime)
+        {
+            if (Time.time > intervalTime)
+            {
+                TakeDamage(damage);
+                intervalTime = Time.time + interval;
+            }
+            await Task.Yield();
+        }
+        TakeDamage(damage); // Final damage to make the last damaging tick of damage
+        print("after dotssss");
     }
 
     public Transform GetModelTransform()
