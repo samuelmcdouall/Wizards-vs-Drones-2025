@@ -26,7 +26,11 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
         // todo add in fx
         print("Electric drone destroyed");
         Instantiate(ExplodePrefab, transform.position + ExplodeOffset, ExplodePrefab.transform.rotation);
-        Instantiate(BatteryPickUp, transform.position + ExplodeOffset, BatteryPickUp.transform.rotation);
+        float rand = Random.Range(0.0f, 1.0f);
+        if (rand < PickUpChance + BonusPickUpChance)
+        {
+            Instantiate(BatteryPickUp, transform.position + ExplodeOffset, BatteryPickUp.transform.rotation);
+        }
         Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this);
         Destroy(gameObject);
     }
@@ -139,6 +143,7 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
 
     public void ResolveAttack(int damage, WVDAttackEffects effects)
     {
+        BonusPickUpChance = effects.DropRateIncrease; // todo this is drone specific, maybe later on combine this into the base drone class, or possibly put into the apply effects
         TakeDamage(damage);
         ApplyEffects(effects);
     }

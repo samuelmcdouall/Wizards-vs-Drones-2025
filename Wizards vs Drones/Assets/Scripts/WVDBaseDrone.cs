@@ -13,6 +13,9 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     protected bool DestroySequenceCompleted;
     protected Vector3 ExplodeOffset = new Vector3(0.0f, 1.0f, 0.0f);
     DroneState _currentDroneState;
+    [SerializeField]
+    protected float PickUpChance;
+    protected float BonusPickUpChance;
 
     [Header("Movement - Base Drone")]
     [SerializeField]

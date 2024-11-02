@@ -12,6 +12,7 @@ public abstract class WVDBaseProjectile : MonoBehaviour
 
     [Header("Damage - General")]
     public int Damage;
+    [SerializeField]
     protected WVDAttackEffects Effects;
 
     [Header("SFX/FX - General")]

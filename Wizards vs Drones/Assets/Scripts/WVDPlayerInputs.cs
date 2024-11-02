@@ -207,6 +207,7 @@ public class WVDPlayerInputs : MonoBehaviour
         WVDPlayerUpgrades currentUpgrades = _playerScript.PurchasedUpgrades;
         effects.Stun = currentUpgrades.StunAttacks;
         effects.StunDuration = currentUpgrades.StunAttackDuration;
+        effects.DropRateIncrease = currentUpgrades.DropRateIncrease;
         return effects;
     }
 
