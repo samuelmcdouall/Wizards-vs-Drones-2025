@@ -20,8 +20,9 @@ public struct WVDAttackEffects
     
     public bool Pierce;
     
-    public bool DamageNearby; // how many other targets
-    public int DamageNearbyTargetsNumber;
+    //public bool DamageNearby; // how many other targets
+    //public float DamageNearbyDistance;
+    //public int DamageNearbyTargetsNumber;
     
     public float ExplodeOnDeathChance;
     
@@ -49,8 +50,9 @@ public struct WVDAttackEffects
         
         Pierce = false;
         
-        DamageNearby = false;
-        DamageNearbyTargetsNumber = 0;
+        //DamageNearby = false;
+        //DamageNearbyDistance = 0.0f;
+        //DamageNearbyTargetsNumber = 0;
         
         ExplodeOnDeathChance = 0.0f;
         

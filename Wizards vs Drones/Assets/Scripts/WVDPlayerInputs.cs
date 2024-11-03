@@ -218,6 +218,10 @@ public class WVDPlayerInputs : MonoBehaviour
         effects.Stun = currentUpgrades.StunAttacks;
         effects.StunDuration = currentUpgrades.StunAttackDuration;
         effects.DropRateIncrease = currentUpgrades.DropRateIncrease;
+        effects.ExplodeOnDeathChance = currentUpgrades.ExplodeOnDeathChance;
+        //effects.DamageNearby = currentUpgrades.DamageNearby;
+        //effects.DamageNearbyDistance = currentUpgrades.DamageNearbyDistance;
+        //effects.DamageNearbyTargetsNumber = currentUpgrades.DamageNearbyTargetsNumber;
         effects.Slow = currentUpgrades.SlowAttacks;
         effects.SlowDuration = currentUpgrades.SlowAttackDuration;
         effects.SlowPercentage = currentUpgrades.SlowAttackPercentage;

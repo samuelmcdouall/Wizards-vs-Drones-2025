@@ -23,9 +23,9 @@ public struct WVDPlayerUpgrades
 
     public bool Pierce;
 
-    public bool DamageNearby; // how many other targets, range
-    public float DamageNearbyDistance;
-    public int DamageNearbyTargetsNumber;
+    //public bool DamageNearby; // how many other targets, range
+    //public float DamageNearbyDistance;
+    //public int DamageNearbyTargetsNumber;
 
     public float ExplodeOnDeathChance;
 
@@ -61,9 +61,9 @@ public struct WVDPlayerUpgrades
         
         Pierce = false;
 
-        DamageNearby = false;//
-        DamageNearbyDistance = 0.0f;
-        DamageNearbyTargetsNumber = 0;
+        //DamageNearby = false;//
+        //DamageNearbyDistance = 0.0f;
+        //DamageNearbyTargetsNumber = 0;
         
         ExplodeOnDeathChance = 0.0f;//
         

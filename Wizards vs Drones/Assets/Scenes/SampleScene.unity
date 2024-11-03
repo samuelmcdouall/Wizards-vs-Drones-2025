@@ -322,9 +322,10 @@ MonoBehaviour:
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 5
   _animator: {fileID: 1801935910}
-  ExplodePrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
+  DestroyPrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
   BatteryPickUp: {fileID: 291795202343636061, guid: a192c1e4f9336b34eb83019ca895833a, type: 3}
   PickUpChance: 0
+  ExplodePrefab: {fileID: 6079881615369700989, guid: 299187d6c354ee54fa595cc064d8e4b0, type: 3}
   AttackRayCastDistance: 10
   RayCastPoints:
   - {fileID: 593811841}
@@ -3323,13 +3324,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentHealth: 0
-  _maxHealth: 10
+  _maxHealth: 1
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4
   _animator: {fileID: 1354730918}
-  ExplodePrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
+  DestroyPrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
   BatteryPickUp: {fileID: 291795202343636061, guid: a192c1e4f9336b34eb83019ca895833a, type: 3}
   PickUpChance: 0
+  ExplodePrefab: {fileID: 6079881615369700989, guid: 299187d6c354ee54fa595cc064d8e4b0, type: 3}
   AttackRayCastDistance: 0.3
   RayCastPoints:
   - {fileID: 1128288905}
@@ -4872,7 +4874,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &942816652
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4933,9 +4935,10 @@ MonoBehaviour:
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4
   _animator: {fileID: 1999061628}
-  ExplodePrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
+  DestroyPrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
   BatteryPickUp: {fileID: 291795202343636061, guid: a192c1e4f9336b34eb83019ca895833a, type: 3}
   PickUpChance: 0
+  ExplodePrefab: {fileID: 6079881615369700989, guid: 299187d6c354ee54fa595cc064d8e4b0, type: 3}
   AttackRayCastDistance: 0.3
   RayCastPoints:
   - {fileID: 1531846112}
@@ -5824,9 +5827,10 @@ MonoBehaviour:
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 5
   _animator: {fileID: 2070657986}
-  ExplodePrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
+  DestroyPrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
   BatteryPickUp: {fileID: 291795202343636061, guid: a192c1e4f9336b34eb83019ca895833a, type: 3}
   PickUpChance: 0
+  ExplodePrefab: {fileID: 6079881615369700989, guid: 299187d6c354ee54fa595cc064d8e4b0, type: 3}
   AttackRayCastDistance: 10
   RayCastPoints:
   - {fileID: 1566286063}
@@ -7317,9 +7321,10 @@ MonoBehaviour:
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 5
   _animator: {fileID: 1002038407}
-  ExplodePrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
+  DestroyPrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
   BatteryPickUp: {fileID: 291795202343636061, guid: a192c1e4f9336b34eb83019ca895833a, type: 3}
   PickUpChance: 0
+  ExplodePrefab: {fileID: 6079881615369700989, guid: 299187d6c354ee54fa595cc064d8e4b0, type: 3}
   AttackRayCastDistance: 10
   RayCastPoints:
   - {fileID: 1951721409}
@@ -8457,15 +8462,12 @@ MonoBehaviour:
     DOTAttackInterval: 0
     DOTAttackDuration: 0
     Pierce: 0
-    DamageNearby: 0
-    DamageNearbyDistance: 0
-    DamageNearbyTargetsNumber: 0
-    ExplodeOnDeathChance: 0
+    ExplodeOnDeathChance: 0.5
     CriticalChance: 0
     HealthIncrease: 0
     AttackSpeedModifier: 1
     DashRechargeModifier: 1
-    LowHealthDamageBonus: 2
+    LowHealthDamageBonus: 0
 --- !u!143 &1975454023
 CharacterController:
   m_ObjectHideFlags: 0
@@ -8980,7 +8982,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &2146448993
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9037,13 +9039,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentHealth: 0
-  _maxHealth: 10
+  _maxHealth: 1
   _healthUI: {fileID: 0}
   _maxNormalSpeed: 4
   _animator: {fileID: 1782186023}
-  ExplodePrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
+  DestroyPrefab: {fileID: 5974695137741759776, guid: f6424e50fe448944cb9ff68365d9611b, type: 3}
   BatteryPickUp: {fileID: 291795202343636061, guid: a192c1e4f9336b34eb83019ca895833a, type: 3}
   PickUpChance: 0
+  ExplodePrefab: {fileID: 6079881615369700989, guid: 299187d6c354ee54fa595cc064d8e4b0, type: 3}
   AttackRayCastDistance: 0.3
   RayCastPoints:
   - {fileID: 36900599}

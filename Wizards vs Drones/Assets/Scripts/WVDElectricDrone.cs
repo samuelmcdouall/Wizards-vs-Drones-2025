@@ -26,11 +26,16 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
     {
         // todo add in fx
         print("Electric drone destroyed");
-        Instantiate(ExplodePrefab, transform.position + ExplodeOffset, ExplodePrefab.transform.rotation);
+        Instantiate(DestroyPrefab, transform.position + ExplodeOffset, DestroyPrefab.transform.rotation);
         float rand = Random.Range(0.0f, 1.0f);
-        if (rand < PickUpChance + BonusPickUpChance)
+        if (rand < PickUpChance + BonusPickUpChanceFromLastHit)
         {
             Instantiate(BatteryPickUp, transform.position + ExplodeOffset, BatteryPickUp.transform.rotation);
+        }
+        rand = Random.Range(0.0f, 1.0f);
+        if (rand < ExplodeOnDeathChanceFromLastHit)
+        {
+            Instantiate(ExplodePrefab, transform.position + ExplodeOffset, ExplodePrefab.transform.rotation);
         }
         Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this); // todo apart from this line, could probably put the base function of this into the base drone function. Still have each drone implementing the Damageable interface, and an override function here
         Destroy(gameObject);
@@ -43,8 +48,8 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
         {
             if (!DestroySequenceCompleted)
             {
-                DestroyFullyDamaged();
                 DestroySequenceCompleted = true;
+                DestroyFullyDamaged();
             }
         }
     }
@@ -143,7 +148,8 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
 
     public void ResolveAttack(int damage, WVDAttackEffects effects)
     {
-        BonusPickUpChance = effects.DropRateIncrease; // todo this is drone specific, maybe later on combine this into the base drone class, or possibly put into the apply effects
+        BonusPickUpChanceFromLastHit = effects.DropRateIncrease; // todo this is drone specific, maybe later on combine this into the base drone class, or possibly put into the apply effects
+        ExplodeOnDeathChanceFromLastHit = effects.ExplodeOnDeathChance;
         TakeDamage(damage);
         ApplyEffects(effects);
     }

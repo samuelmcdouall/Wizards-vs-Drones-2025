@@ -4913,7 +4913,7 @@ GameObject:
   - component: {fileID: 175697132524428029}
   - component: {fileID: 4317332404994851048}
   m_Layer: 0
-  m_Name: ElectricDroneExplodeFX
+  m_Name: ElectricDroneDestroyFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

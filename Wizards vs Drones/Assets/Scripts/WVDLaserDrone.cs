@@ -18,11 +18,16 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
     {
         // todo add in fx
         print("Laser drone destroyed");
-        Instantiate(ExplodePrefab, transform.position + ExplodeOffset, ExplodePrefab.transform.rotation);
+        Instantiate(DestroyPrefab, transform.position + ExplodeOffset, DestroyPrefab.transform.rotation);
         float rand = Random.Range(0.0f, 1.0f);
-        if (rand < PickUpChance + BonusPickUpChance)
+        if (rand < PickUpChance + BonusPickUpChanceFromLastHit)
         {
             Instantiate(BatteryPickUp, transform.position + ExplodeOffset, BatteryPickUp.transform.rotation);
+        }
+        rand = Random.Range(0.0f, 1.0f);
+        if (rand < ExplodeOnDeathChanceFromLastHit)
+        {
+            Instantiate(ExplodePrefab, transform.position + ExplodeOffset, ExplodePrefab.transform.rotation);
         }
         Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this);
         Destroy(gameObject);
@@ -35,8 +40,8 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
         {
             if (!DestroySequenceCompleted)
             {
-                DestroyFullyDamaged();
                 DestroySequenceCompleted = true;
+                DestroyFullyDamaged();
             }
         }
     }
@@ -133,7 +138,8 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
 
     public void ResolveAttack(int damage, WVDAttackEffects effects)
     {
-        BonusPickUpChance = effects.DropRateIncrease;
+        BonusPickUpChanceFromLastHit = effects.DropRateIncrease;
+        ExplodeOnDeathChanceFromLastHit = effects.ExplodeOnDeathChance;
         TakeDamage(damage);
         ApplyEffects(effects);
     }

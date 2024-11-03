@@ -7,7 +7,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
 {
     [Header("General - Base Drone")]
     [SerializeField]
-    protected GameObject ExplodePrefab;
+    protected GameObject DestroyPrefab;
     [SerializeField]
     protected GameObject BatteryPickUp;
     protected bool DestroySequenceCompleted;
@@ -15,7 +15,10 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     DroneState _currentDroneState;
     [SerializeField]
     protected float PickUpChance;
-    protected float BonusPickUpChance;
+    protected float BonusPickUpChanceFromLastHit;
+    protected float ExplodeOnDeathChanceFromLastHit;
+    [SerializeField]
+    protected GameObject ExplodePrefab;
 
     [Header("Movement - Base Drone")]
     [SerializeField]
