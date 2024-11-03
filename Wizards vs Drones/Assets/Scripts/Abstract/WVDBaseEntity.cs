@@ -50,7 +50,12 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
             {
                 _healthUI.value = (float)_currentHealth / (float)_maxHealth;
             }
-        } 
+        }
+    }
+    public int MaxHealth 
+    { 
+        get => _maxHealth; 
+        set => _maxHealth = value; 
     }
     bool _invulnerable;
     [SerializeField] public bool Invulnerable 

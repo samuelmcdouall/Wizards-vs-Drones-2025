@@ -7,6 +7,11 @@ public class WVDPlayerProjectile : WVDBaseProjectile
     {
         base.Start();
         _canPierce = Effects.Pierce;
+        float randCrit = Random.Range(0.0f, 1.0f); // todo will want some effects/sfx here to indicate crit
+        if (randCrit < Effects.CriticalChance)
+        {
+            Damage *= 2;
+        }
     }
 
     private void OnTriggerEnter(Collider other)

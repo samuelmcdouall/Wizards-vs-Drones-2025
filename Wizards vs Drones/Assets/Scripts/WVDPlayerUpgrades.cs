@@ -23,13 +23,12 @@ public struct WVDPlayerUpgrades
 
     public bool Pierce;
 
-    public bool DamageNearby; // how many other targets
+    public bool DamageNearby; // how many other targets, range
+    public float DamageNearbyDistance;
     public int DamageNearbyTargetsNumber;
 
-    public bool ExplodeOnDeath; // %chance
     public float ExplodeOnDeathChance;
 
-    public bool Critical; // %chance
     public float CriticalChance;
 
     //public bool InstaKill; // %chance
@@ -37,7 +36,9 @@ public struct WVDPlayerUpgrades
 
     public bool HealthIncrease; // one off max increase
 
-    public float AttackSpeedIncrease;
+    public float AttackSpeedModifier;
+
+    public float DashRechargeModifier;
 
     public int LowHealthDamageBonus;
 
@@ -47,7 +48,7 @@ public struct WVDPlayerUpgrades
         StunAttacks = false;
         StunAttackDuration = 0.0f;
         
-        DropRateIncrease = 0.0f;
+        DropRateIncrease = 0.0f;//
         
         SlowAttacks = false;
         SlowAttackPercentage = 0.0f;
@@ -59,17 +60,20 @@ public struct WVDPlayerUpgrades
         DOTAttackDuration = 0.0f;
         
         Pierce = false;
-        
-        DamageNearby = false;
+
+        DamageNearby = false;//
+        DamageNearbyDistance = 0.0f;
         DamageNearbyTargetsNumber = 0;
         
-        ExplodeOnDeathChance = 0.0f;
+        ExplodeOnDeathChance = 0.0f;//
         
         CriticalChance = 0.0f;
         
-        HealthIncrease = false;
+        HealthIncrease = false; // todo do this when make shop itself
         
-        AttackSpeedIncrease = 1.0f;
+        AttackSpeedModifier = 1.0f;
+
+        DashRechargeModifier = 1.0f;
         
         LowHealthDamageBonus = 0;
     }

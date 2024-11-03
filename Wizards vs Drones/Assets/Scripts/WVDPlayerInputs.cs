@@ -100,19 +100,29 @@ public class WVDPlayerInputs : MonoBehaviour
         {
             if (_canAttack && Input.GetMouseButtonDown(0)) // todo change back to MouseButton once got cooldown in
             {
-                GameObject magicMissile = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation);
-                magicMissile.GetComponent<WVDPlayerProjectile>().SetProjectileDirection(_attackFirePoint.forward);
+                int bonusDamage = 0;
+                if (_playerScript.CurrentHealth <= _playerScript.MaxHealth / 2)
+                {
+                    bonusDamage = _playerScript.PurchasedUpgrades.LowHealthDamageBonus;
+                }
+
                 WVDAttackEffects currentEffects = GetActiveAttackEffects();
-                magicMissile.GetComponent<WVDPlayerProjectile>().SetProjectileEffects(currentEffects);
+
+                WVDPlayerProjectile magicMissile = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation).GetComponent<WVDPlayerProjectile>();
+                magicMissile.SetProjectileDirection(_attackFirePoint.forward);
+                magicMissile.SetProjectileEffects(currentEffects);
+                magicMissile.Damage += bonusDamage;
 
                 if (_playerScript.PurchasedUpgrades.ShootThreeArc)
                 {
-                    GameObject magicMissileLeft = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation);
-                    magicMissileLeft.GetComponent<WVDPlayerProjectile>().SetProjectileDirection(Quaternion.Euler(0.0f,-30.0f,0.0f) * _attackFirePoint.forward);
-                    magicMissileLeft.GetComponent<WVDPlayerProjectile>().SetProjectileEffects(currentEffects);
-                    GameObject magicMissileRight = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation);
-                    magicMissileRight.GetComponent<WVDPlayerProjectile>().SetProjectileDirection(Quaternion.Euler(0.0f, 30.0f, 0.0f) * _attackFirePoint.forward);
-                    magicMissileRight.GetComponent<WVDPlayerProjectile>().SetProjectileEffects(currentEffects);
+                    WVDPlayerProjectile magicMissileLeft = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation).GetComponent<WVDPlayerProjectile>();
+                    magicMissileLeft.SetProjectileDirection(Quaternion.Euler(0.0f,-30.0f,0.0f) * _attackFirePoint.forward);
+                    magicMissileLeft.SetProjectileEffects(currentEffects);
+                    magicMissileLeft.Damage += bonusDamage;
+                    WVDPlayerProjectile magicMissileRight = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation).GetComponent<WVDPlayerProjectile>();
+                    magicMissileRight.SetProjectileDirection(Quaternion.Euler(0.0f, 30.0f, 0.0f) * _attackFirePoint.forward);
+                    magicMissileRight.SetProjectileEffects(currentEffects);
+                    magicMissileRight.Damage += bonusDamage;
                 }
 
                 CurrentPlayerMovementState = PlayerMovementState.Attacking;
@@ -182,7 +192,7 @@ public class WVDPlayerInputs : MonoBehaviour
     }
     public async void RechargeDash()
     {
-        float endRechargeTime = Time.time + _dashRechargeInterval;
+        float endRechargeTime = Time.time + _dashRechargeInterval / _playerScript.PurchasedUpgrades.DashRechargeModifier;
         while (Time.time < endRechargeTime)
         {
             await Task.Yield();
@@ -192,7 +202,7 @@ public class WVDPlayerInputs : MonoBehaviour
     }
     public async void RechargeAttack()
     {
-        float endRechargeTime = Time.time + _attackRechargeInterval;
+        float endRechargeTime = Time.time + _attackRechargeInterval / _playerScript.PurchasedUpgrades.AttackSpeedModifier;
         while (Time.time < endRechargeTime)
         {
             await Task.Yield();
@@ -216,6 +226,7 @@ public class WVDPlayerInputs : MonoBehaviour
         effects.DOTInterval = currentUpgrades.DOTAttackInterval;
         effects.DOTDuration = currentUpgrades.DOTAttackDuration;
         effects.Pierce = currentUpgrades.Pierce;
+        effects.CriticalChance = currentUpgrades.CriticalChance;
         return effects;
     }
 

@@ -25,7 +25,6 @@ public struct WVDAttackEffects
     
     public float ExplodeOnDeathChance;
     
-    public bool Critical; // %chance
     public float CriticalChance;
     
     //public bool InstaKill; // %chance
