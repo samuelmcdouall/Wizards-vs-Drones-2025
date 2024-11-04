@@ -157,6 +157,8 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         //PurchasedUpgrades.SetToDefault(); todo put back in here
         //_currentShieldVersion = CurrentShieldVersion.None;
         //InitialShieldSetup();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     //private void InitialShieldSetup()
