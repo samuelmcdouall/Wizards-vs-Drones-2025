@@ -66,7 +66,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     List<IWVDDamageable> _drones = new List<IWVDDamageable>();
 
     [Header("Upgrades")]
-    int _batteryCount;
+    [SerializeField] int _batteryCount;
     public WVDPlayerUpgrades PurchasedUpgrades;
 
 
