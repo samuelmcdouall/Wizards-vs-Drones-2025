@@ -13,6 +13,8 @@ public class WVDShopUIManager : MonoBehaviour
     float _discountChance;
     [SerializeField]
     int[] _possibleDiscounts;
+    [SerializeField]
+    TMP_Text _batteriesText;
 
     [Header("Three Arc")]
     [SerializeField]
@@ -212,7 +214,7 @@ public class WVDShopUIManager : MonoBehaviour
         CheckPlayerCanBuyUpgrade(_attackSpeedFinalPrice, _attackSpeedPurchasedImage, _attackSpeedPurchaseButton, _attackSpeedDisabledImage);
         CheckPlayerCanBuyUpgrade(_dashRechargeFinalPrice, _dashRechargePurchasedImage, _dashRechargePurchaseButton, _dashRechargeDisabledImage);
         CheckPlayerCanBuyUpgrade(_lowHealthDamageFinalPrice, _lowHealthDamagePurchasedImage, _lowHealthDamagePurchaseButton, _lowHealthDamageDisabledImage);
-
+        _batteriesText.text = "" + _playerScript.BatteryCount;
     }
     public void PurchaseThreeArc()
     {
@@ -380,5 +382,12 @@ public class WVDShopUIManager : MonoBehaviour
     private void OnEnable()
     {
         UpdateBuyableItems();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+    private void OnDisable()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 }
