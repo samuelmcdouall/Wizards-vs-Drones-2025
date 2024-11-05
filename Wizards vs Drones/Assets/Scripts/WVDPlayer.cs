@@ -47,12 +47,19 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     readonly float _trapDeploymentOffset = 2.0f;
 
     [Header("Heal - Player")]
+    [SerializeField]
+    GameObject _lifeStealFX;
     float _lifeStealTimer;
     bool _lifeSteal;
     public bool LifeSteal 
     { 
-        get => _lifeSteal; 
-        set => _lifeSteal = value; 
+        get => _lifeSteal;
+        set 
+        {
+            print($"Lifesteal: {value}");
+            _lifeStealFX.SetActive(value);
+            _lifeSteal = value;
+        }
     }
 
     [Header("Speed - Player")]
@@ -182,12 +189,12 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     public override void Update()
     {
         base.Update();
-        if (_lifeSteal)
+        if (LifeSteal)
         {
             if (_lifeStealTimer <= 0.0f)
             {
                 print("Player no longer has lifesteal");
-                _lifeSteal = false;
+                LifeSteal = false;
             }
             else
             {
@@ -302,7 +309,10 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     public void TakeDamage(int damage)
     {
         print($"Player took {damage} damage");
-        CurrentHealth -= damage;
+        if (!Invulnerable)
+        {
+            CurrentHealth -= damage;
+        }
         print($"Player on {CurrentHealth} health");
         if (IsFullyDamaged())
         {
@@ -370,7 +380,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         if (time > _lifeStealTimer)
         {
             print("Now has lifesteal!");
-            _lifeSteal = true;
+            LifeSteal = true;
             _lifeStealTimer = time;
         }
     }

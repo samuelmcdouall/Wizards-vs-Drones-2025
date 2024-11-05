@@ -17,7 +17,7 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
     [SerializeField]
     float _lifestealDuration;
     [SerializeField]
-    int _healValueUpgrade2;
+    float _invulnerableDuration;
 
     [Header("Shield")] // todo should probably move the shield + other power up deploying here
     [SerializeField]
@@ -117,7 +117,7 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
                         _playerScript.ApplyLifeStealForSeconds(_lifestealDuration);
                         break;
                     case 2:
-                        _playerScript.CurrentHealth += _healValueUpgrade2; // invul for time
+                        _playerScript.ApplyInvulnerable(_invulnerableDuration); // invul for time
                         break;
                 }
             }

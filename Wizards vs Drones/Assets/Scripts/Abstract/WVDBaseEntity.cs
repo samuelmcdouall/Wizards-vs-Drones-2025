@@ -58,12 +58,16 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
         set => _maxHealth = value; 
     }
     bool _invulnerable;
+    [SerializeField]
+    GameObject _invulnerableFX;
+    float _invulnerableTimer;
     [SerializeField] public bool Invulnerable 
     { 
         get => _invulnerable;
         set
         {
             print($"Invulnerable: {value}");
+            _invulnerableFX.SetActive(value);
             _invulnerable = value;
         }
     }
@@ -137,6 +141,18 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
                 _stunnedTimer -= Time.deltaTime;
             }
         }
+        if (Invulnerable)
+        {
+            if (_invulnerableTimer <= 0.0f)
+            {
+                print("Entity no longer invulnerable");
+                Invulnerable = false;
+            }
+            else
+            {
+                _invulnerableTimer -= Time.deltaTime;
+            }
+        }
     }
 
     public void SwitchToAnimation(string animation)
@@ -184,6 +200,16 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
             print("Stunned!");
             _stunned = true;
             _stunnedTimer = time;
+        }
+    }
+    public void ApplyInvulnerable(float time)
+    {
+        // If a time is applied that would be larger than the time remaining then apply new time
+        if (time > _invulnerableTimer)
+        {
+            print("Invulnerable!");
+            Invulnerable = true;
+            _invulnerableTimer = time;
         }
     }
 
