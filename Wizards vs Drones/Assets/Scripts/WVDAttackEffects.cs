@@ -33,6 +33,8 @@ public struct WVDAttackEffects
     
     public float DropRateIncrease;
 
+    public bool LifeSteal; // Should be player only, heal 1 hp on hit
+
     public void SetToDefault()
     {
         //NoEffects = true;

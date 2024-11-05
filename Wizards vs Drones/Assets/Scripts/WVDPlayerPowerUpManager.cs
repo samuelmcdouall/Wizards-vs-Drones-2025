@@ -15,7 +15,7 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
     [SerializeField]
     int _healValueBase;
     [SerializeField]
-    int _healValueUpgrade1;
+    float _lifestealDuration;
     [SerializeField]
     int _healValueUpgrade2;
 
@@ -114,10 +114,10 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
                         _playerScript.CurrentHealth += _healValueBase;
                         break;
                     case 1:
-                        _playerScript.CurrentHealth += _healValueUpgrade1;
+                        _playerScript.ApplyLifeStealForSeconds(_lifestealDuration);
                         break;
                     case 2:
-                        _playerScript.CurrentHealth += _healValueUpgrade2;
+                        _playerScript.CurrentHealth += _healValueUpgrade2; // invul for time
                         break;
                 }
             }

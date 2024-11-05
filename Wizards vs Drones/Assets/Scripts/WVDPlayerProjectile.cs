@@ -3,6 +3,8 @@ using UnityEngine;
 public class WVDPlayerProjectile : WVDBaseProjectile
 {
     bool _canPierce;
+    [System.NonSerialized]
+    public WVDPlayer PlayerScript;
     public override void Start()
     {
         base.Start();
@@ -22,6 +24,10 @@ public class WVDPlayerProjectile : WVDBaseProjectile
         }
         if (other.gameObject.CompareTag("Enemy") && other.gameObject.GetComponent<IWVDDamageable>() != null)
         {
+            if (Effects.LifeSteal)
+            {
+                PlayerScript.CurrentHealth++;
+            }
             other.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
             print("hit enemy");
             if (_canPierce)

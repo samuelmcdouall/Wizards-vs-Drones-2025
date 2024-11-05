@@ -46,6 +46,15 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     GameObject _trapExplosivePrefab;
     readonly float _trapDeploymentOffset = 2.0f;
 
+    [Header("Heal - Player")]
+    float _lifeStealTimer;
+    bool _lifeSteal;
+    public bool LifeSteal 
+    { 
+        get => _lifeSteal; 
+        set => _lifeSteal = value; 
+    }
+
     [Header("Speed - Player")]
     [SerializeField]
     float _maxSideBackSpeed;
@@ -173,6 +182,18 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     public override void Update()
     {
         base.Update();
+        if (_lifeSteal)
+        {
+            if (_lifeStealTimer <= 0.0f)
+            {
+                print("Player no longer has lifesteal");
+                _lifeSteal = false;
+            }
+            else
+            {
+                _lifeStealTimer -= Time.deltaTime;
+            }
+        }
         if (_shieldElectricFX.activeSelf)
         {
             foreach (IWVDDamageable drone in _drones.ToList()) // copy value to a separate list, so if something disappears from the list mid forloop shouldn't be an issue. Possible issue if drone gets destroyed before its checked in the list in same update cycle
@@ -341,6 +362,17 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         }
 
         Instantiate(chosenTrap, transform.position + _playerModel.transform.forward * _trapDeploymentOffset, _playerModel.transform.rotation);
+    }
+
+    public void ApplyLifeStealForSeconds(float time)
+    {
+        // If a time is applied that would be larger than the time remaining then apply new time
+        if (time > _lifeStealTimer)
+        {
+            print("Now has lifesteal!");
+            _lifeSteal = true;
+            _lifeStealTimer = time;
+        }
     }
 
     public void ResolveAttack(int damage, WVDAttackEffects effects)
