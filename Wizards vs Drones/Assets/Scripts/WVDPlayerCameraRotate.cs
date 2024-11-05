@@ -20,7 +20,10 @@ public class WVDPlayerCameraRotate : MonoBehaviour
     {
         if (_playerMovementScript.CurrentPlayerMovementState != WVDPlayerInputs.PlayerMovementState.Dashing)
         {
-            GetMouseInput();
+            if (WVDMoveRotateAllowed.CanMoveAndRotate())
+            {
+                GetMouseInput();
+            }
             transform.rotation = Quaternion.Euler(_mouseY, _mouseX, 0.0f);
         }
     }

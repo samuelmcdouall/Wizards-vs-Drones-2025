@@ -243,25 +243,28 @@ public class WVDPlayerInputs : MonoBehaviour
         // Separate input vector because movementInput will be dependant on camera rotation
         Vector3 inputVector = Vector3.zero;
 
-        if (Input.GetKey(KeyCode.W))
+        if (WVDMoveRotateAllowed.CanMoveAndRotate())
         {
-            movement += cameraForwardYIndependent;
-            inputVector += Vector3.forward;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            movement -= cameraRightYIndependent;
-            inputVector += Vector3.left;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            movement -= cameraForwardYIndependent;
-            inputVector += Vector3.back;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            movement += cameraRightYIndependent;
-            inputVector += Vector3.right;
+            if (Input.GetKey(KeyCode.W))
+            {
+                movement += cameraForwardYIndependent;
+                inputVector += Vector3.forward;
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                movement -= cameraRightYIndependent;
+                inputVector += Vector3.left;
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                movement -= cameraForwardYIndependent;
+                inputVector += Vector3.back;
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                movement += cameraRightYIndependent;
+                inputVector += Vector3.right;
+            }
         }
 
         return new WVDPlayerDirection(movement, inputVector);
