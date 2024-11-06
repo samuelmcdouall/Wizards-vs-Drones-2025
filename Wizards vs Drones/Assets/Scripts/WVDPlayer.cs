@@ -378,7 +378,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
             chosenTrap = _trapExplosivePrefab;
         }
 
-        Instantiate(chosenTrap, transform.position + _playerModel.transform.forward * _trapDeploymentOffset, _playerModel.transform.rotation);
+        Instantiate(chosenTrap, transform.position + _playerModel.transform.forward * _trapDeploymentOffset + new Vector3(0.0f, -1.0f, 0.0f), _playerModel.transform.rotation);
     }
 
     public void ApplyLifeStealForSeconds(float time)
