@@ -215,7 +215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startPos: {fileID: 5922705332339388181}
   _endPos: {fileID: 701224450085042121}
-  _lifeTime: 0.25
+  _lifeTime: 0.2
 --- !u!1 &5922705332339388181
 GameObject:
   m_ObjectHideFlags: 0
