@@ -411,7 +411,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &4036662
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11699,7 +11699,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!195 &571650194
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -12685,7 +12685,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c548fef4412335045ad6aa44ff405f9a, type: 2}
+  - {fileID: 2100000, guid: 96d385ac4c1545542b364708401f127c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -13809,7 +13809,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &707090104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13953,7 +13953,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &709550925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15584,7 +15584,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &957888280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17301,7 +17301,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &1226640493
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18598,7 +18598,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!135 &1369966958
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -20404,7 +20404,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &1634311070
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20575,7 +20575,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 96d385ac4c1545542b364708401f127c, type: 2}
+  - {fileID: 2100000, guid: 2f6ed9352abcb914aac5b001a66593d6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21511,7 +21511,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1807841845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22621,7 +22621,8 @@ MonoBehaviour:
   _shieldRegularFX: {fileID: 1128563795}
   _shieldReflectFX: {fileID: 639570472}
   _shieldElectricFX: {fileID: 1634313346}
-  _shieldElectricDamageThreshold: 4
+  _shieldElectricDamageThreshold: 8
+  _shieldElectricAttackFXPrefab: {fileID: 872017673861155529, guid: 5f1e13bbfe4314841986ddfa6316953f, type: 3}
   _trapSlowPrefab: {fileID: 3100678737985389441, guid: 000618a85876b9e428b8cf5fd1e87834, type: 3}
   _trapDamagePrefab: {fileID: 8611904704282592497, guid: 1602c5611cf90834bb252a1b27a8297d, type: 3}
   _trapExplosivePrefab: {fileID: 7450529797947933823, guid: ec1fed263ece1ed4eafc01b487107982, type: 3}
@@ -31641,7 +31642,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7771786673932230810
 Transform:
   m_ObjectHideFlags: 0

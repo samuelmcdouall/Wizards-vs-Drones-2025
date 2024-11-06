@@ -36,6 +36,9 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     GameObject _shieldElectricFX;
     [SerializeField]
     float _shieldElectricDamageThreshold;
+    [SerializeField]
+    GameObject _shieldElectricAttackFXPrefab;
+    readonly float _shieldAttackOffset = 2.8f;
 
     [Header("Traps - Player")]
     [SerializeField]
@@ -208,6 +211,10 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
                 if (Vector3.Distance(drone.GetTransform().position, transform.position) <= _shieldElectricDamageThreshold)
                 {
                     drone.TakeDamage(1000); // Insta-kill, something stupidly high
+                    WVDShieldElectricAttackFX attackFX = Instantiate(_shieldElectricAttackFXPrefab, transform.position, Quaternion.identity).GetComponent<WVDShieldElectricAttackFX>();
+                    Vector3 directionToDrone = (drone.GetModelTransform().position - transform.position).normalized;
+                    Vector3 startPos = transform.position + directionToDrone * _shieldAttackOffset;
+                    attackFX.SetPositions(startPos, drone.GetModelTransform().position);
                 }
             }
         }
