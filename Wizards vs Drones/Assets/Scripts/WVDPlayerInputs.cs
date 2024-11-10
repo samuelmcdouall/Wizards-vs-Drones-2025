@@ -325,9 +325,9 @@ public class WVDPlayerInputs : MonoBehaviour
 
     void ApplyGravity()
     {
-        if (_groundCheckScript.IsGrounded && _velocity.y < -2.0f)
+        if (_groundCheckScript.IsGrounded && _velocity.y < -4.0f)
         {
-            _velocity.y = -2.0f;
+            _velocity.y = -4.0f;
         }
 
         _velocity.y += _gravity * Time.deltaTime;
