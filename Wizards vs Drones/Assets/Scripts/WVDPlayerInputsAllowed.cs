@@ -1,9 +1,9 @@
-public static class WVDMoveRotateAllowed
+public static class WVDPlayerInputsAllowed
 {
     public static bool InShopMenu;
     public static bool InPauseMenu;
 
-    public static bool CanMoveAndRotate()
+    public static bool PlayerInputsAllowed()
     {
         return !InShopMenu && !InPauseMenu;
     }
