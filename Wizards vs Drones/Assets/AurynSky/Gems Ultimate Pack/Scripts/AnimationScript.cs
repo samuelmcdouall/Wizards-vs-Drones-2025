@@ -12,7 +12,7 @@ public class AnimationScript : MonoBehaviour {
     public Vector3 rotationAngle;
     public float rotationSpeed;
 
-    public float floatSpeed;
+    public Vector3 floatSpeed;
     private bool goingUp = true;
     public float floatRate;
     private float floatTimer;
@@ -45,8 +45,8 @@ public class AnimationScript : MonoBehaviour {
             if(isFloating)
             {
                 floatTimer += Time.deltaTime;
-                Vector3 moveDir = new Vector3(0.0f, 0.0f, floatSpeed);
-                transform.Translate(moveDir);
+                //Vector3 moveDir = new Vector3(0.0f, 0.0f, floatSpeed);
+                transform.Translate(floatSpeed);
 
                 if (goingUp && floatTimer >= floatRate)
                 {
@@ -59,7 +59,7 @@ public class AnimationScript : MonoBehaviour {
                 {
                     goingUp = true;
                     floatTimer = 0;
-                    floatSpeed = +floatSpeed;
+                    floatSpeed = -floatSpeed;
                 }
             }
 
