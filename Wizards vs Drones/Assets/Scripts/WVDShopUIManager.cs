@@ -382,13 +382,13 @@ public class WVDShopUIManager : MonoBehaviour
     private void OnEnable()
     {
         UpdateBuyableItems();
-        WVDMoveRotateAllowed.InShopMenu = true;
+        WVDPlayerInputsAllowed.InShopMenu = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
     private void OnDisable()
     {
-        WVDMoveRotateAllowed.InShopMenu = false;
+        WVDPlayerInputsAllowed.InShopMenu = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }

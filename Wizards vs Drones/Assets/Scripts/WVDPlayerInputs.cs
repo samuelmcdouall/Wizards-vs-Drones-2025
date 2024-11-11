@@ -98,7 +98,7 @@ public class WVDPlayerInputs : MonoBehaviour
         }
         else
         {
-            if (_canAttack && Input.GetMouseButtonDown(0)) // todo change back to MouseButton once got cooldown in
+            if (WVDPlayerInputsAllowed.PlayerInputsAllowed() && _canAttack && Input.GetMouseButtonDown(0)) // todo change back to MouseButton once got cooldown in
             {
                 int bonusDamage = 0;
                 if (_playerScript.CurrentHealth <= _playerScript.MaxHealth / 2)
@@ -247,7 +247,7 @@ public class WVDPlayerInputs : MonoBehaviour
         // Separate input vector because movementInput will be dependant on camera rotation
         Vector3 inputVector = Vector3.zero;
 
-        if (WVDMoveRotateAllowed.CanMoveAndRotate())
+        if (WVDPlayerInputsAllowed.PlayerInputsAllowed())
         {
             if (Input.GetKey(KeyCode.W))
             {
