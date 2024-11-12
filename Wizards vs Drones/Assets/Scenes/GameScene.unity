@@ -2794,7 +2794,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &344469733
 Transform:
   m_ObjectHideFlags: 0
@@ -7652,7 +7652,7 @@ PrefabInstance:
       objectReference: {fileID: 1487794384161994490}
     - target: {fileID: 2992035982041820795, guid: 2930164276d03e24ca7ef2d6fd5d21ec, type: 3}
       propertyPath: _batteryCount
-      value: 450
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 5134236298605118745, guid: 2930164276d03e24ca7ef2d6fd5d21ec, type: 3}
       propertyPath: m_LocalPosition.x
@@ -20434,7 +20434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerScript: {fileID: 1945535930}
-  _discountChance: 1
+  _discountChance: 0.25
   _possibleDiscounts: 0a000000140000001e000000320000003c00000050000000
   _batteriesText: {fileID: 4782338819730055656}
   _threeArcBasePrice: 100
