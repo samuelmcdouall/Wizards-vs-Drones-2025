@@ -22,21 +22,22 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
         set => _zapDamage = value; 
     }
 
-    public void DestroyFullyDamaged()
+    public override void DestroyFullyDamaged()
     {
-        // todo add in fx
-        print("Electric drone destroyed");
-        Instantiate(DestroyPrefab, transform.position + ExplodeOffset, DestroyPrefab.transform.rotation);
-        float rand = Random.Range(0.0f, 1.0f);
-        if (rand < PickUpChance + BonusPickUpChanceFromLastHit)
-        {
-            Instantiate(BatteryPickUp, transform.position + ExplodeOffset, BatteryPickUp.transform.rotation);
-        }
-        rand = Random.Range(0.0f, 1.0f);
-        if (rand < ExplodeOnDeathChanceFromLastHit)
-        {
-            Instantiate(ExplodePrefab, transform.position + ExplodeOffset, ExplodePrefab.transform.rotation);
-        }
+        //// todo add in fx
+        //print("Electric drone destroyed");
+        //Instantiate(DestroyPrefab, transform.position + ExplodeOffset, DestroyPrefab.transform.rotation);
+        //float rand = Random.Range(0.0f, 1.0f);
+        //if (rand < PickUpChance + BonusPickUpChanceFromLastHit)
+        //{
+        //    Instantiate(BatteryPickUp, transform.position + ExplodeOffset, BatteryPickUp.transform.rotation);
+        //}
+        //rand = Random.Range(0.0f, 1.0f);
+        //if (rand < ExplodeOnDeathChanceFromLastHit)
+        //{
+        //    Instantiate(ExplodePrefab, transform.position + ExplodeOffset, ExplodePrefab.transform.rotation);
+        //}
+        base.DestroyFullyDamaged();
         Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this); // todo apart from this line, could probably put the base function of this into the base drone function. Still have each drone implementing the Damageable interface, and an override function here
         Destroy(gameObject);
     }
