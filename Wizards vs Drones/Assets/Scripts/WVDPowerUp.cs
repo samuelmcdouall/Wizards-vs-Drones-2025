@@ -6,7 +6,14 @@ public class WVDPowerUp : MonoBehaviour
 {
     [SerializeField]
     WVDPlayerPowerUpManager.PowerUpType _selectedPowerUpType;
+    WVDPowerUpSpawner _powerUpSpawner;
+    Transform _spawnedTransform;
 
+    public void SetSpawnerParameters(WVDPowerUpSpawner spawner, Transform spawnedPosition)
+    {
+        _powerUpSpawner = spawner;
+        _spawnedTransform = spawnedPosition;
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -20,6 +27,8 @@ public class WVDPowerUp : MonoBehaviour
             {
                 other.gameObject.GetComponent<WVDPlayerPowerUpManager>().PrimaryPowerUpHeld = _selectedPowerUpType;
             }
+            _powerUpSpawner.CurrentPowerUpsSpawned--;
+            _powerUpSpawner.AvailableSpawnPositions.Add(_spawnedTransform);
             Destroy(gameObject);
         }
     }
