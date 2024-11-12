@@ -26,7 +26,8 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     [SerializeField]
     protected Transform[] RayCastPoints;
     protected NavMeshAgent DroneNMA;
-    protected readonly float ChargingTurnFactor = 2.5f;
+    [SerializeField]
+    protected float ChargingTurnFactor = 2.5f;
     [SerializeField]
     protected GameObject DroneModel;
 
