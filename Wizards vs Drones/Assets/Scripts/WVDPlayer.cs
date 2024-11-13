@@ -88,7 +88,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     [SerializeField] int _batteryCount;
     public WVDPlayerUpgrades PurchasedUpgrades;
 
-    //[Header("Burning")]
+    //[Header("Burning")] // maybe list of enemies in flamethrower range, deal damage * number or list of coroutines?
     //[SerializeField]
     //GameObject _onFireFX;
     //Coroutine _burnCoroutine; // 7:41 in video
