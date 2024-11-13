@@ -88,6 +88,12 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     [SerializeField] int _batteryCount;
     public WVDPlayerUpgrades PurchasedUpgrades;
 
+    //[Header("Burning")]
+    //[SerializeField]
+    //GameObject _onFireFX;
+    //Coroutine _burnCoroutine; // 7:41 in video
+    //bool _stoppingBurn;
+
 
     //public float CurrentShield
     //{
@@ -422,6 +428,52 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         }
         TakeDamage(damage); // Final damage to make the last damaging tick of damage
     }
+
+    //public void StartBurning(int damagePerSecond)
+    //{
+    //    _onFireFX.SetActive(true);
+    //    //_stoppingBurn = false;  // If hit again whilst still burning, cancel the stop burn order
+    //    if (_burnCoroutine != null)
+    //    {
+    //        StopCoroutine(_burnCoroutine);
+    //    }
+    //    _burnCoroutine = StartCoroutine(Burn(damagePerSecond));
+    //}
+
+    //IEnumerator Burn(int damagePerSecond)
+    //{
+    //    TakeDamage(damagePerSecond);
+    //    WaitForSeconds waitTime = new WaitForSeconds(1.0f);
+    //    while (_onFireFX.activeSelf)
+    //    {
+    //        yield return waitTime;
+    //        TakeDamage(damagePerSecond);
+    //    }
+    //}
+
+
+    //public IEnumerator StopBurningAfter(float seconds)
+    //{
+    //    _stoppingBurn = true;
+    //    yield return new WaitForSeconds(seconds);
+    //    if (_stoppingBurn)
+    //    {
+    //        StopBurning();
+    //    }
+    //    else
+    //    {
+    //        print("BURN ORDER CANCELLED");
+    //    }
+    //}
+    //public void StopBurning()
+    //{
+    //    _onFireFX.SetActive(false);
+    //    //_stoppingBurn = false;
+    //    if (_burnCoroutine != null)
+    //    {
+    //        StopCoroutine(_burnCoroutine);
+    //    }
+    //}
 
     public Transform GetModelTransform()
     {
