@@ -41,7 +41,7 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
         Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this); // todo apart from this line, could probably put the base function of this into the base drone function. Still have each drone implementing the Damageable interface, and an override function here
         Destroy(gameObject);
     }
-    public void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage) // for tank, do an override of this + need a go beserk function to increase stats + (maybe this not needed)do a start/update with just the base function
     {
         print($"Electric drone took {damage} damage");
         CurrentHealth -= damage;
