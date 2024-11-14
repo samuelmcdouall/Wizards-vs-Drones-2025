@@ -5,15 +5,14 @@ using UnityEngine;
 public class WVDDroneSpawner : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField]
-    GameObject _testDrone;
     void Start()
     {
-        InvokeRepeating("TestSpawn", 5, 5);
+        
     }
 
-    void TestSpawn()
+    // Update is called once per frame
+    void Update()
     {
-        Instantiate(_testDrone, transform.position, _testDrone.transform.rotation);
+        
     }
 }
