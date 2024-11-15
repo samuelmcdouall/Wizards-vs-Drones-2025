@@ -49,6 +49,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             print($"{gameObject.name} state now set to: {_currentDroneState}");
         }
     }
+    [SerializeField] WVDDroneSpawner _droneSpawner; // todo just to see if getting ref
 
     // Start is called before the first frame update
     public override void Start()
@@ -86,7 +87,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     public virtual void DestroyFullyDamaged()
     {
         // todo add in fx
-        print("Electric drone destroyed");
+        print($"{gameObject.name} drone destroyed");
         Instantiate(DestroyPrefab, transform.position + ExplodeOffset, DestroyPrefab.transform.rotation);
         float rand = Random.Range(0.0f, 1.0f);
         if (rand < PickUpChance + BonusPickUpChanceFromLastHit)
@@ -98,6 +99,13 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         {
             Instantiate(ExplodePrefab, transform.position + ExplodeOffset, ExplodePrefab.transform.rotation);
         }
+        _droneSpawner.CurrentDronesSpawned--;
+    }
+
+
+    public void SetSpawnerParameters(WVDDroneSpawner spawner)
+    {
+        _droneSpawner = spawner;
     }
 
     public enum DroneState

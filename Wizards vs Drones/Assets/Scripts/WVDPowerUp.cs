@@ -29,6 +29,7 @@ public class WVDPowerUp : MonoBehaviour
             }
             _powerUpSpawner.CurrentPowerUpsSpawned--;
             _powerUpSpawner.AvailableSpawnPositions.Add(_spawnedTransform);
+            _powerUpSpawner.SpawnedPowerUps.Remove(this);
             Destroy(gameObject);
         }
     }

@@ -6,9 +6,19 @@ public class WVDPowerUpSpawner : MonoBehaviour
     [SerializeField]
     bool _spawning;
 
+    public List<WVDPowerUp> SpawnedPowerUps = new List<WVDPowerUp>();
+
     [Header("Spawn Positions")]
     [SerializeField]
-    List<Transform> _availableSpawnPositions;
+    List<Transform> _greatHallSpawnPositions;
+    [SerializeField]
+    List<Transform> _towerSpawnPositions;
+    [SerializeField]
+    List<Transform> _battlementsSpawnPositions;
+    [SerializeField]
+    List<Transform> _dungeonSpawnPositions;
+    [SerializeField]
+    List<Transform> _availableSpawnPositions; // always start off with all the courtyard positions, then add the others
 
     [Header("Spawn Limits")]
     [SerializeField]
@@ -44,6 +54,11 @@ public class WVDPowerUpSpawner : MonoBehaviour
         get => _availableSpawnPositions; 
         set => _availableSpawnPositions = value; 
     }
+    public bool Spawning 
+    { 
+        get => _spawning; 
+        set => _spawning = value; 
+    }
 
     void Start()
     {
@@ -70,7 +85,7 @@ public class WVDPowerUpSpawner : MonoBehaviour
         }
     }
 
-    void AddRandomColouredPowerUpToList() // should be triggered with each X level increases
+    public void AddRandomColouredPowerUpToList() // should be triggered with each X level increases
     {
         if (_unavailableColouredPowerUps.Count > 0)
         {
@@ -78,6 +93,33 @@ public class WVDPowerUpSpawner : MonoBehaviour
             GameObject chosenPowerUp = _unavailableColouredPowerUps[randIndex];
             _availableColouredPowerUps.Add(chosenPowerUp);
             _unavailableColouredPowerUps.Remove(chosenPowerUp);
+        }
+    }
+
+    public void AddSpawnPositionsToListFromSection(WVDLevelManager.UnlockableSections section)
+    {
+        switch (section)
+        {
+            case WVDLevelManager.UnlockableSections.GreatHall:
+                AddSpawnPositionsToList(_greatHallSpawnPositions);
+                break;
+            case WVDLevelManager.UnlockableSections.Tower:
+                AddSpawnPositionsToList(_towerSpawnPositions);
+                break;
+            case WVDLevelManager.UnlockableSections.Battlements:
+                AddSpawnPositionsToList(_battlementsSpawnPositions);
+                break;
+            case WVDLevelManager.UnlockableSections.Dungeon:
+                AddSpawnPositionsToList(_dungeonSpawnPositions);
+                break;
+        }
+    }
+
+    void AddSpawnPositionsToList(List<Transform> spawnPositions)
+    {
+        foreach(Transform position in spawnPositions)
+        {
+            _availableSpawnPositions.Add(position);
         }
     }
 
@@ -97,6 +139,7 @@ public class WVDPowerUpSpawner : MonoBehaviour
         Transform spawnedTransform = _availableSpawnPositions[randIndex];
         WVDPowerUp powerUp = Instantiate(chosenPowerUp, spawnedTransform.position, chosenPowerUp.transform.rotation).GetComponent<WVDPowerUp>();
         powerUp.SetSpawnerParameters(this, spawnedTransform);
+        SpawnedPowerUps.Add(powerUp);
         _availableSpawnPositions.Remove(spawnedTransform);
         _currentPowerUpsSpawned++;
 

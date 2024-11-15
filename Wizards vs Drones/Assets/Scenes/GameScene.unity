@@ -3157,6 +3157,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawning: 1
+  _greatHallSpawnPositions: []
+  _towerSpawnPositions: []
+  _battlementsSpawnPositions: []
+  _dungeonSpawnPositions: []
   _availableSpawnPositions:
   - {fileID: 808952978}
   - {fileID: 25447726}
@@ -6856,6 +6860,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 844479300}
+  - component: {fileID: 844479301}
   m_Layer: 0
   m_Name: DroneSpawner
   m_TagString: Untagged
@@ -6878,6 +6883,143 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &844479301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844479299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45f8f53a13fec10409d8b21cd0d007f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawning: 0
+  _dronesPerRound:
+  - MinElectric: 2
+    MaxElectric: 3
+    MinLaser: 0
+    MaxLaser: 0
+    MinFast: 0
+    MaxFast: 0
+    MinTeleport: 0
+    MaxTeleport: 0
+    MinTank: 0
+    MaxTank: 0
+    MaxDroneLimit: 0
+  - MinElectric: 0
+    MaxElectric: 0
+    MinLaser: 0
+    MaxLaser: 0
+    MinFast: 0
+    MaxFast: 0
+    MinTeleport: 0
+    MaxTeleport: 0
+    MinTank: 0
+    MaxTank: 0
+    MaxDroneLimit: 0
+  - MinElectric: 0
+    MaxElectric: 0
+    MinLaser: 0
+    MaxLaser: 0
+    MinFast: 0
+    MaxFast: 0
+    MinTeleport: 0
+    MaxTeleport: 0
+    MinTank: 0
+    MaxTank: 0
+    MaxDroneLimit: 0
+  - MinElectric: 0
+    MaxElectric: 0
+    MinLaser: 0
+    MaxLaser: 0
+    MinFast: 0
+    MaxFast: 0
+    MinTeleport: 0
+    MaxTeleport: 0
+    MinTank: 0
+    MaxTank: 0
+    MaxDroneLimit: 0
+  - MinElectric: 0
+    MaxElectric: 0
+    MinLaser: 0
+    MaxLaser: 0
+    MinFast: 0
+    MaxFast: 0
+    MinTeleport: 0
+    MaxTeleport: 0
+    MinTank: 0
+    MaxTank: 0
+    MaxDroneLimit: 0
+  - MinElectric: 0
+    MaxElectric: 0
+    MinLaser: 0
+    MaxLaser: 0
+    MinFast: 0
+    MaxFast: 0
+    MinTeleport: 0
+    MaxTeleport: 0
+    MinTank: 0
+    MaxTank: 0
+    MaxDroneLimit: 0
+  - MinElectric: 0
+    MaxElectric: 0
+    MinLaser: 0
+    MaxLaser: 0
+    MinFast: 0
+    MaxFast: 0
+    MinTeleport: 0
+    MaxTeleport: 0
+    MinTank: 0
+    MaxTank: 0
+    MaxDroneLimit: 0
+  - MinElectric: 0
+    MaxElectric: 0
+    MinLaser: 0
+    MaxLaser: 0
+    MinFast: 0
+    MaxFast: 0
+    MinTeleport: 0
+    MaxTeleport: 0
+    MinTank: 0
+    MaxTank: 0
+    MaxDroneLimit: 0
+  - MinElectric: 0
+    MaxElectric: 0
+    MinLaser: 0
+    MaxLaser: 0
+    MinFast: 0
+    MaxFast: 0
+    MinTeleport: 0
+    MaxTeleport: 0
+    MinTank: 0
+    MaxTank: 0
+    MaxDroneLimit: 0
+  - MinElectric: 0
+    MaxElectric: 0
+    MinLaser: 0
+    MaxLaser: 0
+    MinFast: 0
+    MaxFast: 0
+    MinTeleport: 0
+    MaxTeleport: 0
+    MinTank: 0
+    MaxTank: 0
+    MaxDroneLimit: 0
+  _greatHallSpawnPositions: []
+  _towerSpawnPositions: []
+  _battlementsSpawnPositions: []
+  _dungeonSpawnPositions: []
+  _availableSpawnPositions: []
+  _currentDronesSpawned: 0
+  _maxDronesSpawned: 0
+  _playerThreshold: 0
+  _electricDrone: {fileID: 0}
+  _laserDrone: {fileID: 0}
+  _fastDrone: {fileID: 0}
+  _teleportDrone: {fileID: 0}
+  _tankDrone: {fileID: 0}
 --- !u!1 &848168891
 GameObject:
   m_ObjectHideFlags: 0
@@ -13060,6 +13202,51 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 2a3f8090f2c9a654b9b4cb36280e1a65, type: 3}
+--- !u!1 &1751395509
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1751395511}
+  - component: {fileID: 1751395510}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1751395510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751395509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac02db1b34872b942a2549e54af2c342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  level: 0
+--- !u!4 &1751395511
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751395509}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1751694887
 GameObject:
   m_ObjectHideFlags: 0
@@ -34482,3 +34669,4 @@ SceneRoots:
   - {fileID: 5092205290346747194}
   - {fileID: 3717768738670725663}
   - {fileID: 844479300}
+  - {fileID: 1751395511}
