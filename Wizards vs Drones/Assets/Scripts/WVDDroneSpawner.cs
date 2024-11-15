@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class WVDDroneSpawner : MonoBehaviour
@@ -36,8 +37,11 @@ public class WVDDroneSpawner : MonoBehaviour
     float _playerThreshold;
 
     [Header("Spawning Times")]
+    [SerializeField]
     float _spawnTimeMin;
+    [SerializeField]
     float _spawnTimeMax;
+    [SerializeField]
     float _spawnTimer;
 
     [Header("Drones")]
@@ -52,8 +56,12 @@ public class WVDDroneSpawner : MonoBehaviour
     [SerializeField]
     GameObject _tankDrone;
 
-    [Header("Other")]
+    [Header("Level")]
+    [SerializeField]
     List<GameObject> _spawnPool;
+    int _levelDronesRemaining;
+    [SerializeField]
+    TMP_Text _levelDronesRemainingUI;
 
     public int CurrentDronesSpawned 
     { 
@@ -72,6 +80,15 @@ public class WVDDroneSpawner : MonoBehaviour
     { 
         get => _spawning; 
         set => _spawning = value; 
+    }
+    public int LevelDronesRemaining 
+    { 
+        get => _levelDronesRemaining;
+        set 
+        {
+            _levelDronesRemaining = value;
+            _levelDronesRemainingUI.text = "Drones remaining: " + _levelDronesRemaining;
+        }
     }
 
     // Start is called before the first frame update
@@ -118,6 +135,7 @@ public class WVDDroneSpawner : MonoBehaviour
         AddDroneNumberToPool(_fastDrone, dronesForThisRound.MinFast, dronesForThisRound.MaxFast);
         AddDroneNumberToPool(_teleportDrone, dronesForThisRound.MinTeleport, dronesForThisRound.MaxTeleport);
         AddDroneNumberToPool(_tankDrone, dronesForThisRound.MinTank, dronesForThisRound.MaxTank);
+        LevelDronesRemaining = _spawnPool.Count;
 
     }
 

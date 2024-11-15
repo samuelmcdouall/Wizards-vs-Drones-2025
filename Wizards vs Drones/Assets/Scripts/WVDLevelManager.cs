@@ -39,6 +39,8 @@ public class WVDLevelManager : MonoBehaviour
     float _shopTime;
     float _shopTimer;
     GameObject _chosenShop;
+    [SerializeField]
+    GameObject _shopUI;
 
     [Header("Section Barriers")]
     [SerializeField]
@@ -103,14 +105,15 @@ public class WVDLevelManager : MonoBehaviour
     public void StartNewLevel()
     {
         _level++;
-        _chosenShop.SetActive(false);
+        _chosenShop?.SetActive(false);
         _chosenShop = null;
+        _shopUI.SetActive(false);
 
         /// if right level, 1,3,5,7
-        if (_level <= 7 && _level % 2 == 1)
-        {
-            AddNewSection();
-        }
+        //if (_level <= 7 && _level % 2 == 1)
+        //{
+        //    AddNewSection();
+        //}
 
 
         /// every level
@@ -135,7 +138,7 @@ public class WVDLevelManager : MonoBehaviour
     {
         if (_shopOpen)
         {
-            // if player not within shop range, do navmesh trail
+           
 
 
 
