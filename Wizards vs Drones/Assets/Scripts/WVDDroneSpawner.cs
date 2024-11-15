@@ -61,7 +61,7 @@ public class WVDDroneSpawner : MonoBehaviour
     List<GameObject> _spawnPool;
     int _levelDronesRemaining;
     [SerializeField]
-    TMP_Text _levelDronesRemainingUI;
+    TMP_Text _levelDronesRemainingUI; // this UI is also used for the shop timer, switches to it in the level manager after a level is completed
 
     public int CurrentDronesSpawned 
     { 

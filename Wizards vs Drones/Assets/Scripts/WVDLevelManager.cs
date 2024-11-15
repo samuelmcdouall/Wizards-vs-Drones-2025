@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
+using TMPro;
 using UnityEngine;
 
 public class WVDLevelManager : MonoBehaviour
@@ -16,6 +17,10 @@ public class WVDLevelManager : MonoBehaviour
     WVDPlayer _playerScript;
     [SerializeField]
     float _playerToShopThreshold;
+    [SerializeField]
+    TMP_Text _dronesAndShopTimerUI;
+    [SerializeField]
+    TMP_Text _levelUI;
 
     //public delegate void NotifyAddNewSection(UnlockableSections section); // todo can do this with delegates/events but not really worth it 
     //public event NotifyAddNewSection OnAddNewSection;
@@ -38,6 +43,7 @@ public class WVDLevelManager : MonoBehaviour
     [SerializeField]
     float _shopTime;
     float _shopTimer;
+    int _lastShopTimer; // optimization so don't have to format strings every frame
     GameObject _chosenShop;
     [SerializeField]
     GameObject _shopUI;
@@ -108,6 +114,7 @@ public class WVDLevelManager : MonoBehaviour
         _chosenShop?.SetActive(false);
         _chosenShop = null;
         _shopUI.SetActive(false);
+        _levelUI.text = $"Level: {_level + 1} /10";
 
         /// if right level, 1,3,5,7
         //if (_level <= 7 && _level % 2 == 1)
@@ -150,6 +157,12 @@ public class WVDLevelManager : MonoBehaviour
             }
             else
             {
+                if ((int)_shopTimer != _lastShopTimer) // update UI if UI needs to be updated
+                {
+                    _dronesAndShopTimerUI.text = "Shop time remaining: " + (int)_shopTimer;
+                    _lastShopTimer = (int)_shopTimer;
+                }
+
                 _shopTimer -= Time.deltaTime;
             }
         }
