@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class WVDPlayer : WVDBaseEntity, IWVDDamageable
 {
@@ -184,6 +183,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         //InitialShieldSetup();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
     }
 
     //private void InitialShieldSetup()

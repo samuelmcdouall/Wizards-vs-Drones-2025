@@ -4,6 +4,8 @@ using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
+using static UnityEngine.GraphicsBuffer;
 
 public class WVDLevelManager : MonoBehaviour
 {
@@ -15,8 +17,6 @@ public class WVDLevelManager : MonoBehaviour
     WVDPowerUpSpawner _powerUpSpawnerScript;
     [SerializeField]
     WVDPlayer _playerScript;
-    [SerializeField]
-    float _playerToShopThreshold;
     [SerializeField]
     TMP_Text _dronesAndShopTimerUI;
     [SerializeField]
@@ -47,6 +47,18 @@ public class WVDLevelManager : MonoBehaviour
     GameObject _chosenShop;
     [SerializeField]
     GameObject _shopUI;
+    bool _shopTrailCoroutineRunning;
+    [SerializeField]
+    GameObject _shopTrailFX;
+    [SerializeField]
+    float _shopTrailAnimationDistGap;
+    [SerializeField]
+    float _shopTrailAnimationTimeGap;
+    [SerializeField]
+    float _playerToShopTrailThreshold;
+    [SerializeField]
+    List<GameObject> _trails = new List<GameObject>();
+    Coroutine _playerToShopCoroutine;
 
     [Header("Section Barriers")]
     [SerializeField]
@@ -114,6 +126,18 @@ public class WVDLevelManager : MonoBehaviour
         _chosenShop?.SetActive(false);
         _chosenShop = null;
         _shopUI.SetActive(false);
+        if (_playerToShopCoroutine != null)
+        {
+            StopCoroutine(_playerToShopCoroutine);
+        }
+        foreach (GameObject trail in _trails)
+        {
+            if (trail)
+            {
+                Destroy(trail);
+            }
+        }
+        _trails.Clear();
         _levelUI.text = $"Level: {_level + 1} /10";
 
         /// if right level, 1,3,5,7
@@ -145,7 +169,14 @@ public class WVDLevelManager : MonoBehaviour
     {
         if (_shopOpen)
         {
-           
+           if (Vector3.Distance(_playerScript.gameObject.transform.position, _chosenShop.transform.position) > _playerToShopTrailThreshold)
+           {
+                if (!_shopTrailCoroutineRunning)
+                {
+                    _shopTrailCoroutineRunning = true;
+                    _playerToShopCoroutine = StartCoroutine(TrailToShopAnimation());
+                }
+           }
 
 
 
@@ -166,6 +197,34 @@ public class WVDLevelManager : MonoBehaviour
                 _shopTimer -= Time.deltaTime;
             }
         }
+    }
+
+    IEnumerator TrailToShopAnimation()
+    {
+        NavMeshPath path = new NavMeshPath();
+        NavMesh.CalculatePath(_playerScript.gameObject.transform.position, _chosenShop.transform.position, NavMesh.AllAreas, path);
+        List<Vector3> pointsForThisAnimation = new List<Vector3>();
+        foreach(Vector3 point in path.corners)
+        {
+            pointsForThisAnimation.Add(new Vector3(point.x, point.y + 0.8f, point.z)); // adding vertical offset
+        }
+
+        Vector3 startingPos = pointsForThisAnimation[0];
+        int i = 0;
+        while (i < pointsForThisAnimation.Count - 1)
+        {
+            Vector3 directionToNextPoint = (pointsForThisAnimation[i + 1] - pointsForThisAnimation[i]).normalized; // might need to make this between the overshot point and the next target, rather than between each waypoint, see how it comes out first
+            startingPos += directionToNextPoint * _shopTrailAnimationDistGap;
+            GameObject trail = Instantiate(_shopTrailFX, startingPos, Quaternion.identity); // todo instead of instantiating might be better to object pool them (in which case the foreach loop destroying remaining ones should set to inactive instead of destroying)
+            _trails.Add(trail);
+            if (Vector3.Distance(startingPos, pointsForThisAnimation[i + 1]) <= _shopTrailAnimationDistGap)
+            {
+                i++;
+            }
+            yield return new WaitForSeconds(_shopTrailAnimationTimeGap);
+        }
+        _shopTrailCoroutineRunning = false;
+        _playerToShopCoroutine = null;
     }
 
     public enum UnlockableSections
