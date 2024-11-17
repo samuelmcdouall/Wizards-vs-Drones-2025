@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 public class WVDPlayer : WVDBaseEntity, IWVDDamageable
@@ -85,6 +86,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
 
     [Header("Upgrades")]
     [SerializeField] int _batteryCount;
+    [SerializeField] TMP_Text _batteryCountUI;
     public WVDPlayerUpgrades PurchasedUpgrades;
 
     //[Header("Burning")] // maybe list of enemies in flamethrower range, deal damage * number or list of coroutines?
@@ -167,8 +169,12 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     }
     public int BatteryCount 
     { 
-        get => _batteryCount; 
-        set => _batteryCount = value; 
+        get => _batteryCount;
+        set 
+        {
+            _batteryCount = value;
+            _batteryCountUI.text = "" + _batteryCount;
+        }
     }
 
     public override void Start()
@@ -181,6 +187,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         //PurchasedUpgrades.SetToDefault(); todo put back in here
         //_currentShieldVersion = CurrentShieldVersion.None;
         //InitialShieldSetup();
+        _batteryCountUI.text = "" + 0;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
