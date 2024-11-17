@@ -204,7 +204,7 @@ public class WVDLevelManager : MonoBehaviour
     IEnumerator TrailToShopAnimation()
     {
         NavMeshPath path = new NavMeshPath();
-        NavMesh.CalculatePath(_playerScript.gameObject.transform.position, _chosenShop.transform.position, NavMesh.AllAreas, path);
+        NavMesh.CalculatePath(_playerScript.gameObject.transform.position, _chosenShop.transform.position, ~3, path); // 3 is the trail mask nav mesh area
         List<Vector3> pointsForThisAnimation = new List<Vector3>();
         foreach(Vector3 point in path.corners)
         {

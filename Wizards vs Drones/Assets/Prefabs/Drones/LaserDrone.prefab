@@ -101,6 +101,7 @@ MonoBehaviour:
   AttackChargeUpDuration: 0.75
   AttackDuration: 0
   AttackDischargeDuration: 0.5
+  _droneSpawner: {fileID: 0}
   _laserProjectilePrefab: {fileID: 5432368540722010777, guid: ab7a3e807e706654b8b69291d3a2c360, type: 3}
   _projectileFirePoint: {fileID: 6439431737988272722}
 --- !u!195 &2854928114363549098
@@ -111,7 +112,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2284048177313171425}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -1372625422
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 800
@@ -123,7 +124,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 7
   m_ObstacleAvoidanceType: 4
 --- !u!65 &934800944313982745
 BoxCollider:
