@@ -57,7 +57,8 @@ public class WVDLevelManager : MonoBehaviour
     [SerializeField]
     float _playerToShopTrailThreshold;
     [SerializeField]
-    List<GameObject> _trails = new List<GameObject>();
+    List<GameObject> _trails;
+    int _trailCounter = 0;
     Coroutine _playerToShopCoroutine;
 
     [Header("Section Barriers")]
@@ -128,16 +129,17 @@ public class WVDLevelManager : MonoBehaviour
         _shopUI.SetActive(false);
         if (_playerToShopCoroutine != null)
         {
+            _shopTrailCoroutineRunning = false;
             StopCoroutine(_playerToShopCoroutine);
         }
         foreach (GameObject trail in _trails)
         {
-            if (trail)
-            {
-                Destroy(trail);
-            }
+            //if (trail) // alternate create/destroy
+            //{
+            //    Destroy(trail);
+            //}
+            trail.SetActive(false);
         }
-        _trails.Clear();
         _levelUI.text = $"Level: {_level + 1} /10";
 
         /// if right level, 1,3,5,7
@@ -215,8 +217,18 @@ public class WVDLevelManager : MonoBehaviour
         {
             Vector3 directionToNextPoint = (pointsForThisAnimation[i + 1] - pointsForThisAnimation[i]).normalized; // might need to make this between the overshot point and the next target, rather than between each waypoint, see how it comes out first
             startingPos += directionToNextPoint * _shopTrailAnimationDistGap;
-            GameObject trail = Instantiate(_shopTrailFX, startingPos, Quaternion.identity); // todo instead of instantiating might be better to object pool them (in which case the foreach loop destroying remaining ones should set to inactive instead of destroying)
-            _trails.Add(trail);
+            //GameObject trail = Instantiate(_shopTrailFX, startingPos, Quaternion.identity); // alternate create/destroy
+            //_trails.Add(trail);
+            _trails[_trailCounter].transform.position = startingPos;
+            _trails[_trailCounter].SetActive(true);
+            if (_trailCounter == _trails.Count - 1)
+            {
+                _trailCounter = 0;
+            }
+            else
+            {
+                _trailCounter++;
+            }
             if (Vector3.Distance(startingPos, pointsForThisAnimation[i + 1]) <= _shopTrailAnimationDistGap)
             {
                 i++;
