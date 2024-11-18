@@ -171,14 +171,14 @@ public class WVDLevelManager : MonoBehaviour
     {
         if (_shopOpen)
         {
-           if (Vector3.Distance(_playerScript.gameObject.transform.position, _chosenShop.transform.position) > _playerToShopTrailThreshold)
-           {
+            if (Vector3.Distance(_playerScript.gameObject.transform.position, _chosenShop.transform.position) > _playerToShopTrailThreshold)
+            {
                 if (!_shopTrailCoroutineRunning)
                 {
                     _shopTrailCoroutineRunning = true;
                     _playerToShopCoroutine = StartCoroutine(TrailToShopAnimation());
                 }
-           }
+            }
 
 
 

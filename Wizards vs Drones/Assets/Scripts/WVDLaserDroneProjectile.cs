@@ -11,6 +11,10 @@ public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if th
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.CompareTag("Fountain"))
+        {
+            return;
+        }
         if (other.gameObject.CompareTag("ShieldDeflect"))
         {
             print("REBOUND PROJECTILE");

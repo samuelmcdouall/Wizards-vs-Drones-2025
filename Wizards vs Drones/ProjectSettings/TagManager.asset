@@ -13,6 +13,7 @@ TagManager:
   - ShieldElectric
   - PickUpTrigger
   - Battery
+  - Fountain
   layers:
   - Default
   - TransparentFX
