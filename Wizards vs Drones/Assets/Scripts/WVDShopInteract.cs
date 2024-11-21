@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WVDShopInteract : MonoBehaviour
 {
+    [SerializeField]
     Transform _player;
     [SerializeField]
     GameObject _interactIcon;
@@ -14,7 +15,7 @@ public class WVDShopInteract : MonoBehaviour
 
     void Start()
     {
-        _player = GameObject.FindGameObjectWithTag("Player").transform;
+        
     }
 
     // Update is called once per frame
