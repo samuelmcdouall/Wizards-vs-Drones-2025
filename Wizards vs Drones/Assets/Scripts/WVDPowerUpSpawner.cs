@@ -59,6 +59,11 @@ public class WVDPowerUpSpawner : MonoBehaviour
         get => _spawning; 
         set => _spawning = value; 
     }
+    public int MaxPowerUpsSpawned 
+    { 
+        get => _maxPowerUpsSpawned; 
+        set => _maxPowerUpsSpawned = value; 
+    }
 
     void Start()
     {

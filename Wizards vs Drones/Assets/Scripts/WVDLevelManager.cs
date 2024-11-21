@@ -100,6 +100,7 @@ public class WVDLevelManager : MonoBehaviour
         _droneSpawnerScript.AddSpawnPositionsToListFromSection(chosenSection);
         _powerUpSpawnerScript.AddSpawnPositionsToListFromSection(chosenSection);
         _powerUpSpawnerScript.AddRandomColouredPowerUpToList();
+        _powerUpSpawnerScript.MaxPowerUpsSpawned += 4; // increase the max amount that can be spawned as the map is now larger
 
         _lockedSections.Remove(_lockedSections[randIndex]);
 
@@ -149,7 +150,6 @@ public class WVDLevelManager : MonoBehaviour
 
         /// every level
         _droneSpawnerScript.CreatePoolForLevel(_level);
-        //set UI for total drone num
 
         _droneSpawnerScript.Spawning = true;
         _powerUpSpawnerScript.Spawning = true;
