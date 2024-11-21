@@ -118,6 +118,7 @@ public class WVDLevelManager : MonoBehaviour
         }
         _powerUpSpawnerScript.SpawnedPowerUps.Clear();
         _powerUpSpawnerScript.Spawning = false;
+        _playerScript.CurrentHealth = _playerScript.MaxHealth;
     }
 
     public void StartNewLevel()
