@@ -49,8 +49,6 @@ public class WVDLevelManager : MonoBehaviour
     GameObject _shopUI;
     bool _shopTrailCoroutineRunning;
     [SerializeField]
-    GameObject _shopTrailFX;
-    [SerializeField]
     float _shopTrailAnimationDistGap;
     [SerializeField]
     float _shopTrailAnimationTimeGap;
@@ -215,7 +213,7 @@ public class WVDLevelManager : MonoBehaviour
         int i = 0;
         while (i < pointsForThisAnimation.Count - 1)
         {
-            Vector3 directionToNextPoint = (pointsForThisAnimation[i + 1] - pointsForThisAnimation[i]).normalized; // might need to make this between the overshot point and the next target, rather than between each waypoint, see how it comes out first
+            Vector3 directionToNextPoint = (pointsForThisAnimation[i + 1] - startingPos).normalized; // might need to make this between the overshot point and the next target, rather than between each waypoint, see how it comes out first
             startingPos += directionToNextPoint * _shopTrailAnimationDistGap;
             //GameObject trail = Instantiate(_shopTrailFX, startingPos, Quaternion.identity); // alternate create/destroy
             //_trails.Add(trail);
