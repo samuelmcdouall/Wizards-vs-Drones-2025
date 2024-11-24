@@ -36,6 +36,7 @@ public class WVDPlayerProjectile : WVDBaseProjectile
                 return;
             }
         }
+        Instantiate(ImpactFX, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

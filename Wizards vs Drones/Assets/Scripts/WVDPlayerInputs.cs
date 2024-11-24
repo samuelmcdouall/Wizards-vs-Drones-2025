@@ -108,7 +108,7 @@ public class WVDPlayerInputs : MonoBehaviour
 
                 WVDAttackEffects currentEffects = GetActiveAttackEffects();
 
-                WVDPlayerProjectile magicMissile = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation).GetComponent<WVDPlayerProjectile>();
+                WVDPlayerProjectile magicMissile = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _playerScript.GetModelTransform().rotation).GetComponent<WVDPlayerProjectile>();
                 magicMissile.SetProjectileDirection(_attackFirePoint.forward);
                 magicMissile.SetProjectileEffects(currentEffects);
                 magicMissile.Damage += bonusDamage;

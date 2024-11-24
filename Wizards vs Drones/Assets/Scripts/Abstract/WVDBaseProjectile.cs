@@ -17,7 +17,7 @@ public abstract class WVDBaseProjectile : MonoBehaviour
 
     [Header("SFX/FX - General")]
     [SerializeField]
-    GameObject _impactFX; // todo change this to public and access in other classes
+    protected GameObject ImpactFX;
 
     public Vector3 Direction
     {
