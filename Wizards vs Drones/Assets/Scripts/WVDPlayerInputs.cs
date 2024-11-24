@@ -116,12 +116,12 @@ public class WVDPlayerInputs : MonoBehaviour
 
                 if (_playerScript.PurchasedUpgrades.ShootThreeArc)
                 {
-                    WVDPlayerProjectile magicMissileLeft = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation).GetComponent<WVDPlayerProjectile>();
+                    WVDPlayerProjectile magicMissileLeft = Instantiate(_magicMissilePrefab, _attackFirePoint.position, Quaternion.Euler(0.0f, -30.0f, 0.0f) * _playerScript.GetModelTransform().rotation).GetComponent<WVDPlayerProjectile>();
                     magicMissileLeft.SetProjectileDirection(Quaternion.Euler(0.0f,-30.0f,0.0f) * _attackFirePoint.forward);
                     magicMissileLeft.SetProjectileEffects(currentEffects);
                     magicMissileLeft.Damage += bonusDamage;
                     magicMissileLeft.PlayerScript = _playerScript;
-                    WVDPlayerProjectile magicMissileRight = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _magicMissilePrefab.transform.rotation).GetComponent<WVDPlayerProjectile>();
+                    WVDPlayerProjectile magicMissileRight = Instantiate(_magicMissilePrefab, _attackFirePoint.position, Quaternion.Euler(0.0f, 30.0f, 0.0f) * _playerScript.GetModelTransform().rotation).GetComponent<WVDPlayerProjectile>();
                     magicMissileRight.SetProjectileDirection(Quaternion.Euler(0.0f, 30.0f, 0.0f) * _attackFirePoint.forward);
                     magicMissileRight.SetProjectileEffects(currentEffects);
                     magicMissileRight.Damage += bonusDamage;
