@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
 public class WVDLevelManager : MonoBehaviour
@@ -58,6 +59,14 @@ public class WVDLevelManager : MonoBehaviour
     List<GameObject> _trails;
     int _trailCounter = 0;
     Coroutine _playerToShopCoroutine;
+    [SerializeField]
+    Slider _skipShopBarSlider;
+    [SerializeField]
+    GameObject _skipShopGameObject;
+    float _skipShopProgress;
+    readonly float _skipShopProgressComplete = 1.0f; // seconds need to hold down to skip
+    readonly float _skippedShopTimeRemaining = 5.0f;
+    
 
     [Header("Section Barriers")]
     [SerializeField]
@@ -69,6 +78,16 @@ public class WVDLevelManager : MonoBehaviour
     [SerializeField]
     GameObject _dungeonBarrier;
 
+    public float SkipShopProgress 
+    { 
+        get => _skipShopProgress;
+        set 
+        {
+            _skipShopProgress = value;
+            _skipShopProgress = Mathf.Min(_skipShopProgress, _skipShopProgressComplete);
+            _skipShopBarSlider.value = _skipShopProgress / _skipShopProgressComplete;
+        } 
+    }
 
     void AddNewSection()
     {
@@ -119,6 +138,7 @@ public class WVDLevelManager : MonoBehaviour
         _powerUpSpawnerScript.SpawnedPowerUps.Clear();
         _powerUpSpawnerScript.Spawning = false;
         _playerScript.CurrentHealth = _playerScript.MaxHealth;
+        _skipShopGameObject.SetActive(true);
     }
 
     public void StartNewLevel()
@@ -127,6 +147,7 @@ public class WVDLevelManager : MonoBehaviour
         _chosenShop?.SetActive(false);
         _chosenShop = null;
         _shopUI.SetActive(false);
+        _skipShopGameObject.SetActive(false);
         if (_playerToShopCoroutine != null)
         {
             _shopTrailCoroutineRunning = false;
@@ -196,6 +217,24 @@ public class WVDLevelManager : MonoBehaviour
                 }
 
                 _shopTimer -= Time.deltaTime;
+            }
+
+            if (_skipShopGameObject.activeSelf)
+            {
+                if (Input.GetKey(KeyCode.Return))
+                {
+                    SkipShopProgress += Time.deltaTime;
+
+                    if (_skipShopProgress == _skipShopProgressComplete)
+                    {
+                        _skipShopGameObject.SetActive(false);
+                        _shopTimer = Mathf.Min(_shopTimer, _skippedShopTimeRemaining);
+                    }
+                }
+                else
+                {
+                    SkipShopProgress = 0.0f;
+                }
             }
         }
     }
