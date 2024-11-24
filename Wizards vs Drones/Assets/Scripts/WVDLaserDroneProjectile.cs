@@ -32,6 +32,7 @@ public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if th
                 other.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
                 print("hit enemy");
             }
+            Instantiate(ImpactFX, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
 
