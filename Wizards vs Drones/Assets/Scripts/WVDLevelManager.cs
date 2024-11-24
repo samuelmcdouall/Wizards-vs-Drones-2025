@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -182,6 +184,7 @@ public class WVDLevelManager : MonoBehaviour
 
     private void Start()
     {
+        // todo try event bus here for level complete, subscribe
         _shopTimer = _shopTime;
         StartNewLevel();
 
