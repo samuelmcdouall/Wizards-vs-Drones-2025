@@ -198,7 +198,7 @@ public class WVDLevelManager : MonoBehaviour
                 if (!_shopTrailCoroutineRunning)
                 {
                     _shopTrailCoroutineRunning = true;
-                    //_playerToShopCoroutine = StartCoroutine(TrailToShopAnimation());
+                    _playerToShopCoroutine = StartCoroutine(TrailToShopAnimation());
                 }
             }
 
