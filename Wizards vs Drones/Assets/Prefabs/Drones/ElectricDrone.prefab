@@ -76,8 +76,8 @@ MonoBehaviour:
   _spawnDronedFromBuff: {fileID: 172903995431153877, guid: 4ac419b81efd1364fa891934c840ee8c, type: 3}
   _spawnDroneBuffIndicator: {fileID: 5184318484449090007}
   _isSpawnedFromBuff: 0
-  _spawnDroneRangeMin: 5
-  _spawnDroneRangeMax: 8
+  _spawnDroneRangeMin: 2
+  _spawnDroneRangeMax: 4
   _attackHitBox: {fileID: 5127027978131583822}
   _attackHitBoxScript: {fileID: 1063651367686975407}
   _zapDamage: 1
