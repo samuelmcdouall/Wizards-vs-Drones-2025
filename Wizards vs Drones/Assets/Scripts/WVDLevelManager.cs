@@ -7,7 +7,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 public class WVDLevelManager : MonoBehaviour
 {
@@ -88,6 +87,12 @@ public class WVDLevelManager : MonoBehaviour
             _skipShopProgress = Mathf.Min(_skipShopProgress, _skipShopProgressComplete);
             _skipShopBarSlider.value = _skipShopProgress / _skipShopProgressComplete;
         } 
+    }
+
+    public int Level 
+    { 
+        get => _level; 
+        set => _level = value; 
     }
 
     void AddNewSection()

@@ -92,6 +92,12 @@ public class WVDDroneSpawner : MonoBehaviour
         }
     }
 
+    public List<WVDDroneSpawnRound> DronesPerRound 
+    { 
+        get => _dronesPerRound; 
+        set => _dronesPerRound = value; 
+    }
+
     // Start is called before the first frame update
     void Start()
     {

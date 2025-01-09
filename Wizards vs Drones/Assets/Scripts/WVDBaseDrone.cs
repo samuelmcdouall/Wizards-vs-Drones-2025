@@ -19,6 +19,9 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     protected float ExplodeOnDeathChanceFromLastHit;
     [SerializeField]
     protected GameObject ExplodePrefab;
+    DroneBuff _selectedDroneBuff;
+    WVDLevelManager _levelManagerScript;
+    [SerializeField] WVDDroneSpawner _droneSpawner; // todo just to see if getting ref
 
     [Header("Movement - Base Drone")]
     [SerializeField]
@@ -40,6 +43,19 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     protected float AttackDischargeDuration;
     protected readonly int LayerMask = 1 << 2;
 
+    [Header("Buffs - Base Drone")]
+    [SerializeField]
+    GameObject _spawnDronedFromBuff; // should be electric one
+    [SerializeField]
+    GameObject _spawnDroneBuffIndicator;
+    [SerializeField]
+    bool _isSpawnedFromBuff; // i.e. shouldn't be added to tally or roll for having a drone buff
+    [SerializeField]
+    float _spawnDroneRangeMin;
+    [SerializeField]
+    float _spawnDroneRangeMax;
+
+
     protected DroneState CurrentDroneState 
     { 
         get => _currentDroneState;
@@ -49,7 +65,6 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             print($"{gameObject.name} state now set to: {_currentDroneState}");
         }
     }
-    [SerializeField] WVDDroneSpawner _droneSpawner; // todo just to see if getting ref
 
     // Start is called before the first frame update
     public override void Start()
@@ -58,6 +73,44 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         CurrentDroneState = DroneState.Chasing;
         DroneNMA = GetComponent<NavMeshAgent>();
         DroneNMA.speed = MaxNormalSpeed;
+
+        _levelManagerScript = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<WVDLevelManager>();
+
+        if (!_isSpawnedFromBuff)
+        {
+            DetermineDroneBuff();
+        }
+        else
+        {
+            _selectedDroneBuff = DroneBuff.None;
+        }
+    }
+
+    void DetermineDroneBuff()
+    {
+        WVDDroneSpawnRound currentRoundStats = _droneSpawner.DronesPerRound[_levelManagerScript.Level];
+
+        float spawnChance = currentRoundStats.SpawnOnDeathChance;
+        float explodeChance = currentRoundStats.ExplodeOnDeathChance;
+        float radiationChance = currentRoundStats.RadiationChance;
+        float rand = Random.Range(0.0f, 1.0f);
+        if (rand < spawnChance)
+        {
+            _selectedDroneBuff = DroneBuff.SpawnOnDeath;
+            _spawnDroneBuffIndicator.SetActive(true);
+        }
+        else if (rand < spawnChance + explodeChance)
+        {
+            _selectedDroneBuff = DroneBuff.ExplodeOnDeath;
+        }
+        else if (rand < spawnChance + explodeChance + radiationChance)
+        {
+            _selectedDroneBuff = DroneBuff.Radiation;
+        }
+        else
+        {
+            _selectedDroneBuff = DroneBuff.None;
+        }
     }
 
     // Update is called once per frame
@@ -99,8 +152,58 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         {
             Instantiate(ExplodePrefab, transform.position + ExplodeOffset, ExplodePrefab.transform.rotation);
         }
+
         _droneSpawner.CurrentDronesSpawned--;
         _droneSpawner.LevelDronesRemaining--;
+
+        if (_selectedDroneBuff == DroneBuff.SpawnOnDeath)
+        {
+            SpawnDroneFromBuff();
+            SpawnDroneFromBuff();
+        }
+    }
+
+    private void SpawnDroneFromBuff()
+    {
+        Vector3 pos = RandomTeleportPosition();
+        NavMeshHit hit;
+        int i = 0;
+        while (!NavMesh.SamplePosition(pos, out hit, 1.0f, NavMesh.AllAreas))
+        {
+            pos = RandomTeleportPosition();
+            if (i == 1000)
+            {
+                break;
+            }
+            i++;
+        }
+        if (i == 1000) // this is to stop infintie loop if can't make it out
+        {
+            Debug.LogError("Could not find a place to spawn the extra drone");
+            return;
+        }
+        pos += transform.position;
+
+        WVDBaseDrone drone = Instantiate(_spawnDronedFromBuff, pos, _spawnDronedFromBuff.transform.rotation).GetComponent<WVDBaseDrone>();
+        drone.SetSpawnerParameters(_droneSpawner);
+        _droneSpawner.CurrentDronesSpawned++;
+        _droneSpawner.LevelDronesRemaining++; // todo adding this back to the total may cause issues but will see
+    }
+
+    private Vector3 RandomTeleportPosition()
+    {
+        float randX = Random.Range(_spawnDroneRangeMin, _spawnDroneRangeMax);
+        float randZ = Random.Range(_spawnDroneRangeMin, _spawnDroneRangeMax);
+        if (Random.Range(0.0f, 1.0f) < 0.5f)
+        {
+            randX = -randX;
+        }
+        if (Random.Range(0.0f, 1.0f) < 0.5f)
+        {
+            randZ = -randZ;
+        }
+
+        return new Vector3(randX, 0.0f, randZ);
     }
 
 
@@ -115,5 +218,14 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         ChargingUp,
         Attacking,
         Discharge // stand still just after attack
+    }
+
+    public enum DroneBuff
+    {
+        None,
+        SpawnOnDeath,
+        ExplodeOnDeath,
+        Radiation
+
     }
 }

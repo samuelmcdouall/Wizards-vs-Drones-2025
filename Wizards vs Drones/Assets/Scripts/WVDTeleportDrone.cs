@@ -134,6 +134,7 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
                 {
                     pos = RandomTeleportPosition();
                 }
+                pos += transform.position;
                 DroneNMA.Warp(pos);
                 _teleportChargingFX.SetActive(false);
                 Instantiate(_teleportActivateFXPrefab, GetModelTransform().position, _teleportActivateFXPrefab.transform.rotation);
