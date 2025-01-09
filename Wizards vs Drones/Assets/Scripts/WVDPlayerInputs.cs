@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class WVDPlayerInputs : MonoBehaviour
 {
-    [Header("Camera Object")]
+    [Header("Camera")]
     [SerializeField]
     Transform _cameraRotationObject;
+    [SerializeField]
+    Transform _camera;
 
     [Header("Movement")]
     CharacterController _playerCC;
@@ -109,7 +111,7 @@ public class WVDPlayerInputs : MonoBehaviour
                 WVDAttackEffects currentEffects = GetActiveAttackEffects();
 
                 WVDPlayerProjectile magicMissile = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _playerScript.GetModelTransform().rotation).GetComponent<WVDPlayerProjectile>();
-                magicMissile.SetProjectileDirection(_attackFirePoint.forward);
+                magicMissile.SetProjectileDirection(_camera.forward);
                 magicMissile.SetProjectileEffects(currentEffects);
                 magicMissile.Damage += bonusDamage;
                 magicMissile.PlayerScript = _playerScript;
@@ -117,12 +119,12 @@ public class WVDPlayerInputs : MonoBehaviour
                 if (_playerScript.PurchasedUpgrades.ShootThreeArc)
                 {
                     WVDPlayerProjectile magicMissileLeft = Instantiate(_magicMissilePrefab, _attackFirePoint.position, Quaternion.Euler(0.0f, -30.0f, 0.0f) * _playerScript.GetModelTransform().rotation).GetComponent<WVDPlayerProjectile>();
-                    magicMissileLeft.SetProjectileDirection(Quaternion.Euler(0.0f,-30.0f,0.0f) * _attackFirePoint.forward);
+                    magicMissileLeft.SetProjectileDirection(Quaternion.Euler(0.0f,-30.0f,0.0f) * _camera.forward);
                     magicMissileLeft.SetProjectileEffects(currentEffects);
                     magicMissileLeft.Damage += bonusDamage;
                     magicMissileLeft.PlayerScript = _playerScript;
                     WVDPlayerProjectile magicMissileRight = Instantiate(_magicMissilePrefab, _attackFirePoint.position, Quaternion.Euler(0.0f, 30.0f, 0.0f) * _playerScript.GetModelTransform().rotation).GetComponent<WVDPlayerProjectile>();
-                    magicMissileRight.SetProjectileDirection(Quaternion.Euler(0.0f, 30.0f, 0.0f) * _attackFirePoint.forward);
+                    magicMissileRight.SetProjectileDirection(Quaternion.Euler(0.0f, 30.0f, 0.0f) * _camera.forward);
                     magicMissileRight.SetProjectileEffects(currentEffects);
                     magicMissileRight.Damage += bonusDamage;
                     magicMissileRight.PlayerScript = _playerScript;
