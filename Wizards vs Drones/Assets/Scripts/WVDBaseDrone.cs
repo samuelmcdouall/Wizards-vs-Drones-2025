@@ -153,14 +153,15 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             Instantiate(ExplodePrefab, transform.position + ExplodeOffset, ExplodePrefab.transform.rotation);
         }
 
-        _droneSpawner.CurrentDronesSpawned--;
-        _droneSpawner.LevelDronesRemaining--;
 
         if (_selectedDroneBuff == DroneBuff.SpawnOnDeath)
         {
             SpawnDroneFromBuff();
             SpawnDroneFromBuff();
         }
+
+        _droneSpawner.CurrentDronesSpawned--;
+        _droneSpawner.LevelDronesRemaining--;
     }
 
     private void SpawnDroneFromBuff()
