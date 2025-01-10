@@ -18,6 +18,7 @@ TagManager:
   - PlayerProjectile
   - FxTemporaire
   - DroneShield
+  - InvisibleWall
   layers:
   - Default
   - TransparentFX

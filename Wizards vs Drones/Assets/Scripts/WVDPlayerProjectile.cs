@@ -45,7 +45,10 @@ public class WVDPlayerProjectile : WVDBaseProjectile
                 return;
             }
         }
-        Instantiate(ImpactFX, transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        if (!other.gameObject.CompareTag("InvisibleWall"))
+        {
+            Instantiate(ImpactFX, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
     }
 }

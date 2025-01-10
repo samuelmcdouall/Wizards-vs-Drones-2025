@@ -64,7 +64,6 @@ Transform:
   m_Children:
   - {fileID: 1640174212435041206}
   - {fileID: 7660028840779799293}
-  - {fileID: 2062312572394602980}
   m_Father: {fileID: 5134236298605118745}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &5870256602348580697
@@ -6354,11 +6353,11 @@ Transform:
   m_GameObject: {fileID: 3491417785400266683}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.98, z: 1.3169999}
+  m_LocalPosition: {x: 0, y: 0, z: 5.132}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8295513187572082635}
+  m_Father: {fileID: 69420313483254024}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3531334841658046820
 GameObject:
@@ -12280,8 +12279,8 @@ MonoBehaviour:
   _lifeStealFX: {fileID: 5879589213093464361}
   _maxSideBackSpeed: 2
   _dashSpeed: 20
-  _playerNMA: {fileID: 0}
   _batteryCount: 50
+  _batteryCountUI: {fileID: 0}
   PurchasedUpgrades:
     ShootThreeArc: 0
     StunAttacks: 0
@@ -12314,6 +12313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cameraRotationObject: {fileID: 9085212773945732838}
+  _camera: {fileID: 0}
   _groundCheckScript: {fileID: 6445510067818248473}
   _jumpHeight: 3
   _currentPlayerMovementState: 0
@@ -12984,7 +12984,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.273, z: -3.815}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2062312572394602980}
   m_Father: {fileID: 9085212773945732838}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &8944349048850581128

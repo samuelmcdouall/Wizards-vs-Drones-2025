@@ -110,8 +110,21 @@ public class WVDPlayerInputs : MonoBehaviour
 
                 WVDAttackEffects currentEffects = GetActiveAttackEffects();
 
+                // Determine projectile direction that fires from just in front of player but goes in direction desired, i.e. direction camera is looking
+                RaycastHit hit;
+                Vector3 direction = Vector3.zero;
+                if (Physics.Raycast(_camera.position, _camera.forward, out hit, 1000.0f))
+                {
+                    direction = hit.point - _attackFirePoint.position;
+                }
+                else
+                {
+                    Debug.LogError("DIDNT FIND AN END TARGET TO HIT");
+                }
+
+
                 WVDPlayerProjectile magicMissile = Instantiate(_magicMissilePrefab, _attackFirePoint.position, _playerScript.GetModelTransform().rotation).GetComponent<WVDPlayerProjectile>();
-                magicMissile.SetProjectileDirection(_camera.forward);
+                magicMissile.SetProjectileDirection(direction);
                 magicMissile.SetProjectileEffects(currentEffects);
                 magicMissile.Damage += bonusDamage;
                 magicMissile.PlayerScript = _playerScript;
@@ -119,12 +132,12 @@ public class WVDPlayerInputs : MonoBehaviour
                 if (_playerScript.PurchasedUpgrades.ShootThreeArc)
                 {
                     WVDPlayerProjectile magicMissileLeft = Instantiate(_magicMissilePrefab, _attackFirePoint.position, Quaternion.Euler(0.0f, -30.0f, 0.0f) * _playerScript.GetModelTransform().rotation).GetComponent<WVDPlayerProjectile>();
-                    magicMissileLeft.SetProjectileDirection(Quaternion.Euler(0.0f,-30.0f,0.0f) * _camera.forward);
+                    magicMissileLeft.SetProjectileDirection(Quaternion.Euler(0.0f,-30.0f,0.0f) * direction);
                     magicMissileLeft.SetProjectileEffects(currentEffects);
                     magicMissileLeft.Damage += bonusDamage;
                     magicMissileLeft.PlayerScript = _playerScript;
                     WVDPlayerProjectile magicMissileRight = Instantiate(_magicMissilePrefab, _attackFirePoint.position, Quaternion.Euler(0.0f, 30.0f, 0.0f) * _playerScript.GetModelTransform().rotation).GetComponent<WVDPlayerProjectile>();
-                    magicMissileRight.SetProjectileDirection(Quaternion.Euler(0.0f, 30.0f, 0.0f) * _camera.forward);
+                    magicMissileRight.SetProjectileDirection(Quaternion.Euler(0.0f, 30.0f, 0.0f) * direction);
                     magicMissileRight.SetProjectileEffects(currentEffects);
                     magicMissileRight.Damage += bonusDamage;
                     magicMissileRight.PlayerScript = _playerScript;

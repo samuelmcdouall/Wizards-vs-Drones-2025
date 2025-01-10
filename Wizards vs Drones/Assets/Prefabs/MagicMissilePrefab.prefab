@@ -4943,7 +4943,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c534740f2977d544b08b1cf45a7b63e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 15
+  _speed: 40
   _lifeTime: 5
   Damage: 1
   Effects:
@@ -9625,8 +9625,8 @@ MonoBehaviour:
   isRotating: 1
   isFloating: 0
   isScaling: 0
-  rotationAngle: {x: 0, y: 5, z: 0}
-  rotationSpeed: 5
+  rotationAngle: {x: 0, y: 1, z: 0}
+  rotationSpeed: 120
   floatSpeed: {x: 0, y: 0, z: 0}
   floatRate: 0
   startScale: {x: 0, y: 0, z: 0}
