@@ -91,7 +91,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         WVDDroneSpawnRound currentRoundStats = _droneSpawner.DronesPerRound[_levelManagerScript.Level];
 
         float spawnChance = currentRoundStats.SpawnOnDeathChance;
-        float explodeChance = currentRoundStats.ExplodeOnDeathChance;
+        float shieldChance = currentRoundStats.ShieldChance;
         float radiationChance = currentRoundStats.RadiationChance;
         float rand = Random.Range(0.0f, 1.0f);
         if (rand < spawnChance)
@@ -99,11 +99,11 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             _selectedDroneBuff = DroneBuff.SpawnOnDeath;
             _spawnDroneBuffIndicator.SetActive(true);
         }
-        else if (rand < spawnChance + explodeChance)
+        else if (rand < spawnChance + shieldChance)
         {
-            _selectedDroneBuff = DroneBuff.ExplodeOnDeath;
+            _selectedDroneBuff = DroneBuff.Shield;
         }
-        else if (rand < spawnChance + explodeChance + radiationChance)
+        else if (rand < spawnChance + shieldChance + radiationChance)
         {
             _selectedDroneBuff = DroneBuff.Radiation;
         }
@@ -225,7 +225,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     {
         None,
         SpawnOnDeath,
-        ExplodeOnDeath,
+        Shield,
         Radiation
 
     }

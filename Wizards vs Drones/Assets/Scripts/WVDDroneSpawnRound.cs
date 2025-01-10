@@ -23,6 +23,6 @@ public struct WVDDroneSpawnRound
     public int MaxDroneLimit;
 
     public float SpawnOnDeathChance;
-    public float ExplodeOnDeathChance;
+    public float ShieldChance;
     public float RadiationChance;
 }
