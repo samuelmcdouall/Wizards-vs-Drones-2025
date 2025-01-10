@@ -25258,6 +25258,9 @@ MonoBehaviour:
   _isSpawnedFromBuff: 0
   _spawnDroneRangeMin: 2
   _spawnDroneRangeMax: 4
+  _shieldObject: {fileID: 0}
+  _shieldRechargeDelay: 0
+  _shieldOn: 0
   _teleportRangeMin: 10
   _teleportRangeMax: 20
   _teleportChargingFX: {fileID: 8028657977199127450}
@@ -30326,7 +30329,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1961094428258639710
 Transform:
   m_ObjectHideFlags: 0

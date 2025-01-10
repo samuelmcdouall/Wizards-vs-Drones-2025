@@ -54,6 +54,12 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     float _spawnDroneRangeMin;
     [SerializeField]
     float _spawnDroneRangeMax;
+    [SerializeField]
+    GameObject _shieldObject;
+    [SerializeField]
+    float _shieldRechargeDelay; // As soon as it goes off, this begins counting
+    [SerializeField]
+    bool _shieldOn;
 
 
     protected DroneState CurrentDroneState 
@@ -64,6 +70,26 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             _currentDroneState = value;
             print($"{gameObject.name} state now set to: {_currentDroneState}");
         }
+    }
+
+    public bool ShieldOn 
+    { 
+        get => _shieldOn;
+        set 
+        {
+            _shieldOn = value;
+            if (!_shieldOn)
+            {
+                _shieldObject.SetActive(false);
+                Invoke("SwitchShieldBackOn", _shieldRechargeDelay);
+            }
+        }
+    }
+
+    void SwitchShieldBackOn()
+    {
+        _shieldOn = true;
+        _shieldObject.SetActive(true);
     }
 
     // Start is called before the first frame update
@@ -102,6 +128,8 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         else if (rand < spawnChance + shieldChance)
         {
             _selectedDroneBuff = DroneBuff.Shield;
+            _shieldOn = true;
+            _shieldObject.SetActive(true);
         }
         else if (rand < spawnChance + shieldChance + radiationChance)
         {

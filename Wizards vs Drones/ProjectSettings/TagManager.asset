@@ -15,6 +15,9 @@ TagManager:
   - Battery
   - Fountain
   - LevelManager
+  - PlayerProjectile
+  - FxTemporaire
+  - DroneShield
   layers:
   - Default
   - TransparentFX

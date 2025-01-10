@@ -15244,7 +15244,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2607198648022093959
 Transform:
   m_ObjectHideFlags: 0
@@ -20583,6 +20583,9 @@ MonoBehaviour:
   _isSpawnedFromBuff: 0
   _spawnDroneRangeMin: 2
   _spawnDroneRangeMax: 4
+  _shieldObject: {fileID: 0}
+  _shieldRechargeDelay: 0
+  _shieldOn: 0
   _attackHitBox: {fileID: 6279241513131582985}
   _attackHitBoxScript: {fileID: 6292856808572627479}
   _zapDamage: 1

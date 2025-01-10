@@ -5,6 +5,7 @@ public class WVDPlayerProjectile : WVDBaseProjectile
     bool _canPierce;
     [System.NonSerialized]
     public WVDPlayer PlayerScript;
+    bool _noFurtherDamage;
     public override void Start()
     {
         base.Start();
@@ -18,7 +19,15 @@ public class WVDPlayerProjectile : WVDBaseProjectile
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Projectile") || other.gameObject.CompareTag("Fountain"))
+        if (_noFurtherDamage)
+        {
+            return;
+        }
+        if (other.gameObject.CompareTag("DroneShield"))
+        {
+            _noFurtherDamage = true; // stops player projectile from doing any more if it travels beyond the shield before being destroyed, shouldn't really be an issue most of the time but this is here just in case
+        }
+        if (other.gameObject.CompareTag("PlayerProjectile") || other.gameObject.CompareTag("Fountain"))
         {
             return;
         }

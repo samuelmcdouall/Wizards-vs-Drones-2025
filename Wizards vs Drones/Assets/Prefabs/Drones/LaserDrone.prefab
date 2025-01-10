@@ -9926,6 +9926,9 @@ MonoBehaviour:
   _isSpawnedFromBuff: 0
   _spawnDroneRangeMin: 2
   _spawnDroneRangeMax: 4
+  _shieldObject: {fileID: 0}
+  _shieldRechargeDelay: 0
+  _shieldOn: 0
   _laserProjectilePrefab: {fileID: 5432368540722010777, guid: ab7a3e807e706654b8b69291d3a2c360, type: 3}
   _projectileFirePoint: {fileID: 6439431737988272722}
 --- !u!195 &2854928114363549098
@@ -14896,7 +14899,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &154145383725392
 Transform:
   m_ObjectHideFlags: 0
