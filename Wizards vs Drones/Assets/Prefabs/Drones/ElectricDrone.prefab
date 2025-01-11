@@ -79,7 +79,6 @@ MonoBehaviour:
   _spawnDroneRangeMax: 4
   _shieldObject: {fileID: 860905739842267873}
   _shieldRechargeDelay: 5
-  _shieldOn: 0
   _attackHitBox: {fileID: 5127027978131583822}
   _attackHitBoxScript: {fileID: 1063651367686975407}
   _zapDamage: 1
@@ -259,7 +258,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8769574346035747673
 Transform:
   m_ObjectHideFlags: 0
