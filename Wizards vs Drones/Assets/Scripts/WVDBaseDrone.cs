@@ -58,7 +58,6 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     GameObject _shieldObject;
     [SerializeField]
     float _shieldRechargeDelay; // As soon as it goes off, this begins counting
-    [SerializeField]
     bool _shieldOn;
 
 
