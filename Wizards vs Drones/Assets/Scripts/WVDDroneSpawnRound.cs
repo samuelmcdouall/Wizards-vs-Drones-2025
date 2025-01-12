@@ -24,5 +24,5 @@ public struct WVDDroneSpawnRound
 
     public float SpawnOnDeathChance;
     public float ShieldChance;
-    public float RadiationChance;
+    public float SlowChance;
 }

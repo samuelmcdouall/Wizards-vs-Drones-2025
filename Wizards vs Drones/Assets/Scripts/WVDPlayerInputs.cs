@@ -162,7 +162,7 @@ public class WVDPlayerInputs : MonoBehaviour
         {
             _playerCC.Move(playerDirection.DirectionVector * _playerScript.MaxNormalSpeed * Time.deltaTime);
         }
-        else // sideways/backward
+        else // sideways/backward todo could possibly just have a modifier for the side/back speed rather than additional variable
         {
             _playerCC.Move(playerDirection.DirectionVector * _playerScript.MaxSideBackSpeed * Time.deltaTime);
         }
@@ -312,19 +312,19 @@ public class WVDPlayerInputs : MonoBehaviour
     {
         if (inputVector.z == 1)
         {
-            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerForwardAnimation);
+            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerForwardAnimation, _playerScript.CurrentSpeedModifier);
         }
         else if (inputVector.z == -1)
         {
-            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerBackwardAnimation);
+            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerBackwardAnimation, _playerScript.CurrentSpeedModifier);
         }
         else if (inputVector.x == 1)
         {
-            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerRightAnimation);
+            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerRightAnimation, _playerScript.CurrentSpeedModifier);
         }
         else if (inputVector.x == -1)
         {
-            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerLeftAnimation);
+            _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerLeftAnimation, _playerScript.CurrentSpeedModifier);
         }
         else
         {

@@ -77,8 +77,14 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
     [SerializeField]
     float _maxNormalSpeed;
     float _initialMaxNormalSpeed;
+    [SerializeField]
+    float _maxSideBackSpeed;
+    float _initialMaxSideBackSpeed;
     float _slowedTimer;
     bool _slowed;
+    float _currentSpeedModifier;
+    [SerializeField]
+    GameObject _slowedFX;
     float _stunnedTimer;
     bool _stunned;
     public float MaxNormalSpeed 
@@ -86,10 +92,20 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
         get => _maxNormalSpeed; 
         set => _maxNormalSpeed = value;
     }
+    public float MaxSideBackSpeed
+    {
+        get => _maxSideBackSpeed;
+        set => _maxSideBackSpeed = value;
+    }
     public bool Stunned
     {
         get => _stunned;
         set => _stunned = value;
+    }
+    public float CurrentSpeedModifier 
+    { 
+        get => _currentSpeedModifier; 
+        set => _currentSpeedModifier = value; 
     }
 
     [Header("Animations - General")]
@@ -103,15 +119,18 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
     }
 
     [Header("Other - General")]
-    [System.NonSerialized]
-    public GameObject Player;
+    protected GameObject Player;
+    protected WVDPlayer PlayerScript;
 
     public virtual void Start()
     {
         _currentHealth = _maxHealth;
         _invulnerable = false;
         _initialMaxNormalSpeed = _maxNormalSpeed;
+        _initialMaxSideBackSpeed = _maxSideBackSpeed;
+        _currentSpeedModifier = 1.0f;
         Player = GameObject.FindGameObjectWithTag("Player");
+        PlayerScript = Player.GetComponent<WVDPlayer>();
     }
 
     public virtual void Update()
@@ -121,8 +140,11 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
             if (_slowedTimer <= 0.0f)
             {
                 print("Entity no longer slowed");
+                _slowedFX?.SetActive(false);
                 _slowed = false;
                 _maxNormalSpeed = _initialMaxNormalSpeed;
+                _maxSideBackSpeed = _initialMaxSideBackSpeed;
+                _currentSpeedModifier = 1.0f;
             }
             else
             {
@@ -155,8 +177,12 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
         }
     }
 
-    public void SwitchToAnimation(string animation)
+    public void SwitchToAnimation(string animation, float speed = 1.0f)
     {
+        if (_animator.speed != speed)
+        {
+            _animator.speed = speed;
+        }
         if (animation != _currentPlayingAnimation)
         {
             _currentPlayingAnimation = animation;
@@ -183,6 +209,9 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
         {
             print($"Entity set to {percentage} speed");
             _maxNormalSpeed = _initialMaxNormalSpeed * percentage;
+            _maxSideBackSpeed = _initialMaxSideBackSpeed * percentage;
+            _currentSpeedModifier = percentage;
+            _slowedFX?.SetActive(true);
             _slowed = true;
         }
 

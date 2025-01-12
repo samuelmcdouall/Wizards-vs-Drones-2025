@@ -45,20 +45,33 @@ public abstract class WVDBaseDrone : WVDBaseEntity
 
     [Header("Buffs - Base Drone")]
     [SerializeField]
-    GameObject _spawnDronedFromBuff; // should be electric one
+    GameObject _spawnDronedFromBuff;
     [SerializeField]
     GameObject _spawnDroneBuffIndicator;
     [SerializeField]
-    bool _isSpawnedFromBuff; // i.e. shouldn't be added to tally or roll for having a drone buff
+    bool _isSpawnedFromBuff;
     [SerializeField]
     float _spawnDroneRangeMin;
     [SerializeField]
     float _spawnDroneRangeMax;
+
     [SerializeField]
     GameObject _shieldObject;
     [SerializeField]
     float _shieldRechargeDelay; // As soon as it goes off, this begins counting
     bool _shieldOn;
+
+    [SerializeField]
+    GameObject _slowObject;
+    [SerializeField]
+    float _slowBuffPercent;
+    [SerializeField]
+    float _slowBuffDuration;
+    [SerializeField]
+    float _slowBuffCheckInterval;
+    float _slowBuffCheckTimer;
+    [SerializeField]
+    float _slowBuffThreshold;
 
 
     protected DroneState CurrentDroneState 
@@ -117,7 +130,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
 
         float spawnChance = currentRoundStats.SpawnOnDeathChance;
         float shieldChance = currentRoundStats.ShieldChance;
-        float radiationChance = currentRoundStats.RadiationChance;
+        float slowChance = currentRoundStats.SlowChance;
         float rand = Random.Range(0.0f, 1.0f);
         if (rand < spawnChance)
         {
@@ -130,9 +143,11 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             _shieldOn = true;
             _shieldObject.SetActive(true);
         }
-        else if (rand < spawnChance + shieldChance + radiationChance)
+        else if (rand < spawnChance + shieldChance + slowChance)
         {
-            _selectedDroneBuff = DroneBuff.Radiation;
+            _selectedDroneBuff = DroneBuff.Slow;
+            _slowObject.SetActive(true);
+            _slowBuffCheckTimer = _slowBuffCheckInterval;
         }
         else
         {
@@ -160,6 +175,21 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             if (CurrentDroneState == DroneState.Chasing) // If it is chasing, reenable the movement, if it isn't then it'll be stopped because its charging up/attacking etc. todo this should be for all movement states, so if theres another one that involves movement other than chasing then put it here as well
             {
                 DroneNMA.isStopped = false;
+            }
+        }
+        if (_selectedDroneBuff == DroneBuff.Slow)
+        {
+            if (_slowBuffCheckTimer < 0.0f)
+            {
+                _slowBuffCheckTimer = _slowBuffCheckInterval;
+                if (Vector3.Distance(transform.position, Player.transform.position) <= _slowBuffThreshold)
+                {
+                    PlayerScript.ApplySlow(_slowBuffPercent, _slowBuffDuration);
+                }
+            }
+            else
+            {
+                _slowBuffCheckTimer -= Time.deltaTime;
             }
         }
     }
@@ -253,7 +283,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         None,
         SpawnOnDeath,
         Shield,
-        Radiation
+        Slow
 
     }
 }

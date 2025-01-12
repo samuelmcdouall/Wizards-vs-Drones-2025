@@ -67,13 +67,6 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
 
     [Header("Speed - Player")]
     [SerializeField]
-    float _maxSideBackSpeed;
-    public float MaxSideBackSpeed
-    {
-        get => _maxSideBackSpeed;
-        set => _maxSideBackSpeed = value;
-    }
-    [SerializeField]
     float _dashSpeed;
     public float DashSpeed
     {

@@ -30,7 +30,7 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
         //    Instantiate(ExplodePrefab, transform.position + ExplodeOffset, ExplodePrefab.transform.rotation);
         //}
         base.DestroyFullyDamaged();
-        Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this);
+        PlayerScript.RemoveDroneFromPlayerList(this);
         Destroy(gameObject);
     }
     public void TakeDamage(int damage)
@@ -49,7 +49,7 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
     public override void Start()
     {
         base.Start();
-        Player.GetComponent<WVDPlayer>().AddDroneToPlayerList(this);   
+        PlayerScript.AddDroneToPlayerList(this);   
     }
 
     // Update is called once per frame

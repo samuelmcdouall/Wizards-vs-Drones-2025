@@ -38,7 +38,7 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
         //    Instantiate(ExplodePrefab, transform.position + ExplodeOffset, ExplodePrefab.transform.rotation);
         //}
         base.DestroyFullyDamaged();
-        Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this); // todo apart from this line, could probably put the base function of this into the base drone function. Still have each drone implementing the Damageable interface, and an override function here
+        PlayerScript.RemoveDroneFromPlayerList(this); // todo apart from this line, could probably put the base function of this into the base drone function. Still have each drone implementing the Damageable interface, and an override function here
         Destroy(gameObject);
     }
     public virtual void TakeDamage(int damage) // for tank, do an override of this + need a go beserk function to increase stats + (maybe this not needed)do a start/update with just the base function
@@ -58,7 +58,7 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
     {
         base.Start();
         _attackHitBox.SetActive(false);
-        Player.GetComponent<WVDPlayer>().AddDroneToPlayerList(this);
+        PlayerScript.AddDroneToPlayerList(this);
     }
 
     public override void Update()

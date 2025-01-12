@@ -28,7 +28,7 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
     public override void DestroyFullyDamaged()
     {
         base.DestroyFullyDamaged();
-        Player.GetComponent<WVDPlayer>().RemoveDroneFromPlayerList(this);
+        PlayerScript.RemoveDroneFromPlayerList(this);
         Destroy(gameObject);
     }
     public void TakeDamage(int damage)
@@ -47,7 +47,7 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
     public override void Start()
     {
         base.Start();
-        Player.GetComponent<WVDPlayer>().AddDroneToPlayerList(this);
+        PlayerScript.AddDroneToPlayerList(this);
     }
 
     // Update is called once per frame
