@@ -19,6 +19,7 @@ TagManager:
   - FxTemporaire
   - DroneShield
   - InvisibleWall
+  - EnemyHitBox
   layers:
   - Default
   - TransparentFX

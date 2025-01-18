@@ -56,6 +56,8 @@ MonoBehaviour:
   _healthUI: {fileID: 0}
   _invulnerableFX: {fileID: 0}
   _maxNormalSpeed: 4
+  _maxSideBackSpeed: 0
+  _slowedFX: {fileID: 0}
   _animator: {fileID: 7340445498986333092}
   DestroyPrefab: {fileID: 7663171341061898199, guid: 83f1842858af0b349a90c12ea4468b09, type: 3}
   BatteryPickUp: {fileID: 291795202343636061, guid: a192c1e4f9336b34eb83019ca895833a, type: 3}
@@ -79,6 +81,11 @@ MonoBehaviour:
   _spawnDroneRangeMax: 0
   _shieldObject: {fileID: 0}
   _shieldRechargeDelay: 0
+  _slowObject: {fileID: 0}
+  _slowBuffPercent: 0
+  _slowBuffDuration: 0
+  _slowBuffCheckInterval: 0
+  _slowBuffThreshold: 0
   _attackHitBox: {fileID: 5127027978131583822}
   _attackHitBoxScript: {fileID: 1063651367686975407}
   _zapDamage: 1
@@ -123,8 +130,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1.1, z: 1}
-  m_Center: {x: 0, y: 1.4, z: 0}
+  m_Size: {x: 1, y: 1.375, z: 1}
+  m_Center: {x: 0, y: 1.26, z: 0}
 --- !u!1 &621903931512398027
 GameObject:
   m_ObjectHideFlags: 0

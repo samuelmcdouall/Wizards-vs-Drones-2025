@@ -25421,7 +25421,7 @@ GameObject:
   - component: {fileID: 6292856808572627479}
   m_Layer: 6
   m_Name: HitBox
-  m_TagString: Untagged
+  m_TagString: EnemyHitBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25657,8 +25657,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1.1, z: 1}
-  m_Center: {x: 0, y: 1.4, z: 0}
+  m_Size: {x: 1, y: 1.375, z: 1}
+  m_Center: {x: 0, y: 1.26, z: 0}
 --- !u!1 &7012119150851153993
 GameObject:
   m_ObjectHideFlags: 0

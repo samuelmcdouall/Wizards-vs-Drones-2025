@@ -19,6 +19,7 @@ public class WVDPlayerProjectile : WVDBaseProjectile
 
     private void OnTriggerEnter(Collider other)
     {
+        print("PROJECTILE HIT: " + other.gameObject.name);
         if (_noFurtherDamage)
         {
             return;
@@ -27,7 +28,11 @@ public class WVDPlayerProjectile : WVDBaseProjectile
         {
             _noFurtherDamage = true; // stops player projectile from doing any more if it travels beyond the shield before being destroyed, shouldn't really be an issue most of the time but this is here just in case
         }
-        if (other.gameObject.CompareTag("PlayerProjectile") || other.gameObject.CompareTag("Fountain"))
+        if (other.gameObject.CompareTag("Player") ||
+            other.gameObject.CompareTag("PlayerProjectile") ||
+            other.gameObject.CompareTag("PickUpTrigger") ||
+            other.gameObject.CompareTag("Fountain") || 
+            other.gameObject.CompareTag("EnemyHitBox"))
         {
             return;
         }
@@ -42,6 +47,11 @@ public class WVDPlayerProjectile : WVDBaseProjectile
             if (_canPierce)
             {
                 _canPierce = false;
+                if (!other.gameObject.CompareTag("InvisibleWall"))
+                {
+                    Instantiate(ImpactFX, transform.position, Quaternion.identity);
+                    Destroy(gameObject);
+                }
                 return;
             }
         }
