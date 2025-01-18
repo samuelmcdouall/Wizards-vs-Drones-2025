@@ -167,10 +167,13 @@ public class WVDLevelManager : MonoBehaviour
             //}
             trail.SetActive(false);
         }
-        _levelUI.text = $"Level: {_level + 1} /10";
+        _levelUI.text = $"Level: {_level + 1} /8";
 
-        /// if right level, 1,3,5,7
-        //if (_level <= 7 && _level % 2 == 1)
+        /// should unlock new section on levels 3, 5 and 7 (2, 4, 6 in code)
+        //if (_level <= 6 &&
+        //    _level >= 2 &&
+        //    _level % 2 == 0
+        //    )
         //{
         //    AddNewSection();
         //}
