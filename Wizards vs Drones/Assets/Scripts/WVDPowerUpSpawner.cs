@@ -78,7 +78,7 @@ public class WVDPowerUpSpawner : MonoBehaviour
             if (_spawnTimer < 0.0f)
             {
                 _spawnTimer = Random.Range(_spawnTimeMin, _spawnTimeMax);
-                if (_currentPowerUpsSpawned < _maxPowerUpsSpawned)
+                if (_currentPowerUpsSpawned < _maxPowerUpsSpawned && _availableSpawnPositions.Count > 0)
                 {
                     SpawnRandomPowerUp();
                 }
