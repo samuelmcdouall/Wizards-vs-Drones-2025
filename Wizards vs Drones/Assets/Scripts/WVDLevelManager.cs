@@ -136,6 +136,7 @@ public class WVDLevelManager : MonoBehaviour
         _shopOpen = true;
         _chosenShop = _availableShops[Random.Range(0, _availableShops.Count)];
         _chosenShop.SetActive(true);
+        print($"Chosen shop: {_chosenShop.name}");
 
         foreach (WVDPowerUp powerUp in _powerUpSpawnerScript.SpawnedPowerUps)
         {
