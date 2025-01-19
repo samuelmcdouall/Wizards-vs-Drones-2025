@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WVDHomingProjectile : WVDBaseProjectile
 {
+    [SerializeField]
+    GameObject _spawnFX;
     IWVDDamageable _currentLockedOnDrone;
     List<IWVDDamageable> _droneTargets = new List<IWVDDamageable>(); // On creation give the homing projectile a reference to the drone list from the player script
 
@@ -16,6 +18,7 @@ public class WVDHomingProjectile : WVDBaseProjectile
     public override void Start()
     {
         base.Start();
+        Instantiate(_spawnFX, transform.position, Quaternion.identity);
         _currentLockedOnDrone = SelectClosestTarget();
     }
 
@@ -24,7 +27,8 @@ public class WVDHomingProjectile : WVDBaseProjectile
         // If the currently locked on drone has yet to be hit, then move towards it
         if (_currentLockedOnDrone as Object)
         {
-            Vector3 directionToDrone = _currentLockedOnDrone.GetModelTransform().position - transform.position;
+            Vector3 directionToDrone = (_currentLockedOnDrone.GetModelTransform().position - transform.position).normalized;
+            transform.rotation = Quaternion.LookRotation(new Vector3(directionToDrone.x, 0.0f, directionToDrone.z));
             SetProjectileDirection(directionToDrone);
         }
         // Otherwise find the next closest target and move towards that (if there are no others, it will keep searching an empty list but continue on same trajectory)
