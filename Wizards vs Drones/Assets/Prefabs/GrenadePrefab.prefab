@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4535826961712832393}
   - component: {fileID: 7814967854388491692}
   - component: {fileID: 947138510328511660}
+  - component: {fileID: 8561598424219698279}
   m_Layer: 0
   m_Name: GrenadePrefab
   m_TagString: Projectile
@@ -64,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 71a9fa088db3a004986f2b7365873c2a, type: 2}
+  - {fileID: 2100000, guid: 058595cb07ad23946a0a151be620489b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -149,5 +150,44 @@ MonoBehaviour:
   _speed: 10
   _lifeTime: 5
   Damage: 0
-  _impactFX: {fileID: 0}
+  Effects:
+    Slow: 0
+    SlowPercentage: 0
+    SlowDuration: 0
+    DOT: 0
+    DOTDamage: 0
+    DOTInterval: 0
+    DOTDuration: 0
+    Stun: 0
+    StunDuration: 0
+    Pierce: 0
+    ExplodeOnDeathChance: 0
+    CriticalChance: 0
+    DropRateIncrease: 0
+    LifeSteal: 0
+  ImpactFX: {fileID: 0}
   _explosionPrefab: {fileID: 5635904934877954413, guid: 153a9d152fc1e8b4ba1df1d37de477a5, type: 3}
+--- !u!114 &8561598424219698279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5432368540722010777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ff967b7ed48f2441bcf509edf6b889a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAnimated: 1
+  isRotating: 1
+  isFloating: 0
+  isScaling: 0
+  rotationAngle: {x: 0, y: 1, z: 0}
+  rotationSpeed: 180
+  floatSpeed: {x: 0, y: 0, z: 0}
+  floatRate: 0
+  startScale: {x: 0, y: 0, z: 0}
+  endScale: {x: 0, y: 0, z: 0}
+  scaleSpeed: 0
+  scaleRate: 0
