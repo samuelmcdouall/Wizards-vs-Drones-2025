@@ -26,7 +26,7 @@ public class WVDLevelManager : MonoBehaviour
     //public delegate void NotifyAddNewSection(UnlockableSections section); // todo can do this with delegates/events but not really worth it 
     //public event NotifyAddNewSection OnAddNewSection;
 
-    List<UnlockableSections> _lockedSections = new List<UnlockableSections> { UnlockableSections.GreatHall, UnlockableSections.Tower, UnlockableSections.Battlements, UnlockableSections.Dungeon };
+    List<UnlockableSections> _lockedSections = new List<UnlockableSections> { UnlockableSections.GreatHall, UnlockableSections.Tower, UnlockableSections.Dungeon };
 
     [Header("Shop")]
     [SerializeField]
@@ -99,6 +99,7 @@ public class WVDLevelManager : MonoBehaviour
     {
         int randIndex = Random.Range(0, _lockedSections.Count);
         UnlockableSections chosenSection = _lockedSections[randIndex];
+        print("Unlocking the :" + chosenSection);
 
         switch (chosenSection)
         {
@@ -125,7 +126,7 @@ public class WVDLevelManager : MonoBehaviour
         _droneSpawnerScript.AddSpawnPositionsToListFromSection(chosenSection);
         _powerUpSpawnerScript.AddSpawnPositionsToListFromSection(chosenSection);
         _powerUpSpawnerScript.AddRandomColouredPowerUpToList();
-        _powerUpSpawnerScript.MaxPowerUpsSpawned += 4; // increase the max amount that can be spawned as the map is now larger
+        _powerUpSpawnerScript.MaxPowerUpsSpawned += 0; // increase the max amount that can be spawned as the map is now larger todo decide if needed
 
         _lockedSections.Remove(_lockedSections[randIndex]);
 
@@ -171,13 +172,13 @@ public class WVDLevelManager : MonoBehaviour
         _levelUI.text = $"Level: {_level + 1} /8";
 
         /// should unlock new section on levels 3, 5 and 7 (2, 4, 6 in code)
-        //if (_level <= 6 &&
-        //    _level >= 2 &&
-        //    _level % 2 == 0
-        //    )
-        //{
-        //    AddNewSection();
-        //}
+        if (_level <= 6 &&
+            _level >= 2 &&
+            _level % 2 == 0
+            )
+        {
+            AddNewSection();
+        }
 
 
         /// every level
