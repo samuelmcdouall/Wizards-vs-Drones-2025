@@ -56,7 +56,7 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
                     _primaryPowerUpIcon.GetComponent<Image>().color = Color.green;
                     break;
                 case PowerUpType.Shield:
-                    _primaryPowerUpIcon.GetComponent<Image>().color = Color.blue;
+                    _primaryPowerUpIcon.GetComponent<Image>().color = new Color(0.35f, 0.72f, 1.0f);
                     break;
                 case PowerUpType.Trap:
                     _primaryPowerUpIcon.GetComponent<Image>().color = Color.yellow;
