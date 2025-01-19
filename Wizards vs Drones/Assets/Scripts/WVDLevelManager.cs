@@ -259,7 +259,13 @@ public class WVDLevelManager : MonoBehaviour
         {
             pointsForThisAnimation.Add(new Vector3(point.x, point.y + 0.8f, point.z)); // adding vertical offset
         }
-
+        print("Points in path: " + pointsForThisAnimation.Count);
+        if (pointsForThisAnimation.Count == 0)
+        {
+            _shopTrailCoroutineRunning = false;
+            _playerToShopCoroutine = null;
+            yield break;
+        }
         Vector3 startingPos = pointsForThisAnimation[0];
         int i = 0;
         while (i < pointsForThisAnimation.Count - 1)
