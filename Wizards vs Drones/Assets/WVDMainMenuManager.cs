@@ -38,7 +38,7 @@ public class WVDMainMenuManager : MonoBehaviour
         _optionsModeScreen.SetActive(false);
     }
 
-    public async void FadeToWhite()
+    async void FadeToWhite()
     {
         float fadeInTimer = 0.0f;
         while (fadeInTimer < _whiteFadeDuration)

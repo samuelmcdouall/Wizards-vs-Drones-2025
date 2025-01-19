@@ -112,7 +112,7 @@ public class WVDDroneSpawner : MonoBehaviour
             if (_spawnTimer < 0.0f)
             {
                 _spawnTimer = Random.Range(_spawnTimeMin, _spawnTimeMax);
-                if (_currentDronesSpawned < _maxDronesSpawned)
+                if (_currentDronesSpawned < _maxDronesSpawned && !WVDFunctionsCheck.IsDead)
                 {
                     if (_spawnPool.Count > 0)
                     {

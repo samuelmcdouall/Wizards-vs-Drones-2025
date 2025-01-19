@@ -74,7 +74,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     float _slowBuffThreshold;
 
 
-    protected DroneState CurrentDroneState 
+    public DroneState CurrentDroneState 
     { 
         get => _currentDroneState;
         set
@@ -165,7 +165,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             Debug.DrawRay(RayCastPoints[i].position, RayCastPoints[i].forward * AttackRayCastDistance, Color.magenta);
         }
 
-        if (Stunned)
+        if (Stunned || CurrentDroneState == DroneState.Stopped)
         {
             DroneNMA.isStopped = true;
             return;
@@ -275,7 +275,8 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         Chasing,
         ChargingUp,
         Attacking,
-        Discharge // stand still just after attack
+        Discharge, // stand still just after attack
+        Stopped // this is when the player is dead, the drones will stop
     }
 
     public enum DroneBuff

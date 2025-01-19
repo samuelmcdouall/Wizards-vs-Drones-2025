@@ -20,7 +20,7 @@ public class WVDPlayerCameraRotate : MonoBehaviour
     {
         if (_playerMovementScript.CurrentPlayerMovementState != WVDPlayerInputs.PlayerMovementState.Dashing)
         {
-            if (WVDPlayerInputsAllowed.PlayerInputsAllowed())
+            if (WVDFunctionsCheck.PlayerInputsAllowed())
             {
                 GetMouseInput();
             }

@@ -143,6 +143,8 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
                 CurrentDroneState = DroneState.Chasing;
                 DroneNMA.isStopped = false;
                 break;
+            case DroneState.Stopped:
+                break;
             default:
                 Debug.LogError("ERROR: Invalid state for Teleport Drone");
                 break;

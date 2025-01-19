@@ -135,6 +135,9 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
                 CurrentDroneState = DroneState.Chasing;
                 DroneNMA.isStopped = false;
                 break;
+            case DroneState.Stopped:
+                _attackHitBox.SetActive(false);
+                break;
             default:
                 Debug.LogError("ERROR: Invalid state for Electric Drone");
                 break;

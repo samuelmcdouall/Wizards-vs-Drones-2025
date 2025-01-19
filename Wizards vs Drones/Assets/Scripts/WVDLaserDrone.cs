@@ -125,6 +125,8 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
                 CurrentDroneState = DroneState.Chasing;
                 DroneNMA.isStopped = false;
                 break;
+            case DroneState.Stopped:
+                break;
             default:
                 Debug.LogError("ERROR: Invalid state for Laser Drone");
                 break;

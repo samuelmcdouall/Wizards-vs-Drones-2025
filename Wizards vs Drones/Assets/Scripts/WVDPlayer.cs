@@ -76,6 +76,8 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
 
     [Header("General - Player")]
     List<IWVDDamageable> _drones = new List<IWVDDamageable>();
+    [SerializeField]
+    WVDGameOverManager _gameOverManagerScript;
 
 
     [Header("Upgrades")]
@@ -316,10 +318,13 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     public void PlayerDies()
     {
         print("PLAYER DEAD!");
-        WVDPlayerInputsAllowed.IsDead = true;
         SwitchToAnimation(WVDAnimationStrings.PlayerDieAnimation);
+        foreach(IWVDDamageable drone in _drones)
+        {
+            drone.GetTransform().gameObject.GetComponent<WVDBaseDrone>().CurrentDroneState = WVDBaseDrone.DroneState.Stopped;
+        }
+        _gameOverManagerScript.TriggerGameOver();
 
-        // 
     }
 
     // todo implement this, this is next
