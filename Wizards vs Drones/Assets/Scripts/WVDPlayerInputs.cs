@@ -32,6 +32,8 @@ public class WVDPlayerInputs : MonoBehaviour
     bool _canDash;
     [SerializeField]
     GameObject _dashUI;
+    [SerializeField]
+    GameObject _dashFX;
 
     [Header("Attacking")]
     [SerializeField]
@@ -41,7 +43,6 @@ public class WVDPlayerInputs : MonoBehaviour
     bool _canAttack;
     [SerializeField]
     float _attackRechargeInterval;
-
 
     public PlayerMovementState CurrentPlayerMovementState 
     { 
@@ -199,6 +200,7 @@ public class WVDPlayerInputs : MonoBehaviour
 
     public async void DashInDirection(Vector3 dashDirection)
     {
+        _dashFX.SetActive(true);
         float endDashTime = Time.time + _dashInterval;
         while (Time.time < endDashTime)
         {
@@ -210,6 +212,7 @@ public class WVDPlayerInputs : MonoBehaviour
         _playerScript.PlayerModelOn = true;
         CurrentPlayerMovementState = PlayerMovementState.Moving;
         _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerIdleAnimation); // This is so that input after the dash allows the animation to change back to running
+        _dashFX.SetActive(false);
     }
     public async void RechargeDash()
     {
