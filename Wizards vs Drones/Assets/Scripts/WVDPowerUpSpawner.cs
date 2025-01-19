@@ -78,7 +78,7 @@ public class WVDPowerUpSpawner : MonoBehaviour
             if (_spawnTimer < 0.0f)
             {
                 _spawnTimer = Random.Range(_spawnTimeMin, _spawnTimeMax);
-                if (_currentPowerUpsSpawned < _maxPowerUpsSpawned && _availableSpawnPositions.Count > 0 && !WVDFunctionsCheck.IsDead)
+                if (_currentPowerUpsSpawned < _maxPowerUpsSpawned && _availableSpawnPositions.Count > 0 && !WVDFunctionsCheck.IsDead) // todo bug with power ups not spawning, for one of these reasons
                 {
                     SpawnRandomPowerUp();
                 }
