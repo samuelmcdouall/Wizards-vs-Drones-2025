@@ -77,6 +77,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     [Header("General - Player")]
     List<IWVDDamageable> _drones = new List<IWVDDamageable>();
 
+
     [Header("Upgrades")]
     [SerializeField] int _batteryCount;
     [SerializeField] TMP_Text _batteryCountUI;
@@ -312,10 +313,13 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         print($"Drone removed, currently keeping track of {_drones.Count}");
     }
 
-    public void DestroyFullyDamaged()
+    public void PlayerDies()
     {
         print("PLAYER DEAD!");
-        // Do other things
+        WVDPlayerInputsAllowed.IsDead = true;
+        SwitchToAnimation(WVDAnimationStrings.PlayerDieAnimation);
+
+        // 
     }
 
     // todo implement this, this is next
@@ -329,7 +333,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         print($"Player on {CurrentHealth} health");
         if (IsFullyDamaged())
         {
-            DestroyFullyDamaged();
+            PlayerDies();
         }
     }
 

@@ -8,4 +8,5 @@ public class WVDAnimationStrings
 
     public static string PlayerBlockAnimation = "Block";
     public static string PlayerAttackAnimation = "PlayerAttack";
+    public static string PlayerDieAnimation = "Die";
 }

@@ -149,7 +149,10 @@ public class WVDPlayerInputs : MonoBehaviour
                 RechargeAttack();
             }
             //_playerScript.ActivateShield = false;
-            HandleMovement();
+            if (WVDPlayerInputsAllowed.PlayerInputsAllowed())
+            {
+                HandleMovement();
+            }
         }
     }
 
