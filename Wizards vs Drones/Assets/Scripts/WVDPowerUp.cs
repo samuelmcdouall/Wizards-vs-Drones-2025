@@ -9,6 +9,8 @@ public class WVDPowerUp : MonoBehaviour
     WVDPowerUpSpawner _powerUpSpawner;
     Transform _spawnedTransform;
 
+    public Transform SpawnedTransform { get => _spawnedTransform; set => _spawnedTransform = value; }
+
     public void SetSpawnerParameters(WVDPowerUpSpawner spawner, Transform spawnedPosition)
     {
         _powerUpSpawner = spawner;
