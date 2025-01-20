@@ -145,6 +145,7 @@ public class WVDLevelManager : MonoBehaviour
             Destroy(powerUp.gameObject);
         }
         _powerUpSpawnerScript.CurrentPowerUpsSpawned = 0;
+        _powerUpSpawnerScript.TomeSpawned = false;
         _powerUpSpawnerScript.SpawnedPowerUps.Clear();
         _powerUpSpawnerScript.Spawning = false;
         _playerScript.CurrentHealth = _playerScript.MaxHealth;

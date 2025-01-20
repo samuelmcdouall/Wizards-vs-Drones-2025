@@ -35,6 +35,15 @@ public class WVDPowerUpSpawner : MonoBehaviour
     GameObject _upgradePowerUp;
     [SerializeField]
     float _chanceSpawnColouredPowerUp;
+    [SerializeField]
+    WVDLevelManager _levelManagerScript;
+    [SerializeField]
+    GameObject _tome;
+    [SerializeField]
+    float _chanceSpawnTome; // Tome instead of power up (power up could then be coloured or upgrade)
+    [SerializeField]
+    int _minLevelTomeCanSpawn;
+    bool _tomeSpawned; // Counts towards the max number of power ups but can only have one of these out at a time
 
     [Header("Spawning Times")]
     [SerializeField]
@@ -63,6 +72,11 @@ public class WVDPowerUpSpawner : MonoBehaviour
     { 
         get => _maxPowerUpsSpawned; 
         set => _maxPowerUpsSpawned = value; 
+    }
+    public bool TomeSpawned 
+    { 
+        get => _tomeSpawned; 
+        set => _tomeSpawned = value; 
     }
 
     void Start()
@@ -128,21 +142,36 @@ public class WVDPowerUpSpawner : MonoBehaviour
         }
     }
 
-    void SpawnRandomPowerUp()
+    void SpawnRandomPowerUp() // Includes potential to spawn a tome
     {
         GameObject chosenPowerUp = null;
-        if (Random.Range(0.0f, 1.0f) < _chanceSpawnColouredPowerUp)
+        Vector3 spawnOffset = Vector3.zero;
+        
+        float rand = Random.Range(0.0f, 1.0f);
+        if (_levelManagerScript.Level >= _minLevelTomeCanSpawn && 
+            rand < _chanceSpawnTome && 
+            !_tomeSpawned
+            )
         {
-            chosenPowerUp = _availableColouredPowerUps[Random.Range(0, _availableColouredPowerUps.Count)];
+            chosenPowerUp = _tome;
+            spawnOffset = new Vector3(0.0f, 0.4f, 0.0f); // Tome needs to spawn in slightly higher than power ups
+            _tomeSpawned = true;
         }
         else
         {
-            chosenPowerUp = _upgradePowerUp;
+            if (Random.Range(0.0f, 1.0f) < _chanceSpawnColouredPowerUp)
+            {
+                chosenPowerUp = _availableColouredPowerUps[Random.Range(0, _availableColouredPowerUps.Count)];
+            }
+            else
+            {
+                chosenPowerUp = _upgradePowerUp;
+            }
         }
 
         int randIndex = Random.Range(0, _availableSpawnPositions.Count);
         Transform spawnedTransform = _availableSpawnPositions[randIndex];
-        WVDPowerUp powerUp = Instantiate(chosenPowerUp, spawnedTransform.position, chosenPowerUp.transform.rotation).GetComponent<WVDPowerUp>();
+        WVDPowerUp powerUp = Instantiate(chosenPowerUp, spawnedTransform.position + spawnOffset, chosenPowerUp.transform.rotation).GetComponent<WVDPowerUp>();
         powerUp.SetSpawnerParameters(this, spawnedTransform);
         SpawnedPowerUps.Add(powerUp);
         _availableSpawnPositions.Remove(spawnedTransform);

@@ -231,6 +231,7 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
         Attack, // Red
         Explosion, // Purple
         Upgrade, // white/black/silver?
+        Tome, // One off nuke
         None,
     }
 }

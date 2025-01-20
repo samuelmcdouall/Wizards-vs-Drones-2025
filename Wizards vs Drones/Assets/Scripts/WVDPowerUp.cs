@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class WVDPowerUp : MonoBehaviour
@@ -21,7 +22,16 @@ public class WVDPowerUp : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (_selectedPowerUpType == WVDPlayerPowerUpManager.PowerUpType.Upgrade)
+            if (_selectedPowerUpType == WVDPlayerPowerUpManager.PowerUpType.Tome)
+            {
+                List<IWVDDamageable> drones = other.gameObject.GetComponent<WVDPlayer>().Drones;
+                foreach (IWVDDamageable drone in drones.ToList())
+                {
+                    drone.ResolveAttack(100, new WVDAttackEffects());
+                }
+                _powerUpSpawner.TomeSpawned = false;
+            }
+            else if (_selectedPowerUpType == WVDPlayerPowerUpManager.PowerUpType.Upgrade)
             {
                 other.gameObject.GetComponent<WVDPlayerPowerUpManager>().SecondaryPowerUpCountHeld++;
             }
