@@ -11,7 +11,8 @@ public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if th
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Fountain"))
+        if (other.gameObject.CompareTag("Fountain") ||
+            other.gameObject.CompareTag("PowerUp"))
         {
             return;
         }

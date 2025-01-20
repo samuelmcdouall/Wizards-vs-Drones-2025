@@ -31,6 +31,7 @@ public class WVDPlayerProjectile : WVDBaseProjectile
         if (other.gameObject.CompareTag("Player") ||
             other.gameObject.CompareTag("PlayerProjectile") ||
             other.gameObject.CompareTag("PickUpTrigger") ||
+            other.gameObject.CompareTag("PowerUp") ||
             other.gameObject.CompareTag("Fountain") || 
             other.gameObject.CompareTag("EnemyHitBox"))
         {
