@@ -22,6 +22,10 @@ public class WVDLevelManager : MonoBehaviour
     TMP_Text _dronesAndShopTimerUI;
     [SerializeField]
     TMP_Text _levelUI;
+    [SerializeField]
+    WVDBossCutsceneManager _bossCutsceneManagerScript;
+    [SerializeField]
+    float _bossCutsceneTriggerDelay;
 
     //public delegate void NotifyAddNewSection(UnlockableSections section); // todo can do this with delegates/events but not really worth it 
     //public event NotifyAddNewSection OnAddNewSection;
@@ -172,7 +176,6 @@ public class WVDLevelManager : MonoBehaviour
             //}
             trail.SetActive(false);
         }
-        _levelUI.text = $"Level: {_level + 1} /8";
 
         /// should unlock new section on levels 3, 5 and 7 (2, 4, 6 in code)
         if (_level <= 6 &&
@@ -182,16 +185,28 @@ public class WVDLevelManager : MonoBehaviour
         {
             AddNewSection();
         }
+        if (_level < 8) // normal level
+        {
+            _droneSpawnerScript.CreatePoolForLevel(_level);
+            _droneSpawnerScript.Spawning = true;
+            _powerUpSpawnerScript.Spawning = true;
+            _levelUI.text = $"Level: {_level + 1} /8";
+        }
+        else if (_level == 8) // i.e. boss level
+        {
+            Invoke("StartBossCutscene", _bossCutsceneTriggerDelay);
+            _levelUI.text = "BOSS";
+        }
 
 
-        /// every level
-        _droneSpawnerScript.CreatePoolForLevel(_level);
-
-        _droneSpawnerScript.Spawning = true;
-        _powerUpSpawnerScript.Spawning = true;
     }
 
-    
+    void StartBossCutscene()
+    {
+        _bossCutsceneManagerScript.StartBossCutscene();
+    }
+
+
 
 
     private void Start()
