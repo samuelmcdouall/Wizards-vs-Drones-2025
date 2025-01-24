@@ -25,6 +25,7 @@ TagManager:
   - BossFireStream
   - Boss
   - Flammable
+  - BossCellBarrier
   layers:
   - Default
   - TransparentFX

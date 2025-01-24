@@ -284,7 +284,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.13628809, g: 0.023673814, b: 0.6603774, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4961,7 +4961,7 @@ MonoBehaviour:
     CriticalChance: 0
     DropRateIncrease: 0
     LifeSteal: 0
-  ImpactFX: {fileID: 5395027156059856893, guid: 6cd17a3b815a12c47b18b6a5bf3d8f1a, type: 3}
+  ImpactFX: {fileID: 5395027156059856893, guid: b4f392512d36b5940b76a6a3302a94fd, type: 3}
 --- !u!1 &5742160393761371193
 GameObject:
   m_ObjectHideFlags: 0
@@ -9587,7 +9587,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f70d582ac8795e94fbba81f1bda57848, type: 2}
+  - {fileID: 2100000, guid: 7f61e96487dd8084480def67ee56f766, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

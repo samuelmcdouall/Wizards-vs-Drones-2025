@@ -55,7 +55,10 @@ public class WVDPlayerInputs : MonoBehaviour
         set
         {
             _canDash = value;
-            _dashUI.SetActive(_canDash);
+            if (WVDFunctionsCheck.PlayerInputsAllowed())
+            {
+                _dashUI.SetActive(_canDash);
+            }
         }
     }
 

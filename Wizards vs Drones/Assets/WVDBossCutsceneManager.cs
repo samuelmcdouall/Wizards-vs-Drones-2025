@@ -47,6 +47,9 @@ public class WVDBossCutsceneManager : MonoBehaviour
         _playerCamera.SetActive(false);
         _cutsceneCamera.SetActive(true);
         _canvas.SetActive(false);
+        _player.GetComponent<CharacterController>().enabled = false;
+        _player.transform.position = _playerStartingPosition.position;
+        _player.GetComponent<CharacterController>().enabled = true;
     }
 
     public void EndBossCutscene()
@@ -61,9 +64,6 @@ public class WVDBossCutsceneManager : MonoBehaviour
         int rand = Random.Range(0, _bossStartingPositions.Count);
         _bossScript.gameObject.transform.position =_bossStartingPositions[rand].position;
         _bossScript.SetCurrentBattleWayPoint(_bossStartingPositions[rand]);
-        _player.GetComponent<CharacterController>().enabled = false;
-        _player.transform.position = _playerStartingPosition.position;
-        _player.GetComponent<CharacterController>().enabled = true;
         _playerCamera.SetActive(true);
         _cutsceneCamera.SetActive(false);
         _canvas.SetActive(true);

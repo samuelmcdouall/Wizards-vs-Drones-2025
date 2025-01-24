@@ -449,7 +449,6 @@ public class WVDBoss : WVDBaseEntity
                 }
                 break;
             case BossState.Victory:
-                SwitchToAnimation(WVDAnimationStrings.BossHealAnimation); // Also used for victory animation
                 // nothing else, absorbing state
                 break;
         }
@@ -552,15 +551,32 @@ public class WVDBoss : WVDBaseEntity
     }
     public void TakeDamage(int damage) // Boss will be immune to effects so just takes damage
     {
-        print($"Boss took {damage} damage");
-        CurrentHealth -= damage;
-        if (IsFullyDamaged() && _currentBossState != BossState.Victory)
+        if (BossInBattle)
         {
-            _currentBossState = BossState.Dead;
-            SwitchToAnimation(WVDAnimationStrings.BossDieAnimation);
-            // todo put in victory screen
+            print($"Boss took {damage} damage");
+            CurrentHealth -= damage;
+            if (IsFullyDamaged() &&
+                _currentBossState != BossState.Victory &&
+                _currentBossState != BossState.Dead)
+            {
+                _currentBossState = BossState.Dead;
+                SlowlyLowerPosition(0.5f, 2.0f);
+                SwitchToAnimation(WVDAnimationStrings.BossDieAnimation);
+                // todo put in victory screen
+            }
         }
     }
+    async void SlowlyLowerPosition(float timePeriod, float speed) // gives a more natural feel to the boss crashing to the floor as its defeated
+    {
+        float endTime = Time.time + timePeriod;
+        while (Time.time < endTime)
+        {
+            transform.position += Vector3.down * speed * Time.deltaTime;
+            await Task.Yield();
+        }
+        transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
+    }
+    
 
 
     public enum BossState
