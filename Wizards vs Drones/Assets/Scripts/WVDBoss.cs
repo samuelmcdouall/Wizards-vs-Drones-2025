@@ -91,8 +91,28 @@ public class WVDBoss : WVDBaseEntity
 
     [Header("Battle - Fire Stream Attack")]
     [SerializeField]
-    GameObject _fireStreamPrefab;
-    
+    GameObject _fireStreamElementPrefab;
+    [SerializeField]
+    float _fireStreamInBetweenAttacksDelay;
+    [SerializeField]
+    float _fireStreamPreLaunchDelay;
+    [SerializeField]
+    float _fireStreamPostLaunchDelay;
+    [SerializeField]
+    int _fireStreamsNumberStageOne;
+    [SerializeField]
+    int _fireStreamsNumberStageTwo;
+    [SerializeField]
+    int _fireStreamsNumberStageThree;
+    int _currentFireStreamAttackNumber;
+    [SerializeField]
+    float _fireStreamElementIntervalStageOne; // time interval, not distance
+    [SerializeField]
+    float _fireStreamElementIntervalStageTwo;
+    [SerializeField]
+    float _fireStreamElementIntervalStageThree;
+    BossFireStreamAttackState _currentBossFireStreamAttackState;
+    // NEXT how many streams, interval between successive elements spawning, then other pieces as from above + each stream will be given a direction and a time interval and a number (0). Dist + num for each stream is same
 
 
     public BossState CurrentBossState 
@@ -107,6 +127,7 @@ public class WVDBoss : WVDBaseEntity
         _currentBossState = BossState.DungeonIdle;
         _currentBossFightStage = BossFightStage.StageOne;
         _currentBossFireballAttackState = BossFireballAttackState.BetweenAttacks;
+        _currentBossFireStreamAttackState = BossFireStreamAttackState.BetweenAttacks;
         _dungeonIdleTimer = Random.Range(_minDungeonIdleTime, _maxDungeonIdleTime);
         _combatIdleTimer = Random.Range(_minCombatIdleTime, _maxCombatIdleTime);
         _chosenDungeonWayPoint = _dungeonIdleWayPoints[Random.Range(0, _dungeonIdleWayPoints.Count)];
@@ -199,7 +220,9 @@ public class WVDBoss : WVDBaseEntity
                 if (_combatIdleTimer < 0.0f)
                 {
                     _combatIdleTimer = Random.Range(_minCombatIdleTime, _maxCombatIdleTime);
+
                     _currentBossState = BossState.FireStreamAttack;
+                    _currentFireStreamAttackNumber = 0;
                     //_currentBossState = BossState.FireballAttack;
                     //_currentFireballAttackNumber = 0;
                     //int indexOfCurrentWayPoint = _battleWayPoints.IndexOf(_chosenBattleWayPoint);
@@ -292,6 +315,68 @@ public class WVDBoss : WVDBaseEntity
                     }
                 }
                 break;
+            case BossState.FireStreamAttack:
+                //if (Vector3.Distance(transform.position, _chosenBattleWayPoint.position) < _wayPointThreshold) // keeping this here for the moment in case decide need to move
+                //{
+                //    SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
+                //    _currentBossState = BossState.Idle;
+                //    _currentBossFireballAttackState = BossFireballAttackState.BetweenAttacks;
+                //}
+                //else
+                //{
+                    //transform.position += _movementVector * MaxNormalSpeed * Time.deltaTime;
+                    //LookAtPlayer();
+                    switch (_currentBossFireStreamAttackState)
+                    {
+                        case BossFireStreamAttackState.BetweenAttacks:
+                            {
+                                SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
+                                int currentFireStreamsNumber = _fireStreamsNumberStageOne;
+                                if (_currentBossFightStage == BossFightStage.StageTwo)
+                                {
+                                    currentFireStreamsNumber = _fireStreamsNumberStageTwo;
+                                }
+                                else if (_currentBossFightStage == BossFightStage.StageThree)
+                                {
+                                    currentFireStreamsNumber = _fireStreamsNumberStageThree;
+                                }
+                                if (_currentFireStreamAttackNumber < currentFireStreamsNumber)
+                                {
+                                    _currentFireStreamAttackNumber++;
+                                    TransitionToStateAfterDelay(BossFireStreamAttackState.ChargingUpFireStream, _fireStreamInBetweenAttacksDelay);
+                                }
+                                else
+                                {
+                                    _currentBossState = BossState.Idle;
+                                }
+
+                                break;
+                            }
+
+                        case BossFireStreamAttackState.ChargingUpFireStream:
+                            SwitchToAnimation(WVDAnimationStrings.BossTridentAttackAnimation);
+                            TransitionToStateAfterDelay(BossFireStreamAttackState.LaunchingFireStream, _fireStreamPreLaunchDelay);
+                            break;
+                        case BossFireStreamAttackState.LaunchingFireStream:
+                            {
+                                float currentFireStreamElementInterval = _fireStreamElementIntervalStageOne;
+                                if (_currentBossFightStage == BossFightStage.StageTwo)
+                                {
+                                    currentFireStreamElementInterval = _fireStreamElementIntervalStageTwo;
+                                }
+                                else if (_currentBossFightStage == BossFightStage.StageThree)
+                                {
+                                    currentFireStreamElementInterval = _fireStreamElementIntervalStageThree;
+                                }
+                                Vector3 directionToPlayer = (new Vector3(_player.transform.position.x, transform.position.y, _player.transform.position.z) - transform.position).normalized;
+                                WVDBossFireStreamElement fireStreamElement = Instantiate(_fireStreamElementPrefab, new Vector3(transform.position.x, 0.0f, transform.position.z) + directionToPlayer * 0.5f, Quaternion.identity).GetComponent<WVDBossFireStreamElement>();
+                                fireStreamElement.SetParameters(directionToPlayer, currentFireStreamElementInterval, 0);
+                                TransitionToStateAfterDelay(BossFireStreamAttackState.BetweenAttacks, _fireStreamPostLaunchDelay);
+                                break;
+                            }
+                    }
+                //}
+                break;
 
         }
 
@@ -331,6 +416,16 @@ public class WVDBoss : WVDBaseEntity
             await Task.Yield();
         }
         _currentBossFireballAttackState = nextState;
+    }
+    async void TransitionToStateAfterDelay(BossFireStreamAttackState nextState, float delay)
+    {
+        _currentBossFireStreamAttackState = BossFireStreamAttackState.Transitional;
+        float endTime = Time.time + delay;
+        while (Time.time < endTime)
+        {
+            await Task.Yield();
+        }
+        _currentBossFireStreamAttackState = nextState;
     }
 
     async void LaunchFireballsInArc(int numFireballs)
