@@ -112,7 +112,31 @@ public class WVDBoss : WVDBaseEntity
     [SerializeField]
     float _fireStreamElementIntervalStageThree;
     BossFireStreamAttackState _currentBossFireStreamAttackState;
-    // NEXT how many streams, interval between successive elements spawning, then other pieces as from above + each stream will be given a direction and a time interval and a number (0). Dist + num for each stream is same
+
+    [Header("Battle - Healing")]
+    [SerializeField]
+    GameObject _healElementPrefab;
+    [SerializeField]
+    int _healElementNumberStageTwo;
+    [SerializeField]
+    int _healElementNumberStageThree;
+    [SerializeField]
+    int _stageTwoHealthThreshold;
+    [SerializeField]
+    int _stageThreeHealthThreshold;
+    [SerializeField]
+    GameObject _healElementRotateBaseObject; // put the animation rotate script on this 
+    [SerializeField]
+    float _healingInterval; // Each interval, heal 1 health
+    float _healTimer;
+    [SerializeField]
+    Transform _startingHealElementTransform;
+    [System.NonSerialized]
+    public int CurrentHealElementsActive;
+    [System.NonSerialized]
+    public bool BossInBattle;
+    Color _bossHealthUIOriginalColor;
+
 
 
     public BossState CurrentBossState 
@@ -131,6 +155,7 @@ public class WVDBoss : WVDBaseEntity
         _dungeonIdleTimer = Random.Range(_minDungeonIdleTime, _maxDungeonIdleTime);
         _combatIdleTimer = Random.Range(_minCombatIdleTime, _maxCombatIdleTime);
         _chosenDungeonWayPoint = _dungeonIdleWayPoints[Random.Range(0, _dungeonIdleWayPoints.Count)];
+        _bossHealthUIOriginalColor = HealthUIFill.color;
     }
 
     public override void Update()
@@ -205,6 +230,7 @@ public class WVDBoss : WVDBaseEntity
                 {
                     SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
                     _currentBossState = BossState.Idle;
+                    BossInBattle = true;
                     _bossCutsceneManagerScript.EndBossCutscene();
                 }
                 else
@@ -221,31 +247,51 @@ public class WVDBoss : WVDBaseEntity
                 {
                     _combatIdleTimer = Random.Range(_minCombatIdleTime, _maxCombatIdleTime);
 
-                    _currentBossState = BossState.FireStreamAttack;
-                    _currentFireStreamAttackNumber = 0;
-                    //_currentBossState = BossState.FireballAttack;
-                    //_currentFireballAttackNumber = 0;
-                    //int indexOfCurrentWayPoint = _battleWayPoints.IndexOf(_chosenBattleWayPoint);
-                    //int chosenIndex;
-                    //float rand = Random.Range(0.0f, 1.0f);
-                    //if (rand < 0.5f)
-                    //{
-                    //    chosenIndex = indexOfCurrentWayPoint + 1;
-                    //}
-                    //else
-                    //{
-                    //    chosenIndex = indexOfCurrentWayPoint - 1;
-                    //}
-                    //if (chosenIndex == -1)
-                    //{
-                    //    chosenIndex = _battleWayPoints.Count - 1;
-                    //}
-                    //else if (chosenIndex == _battleWayPoints.Count)
-                    //{
-                    //    chosenIndex = 0;
-                    //}
-                    //_chosenBattleWayPoint = _battleWayPoints[chosenIndex];
-                    //_movementVector = (_chosenBattleWayPoint.position - transform.position).normalized;
+                    if (_currentBossFightStage == BossFightStage.StageOne && CurrentHealth <= _stageTwoHealthThreshold)
+                    {
+                        _currentBossFightStage = BossFightStage.StageTwo;
+                        BeginHealingWithHealElementNumber(_healElementNumberStageTwo);
+                    }
+                    else if (_currentBossFightStage == BossFightStage.StageTwo && CurrentHealth <= _stageThreeHealthThreshold)
+                    {
+                        _currentBossFightStage = BossFightStage.StageThree;
+                        BeginHealingWithHealElementNumber(_healElementNumberStageThree);
+                    }
+                    else // pick either fire stream or fireball attack
+                    {
+                        if (Random.Range(0.0f, 1.0f) < 0.5f)
+                        {
+                            _currentBossState = BossState.FireStreamAttack;
+                            _currentFireStreamAttackNumber = 0;
+                        }
+
+                        else
+                        {
+                            _currentBossState = BossState.FireballAttack;
+                            _currentFireballAttackNumber = 0;
+                            int indexOfCurrentWayPoint = _battleWayPoints.IndexOf(_chosenBattleWayPoint);
+                            int chosenIndex;
+                            float rand = Random.Range(0.0f, 1.0f);
+                            if (rand < 0.5f)
+                            {
+                                chosenIndex = indexOfCurrentWayPoint + 1;
+                            }
+                            else
+                            {
+                                chosenIndex = indexOfCurrentWayPoint - 1;
+                            }
+                            if (chosenIndex == -1)
+                            {
+                                chosenIndex = _battleWayPoints.Count - 1;
+                            }
+                            else if (chosenIndex == _battleWayPoints.Count)
+                            {
+                                chosenIndex = 0;
+                            }
+                            _chosenBattleWayPoint = _battleWayPoints[chosenIndex];
+                            _movementVector = (_chosenBattleWayPoint.position - transform.position).normalized;
+                        }
+                    }
                 }
                 else
                 {
@@ -377,10 +423,58 @@ public class WVDBoss : WVDBaseEntity
                     }
                 //}
                 break;
-
+            case BossState.Healing:
+                LookAtPlayer();
+                if (CurrentHealElementsActive > 0)
+                {
+                    if (_healTimer < 0.0f)
+                    {
+                        _healTimer = _healingInterval;
+                        CurrentHealth++;
+                    }
+                    else
+                    {
+                        _healTimer -= Time.deltaTime;
+                    }
+                }
+                else
+                {
+                    SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
+                    _currentBossState = BossState.Idle;
+                    Invulnerable = false;
+                    HealthUIFill.color = _bossHealthUIOriginalColor;
+                    _healTimer = _healingInterval;
+                    _healElementRotateBaseObject.SetActive(false);
+                }
+                break;
+            case BossState.Victory:
+                SwitchToAnimation(WVDAnimationStrings.BossHealAnimation); // Also used for victory animation
+                // nothing else, absorbing state
+                break;
         }
 
 
+    }
+
+    void BeginHealingWithHealElementNumber(int elementNumber)
+    {
+        SwitchToAnimation(WVDAnimationStrings.BossHealAnimation);
+        _currentBossState = BossState.Healing;
+        Invulnerable = true;
+        HealthUIFill.color = Color.green;
+        _healTimer = _healingInterval;
+        _healElementRotateBaseObject.SetActive(true);
+        Vector3 backwardsDirection = (_startingHealElementTransform.position - transform.position).normalized; // behind the boss, this is where the first element starts
+        float arcIncrement = 360.0f / elementNumber;
+        float currentAngle = 0.0f;
+        for (int i = 0; i < elementNumber; i++)
+        {
+            WVDBossHealElement healElement = Instantiate(_healElementPrefab, transform.position, Quaternion.identity).GetComponent<WVDBossHealElement>();
+            healElement.SetParameters(Quaternion.Euler(0.0f, currentAngle, 0.0f) * backwardsDirection, this);
+            healElement.gameObject.transform.parent = _healElementRotateBaseObject.transform;
+            currentAngle += arcIncrement;
+            CurrentHealElementsActive++;
+        }
     }
 
     private void LookAtPlayer()
@@ -399,13 +493,16 @@ public class WVDBoss : WVDBaseEntity
 
     async void TransitionToStateAfterDelay(BossState nextState, float delay)
     {
-        _currentBossState = BossState.Transitional;
-        float endTime = Time.time + delay;
-        while (Time.time < endTime)
+        if (_currentBossState != BossState.Victory)
         {
-            await Task.Yield();
+            _currentBossState = BossState.Transitional;
+            float endTime = Time.time + delay;
+            while (Time.time < endTime)
+            {
+                await Task.Yield();
+            }
+            _currentBossState = nextState;
         }
-        _currentBossState = nextState;
     }
     async void TransitionToStateAfterDelay(BossFireballAttackState nextState, float delay)
     {
@@ -437,9 +534,12 @@ public class WVDBoss : WVDBaseEntity
         Vector3 middleFireballDirection = (new Vector3(_player.transform.position.x, transform.position.y, _player.transform.position.z) - _middleFireballFirePoint.position).normalized; 
         for (int i = 0; i < numFireballs; i++)
         {
-            WVDBossProjectile fireball = Instantiate(_fireballAttackPrefab, _middleFireballFirePoint.position, Quaternion.Euler(0.0f, currentAngle, 0.0f) * transform.rotation).GetComponent<WVDBossProjectile>();
-            fireball.SetProjectileDirection(Quaternion.Euler(0.0f, currentAngle, 0.0f) * middleFireballDirection);
-            fireball.SetProjectileEffects(new WVDAttackEffects());
+            if (_currentBossState != BossState.Victory)
+            {
+                WVDBossProjectile fireball = Instantiate(_fireballAttackPrefab, _middleFireballFirePoint.position, Quaternion.Euler(0.0f, currentAngle, 0.0f) * transform.rotation).GetComponent<WVDBossProjectile>();
+                fireball.SetProjectileDirection(Quaternion.Euler(0.0f, currentAngle, 0.0f) * middleFireballDirection);
+                fireball.SetProjectileEffects(new WVDAttackEffects());
+            }
 
             currentAngle += arcIncrement;
             float endTime = Time.time + timeIncrement;
@@ -447,6 +547,17 @@ public class WVDBoss : WVDBaseEntity
             {
                 await Task.Yield();
             }
+        }
+    }
+    public void TakeDamage(int damage) // Boss will be immune to effects so just takes damage
+    {
+        print($"Boss took {damage} damage");
+        CurrentHealth -= damage;
+        if (IsFullyDamaged() && _currentBossState != BossState.Victory)
+        {
+            _currentBossState = BossState.Dead;
+            SwitchToAnimation(WVDAnimationStrings.BossDieAnimation);
+            // todo put in victory screen
         }
     }
 
@@ -466,9 +577,11 @@ public class WVDBoss : WVDBaseEntity
 
         // During combat
         Idle,
-        FireballAttack, // fireballs can destroy trees (they burn for a moment, turning black, before vanishing)
+        FireballAttack,
         FireStreamAttack,
         Healing,
+        Dead,
+        Victory,
 
         Transitional // will move to another state after a small delay
     }

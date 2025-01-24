@@ -22,6 +22,9 @@ TagManager:
   - EnemyHitBox
   - BossProjectile
   - Tree
+  - BossFireStream
+  - Boss
+  - Flammable
   layers:
   - Default
   - TransparentFX

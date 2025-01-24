@@ -33,7 +33,8 @@ public class WVDPlayerProjectile : WVDBaseProjectile
             other.gameObject.CompareTag("PickUpTrigger") ||
             other.gameObject.CompareTag("PowerUp") ||
             other.gameObject.CompareTag("Fountain") || 
-            other.gameObject.CompareTag("EnemyHitBox"))
+            other.gameObject.CompareTag("EnemyHitBox") ||
+            other.gameObject.CompareTag("BossFireStream"))
         {
             return;
         }
@@ -55,6 +56,11 @@ public class WVDPlayerProjectile : WVDBaseProjectile
                 }
                 return;
             }
+        }
+        if (other.gameObject.CompareTag("Boss"))
+        {
+            other.gameObject.GetComponent<WVDBoss>().TakeDamage(Damage);
+
         }
         if (!other.gameObject.CompareTag("InvisibleWall"))
         {

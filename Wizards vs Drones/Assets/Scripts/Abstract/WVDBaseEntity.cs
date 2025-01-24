@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,8 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
     int _maxHealth;
     [SerializeField]
     Slider _healthUI;
+    [SerializeField]
+    protected Image HealthUIFill;
 
     public int CurrentHealth 
     { 
@@ -67,8 +70,9 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
         set
         {
             print($"Invulnerable: {value}");
-            _invulnerableFX.SetActive(value);
+            _invulnerableFX?.SetActive(value);
             _invulnerable = value;
+
         }
     }
 

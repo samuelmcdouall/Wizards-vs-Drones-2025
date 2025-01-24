@@ -78,6 +78,8 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     List<IWVDDamageable> _drones = new List<IWVDDamageable>();
     [SerializeField]
     WVDGameOverManager _gameOverManagerScript;
+    [SerializeField]
+    WVDBoss _bossScript;
 
 
     [Header("Upgrades")]
@@ -322,6 +324,10 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         foreach(IWVDDamageable drone in _drones)
         {
             drone.GetTransform().gameObject.GetComponent<WVDBaseDrone>().CurrentDroneState = WVDBaseDrone.DroneState.Stopped;
+        }
+        if (_bossScript.BossInBattle)
+        {
+            _bossScript.CurrentBossState = WVDBoss.BossState.Victory;
         }
         _gameOverManagerScript.TriggerGameOver();
 

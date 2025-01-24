@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class WVDBossFireStreamElement : MonoBehaviour
 {
-    [System.NonSerialized]
-    public Vector3 Direction;
-    [System.NonSerialized]
-    public float TimeIntervalToSpawnNextElement;
-    [System.NonSerialized]
-    public int ElementNumber;
+    Vector3 _direction;
+    float _timeIntervalToSpawnNextElement;
+    int _elementNumber;
     [SerializeField]
     float _distance;
     [SerializeField]
@@ -27,25 +24,26 @@ public class WVDBossFireStreamElement : MonoBehaviour
 
     void Start()
     {
+        gameObject.name = "BossFireStreamElement (Clone)"; // So we don't get stupidly long names in the hierarchy
         _canDamage = true;
         Destroy(gameObject, _lifeTime);
-        if (ElementNumber < _maxNumberElements)
+        if (_elementNumber < _maxNumberElements)
         {
-            Invoke("SpawnNextElement", TimeIntervalToSpawnNextElement);
+            Invoke("SpawnNextElement", _timeIntervalToSpawnNextElement);
         }
     }
 
     public void SetParameters(Vector3 direction, float timeInterval, int elementNumber)
     {
-        Direction = direction.normalized;
-        TimeIntervalToSpawnNextElement = timeInterval;
-        ElementNumber = elementNumber;
+        _direction = direction.normalized;
+        _timeIntervalToSpawnNextElement = timeInterval;
+        _elementNumber = elementNumber;
     }
     
     void SpawnNextElement()
     {
-        WVDBossFireStreamElement fireStreamElement = Instantiate(_fireStreamElementPrefab, transform.position + Direction * _distance, Quaternion.identity).GetComponent<WVDBossFireStreamElement>();
-        fireStreamElement.SetParameters(Direction, TimeIntervalToSpawnNextElement, ElementNumber++);
+        WVDBossFireStreamElement fireStreamElement = Instantiate(_fireStreamElementPrefab, transform.position + _direction * _distance, Quaternion.identity).GetComponent<WVDBossFireStreamElement>();
+        fireStreamElement.SetParameters(_direction, _timeIntervalToSpawnNextElement, _elementNumber++);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -55,7 +53,21 @@ public class WVDBossFireStreamElement : MonoBehaviour
             other.GetComponent<WVDPlayer>().TakeDamage(_damage);
             _canDamage = false;
             Invoke("CanDamageAgain", _canDamageInterval);
-        }   
+        }
+        else if (other.gameObject.CompareTag("Flammable"))
+        {
+            other.gameObject.GetComponent<WVDFlammable>().BurnObject(transform.position);
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player") && _canDamage)
+        {
+            other.GetComponent<WVDPlayer>().TakeDamage(_damage);
+            _canDamage = false;
+            Invoke("CanDamageAgain", _canDamageInterval);
+        }
     }
 
     void CanDamageAgain()

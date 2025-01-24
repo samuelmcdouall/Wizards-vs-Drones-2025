@@ -14,7 +14,8 @@ public class WVDBossProjectile : WVDBaseProjectile
         print("PROJECTILE HIT: " + other.gameObject.name);
         if (
             other.gameObject.CompareTag("PickUpTrigger") ||
-            other.gameObject.CompareTag("Fountain"))
+            other.gameObject.CompareTag("Fountain") ||
+            other.gameObject.CompareTag("Boss"))
         {
             return;
         }
@@ -22,9 +23,9 @@ public class WVDBossProjectile : WVDBaseProjectile
         {
             other.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
         }
-        else if (other.gameObject.CompareTag("Tree"))
+        else if (other.gameObject.CompareTag("Flammable"))
         {
-            other.gameObject.GetComponent<WVDTree>().BurnTree(transform.position);
+            other.gameObject.GetComponent<WVDFlammable>().BurnObject(transform.position);
         }
         if (!other.gameObject.CompareTag("InvisibleWall"))
         {
