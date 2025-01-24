@@ -9,15 +9,17 @@ using Unity.VisualScripting;
 public class WVDBoss : WVDBaseEntity
 {
     [Header("General - Boss")]
+    [SerializeField]
+    GameObject _player;
     BossState _currentBossState;
 
     [Header("Movement - Boss")]
     Vector3 _movementVector;
 
-    [Header("Dungeon Idle - Boss")]
+    [Header("Dungeon Idle")]
     [SerializeField]
     List<Transform> _dungeonIdleWayPoints;
-    Transform _chosenWayPoint;
+    Transform _chosenDungeonWayPoint;
     [SerializeField]
     float _wayPointThreshold;
     [SerializeField]
@@ -26,7 +28,7 @@ public class WVDBoss : WVDBaseEntity
     float _maxDungeonIdleTime;
     float _dungeonIdleTimer;
 
-    [Header("Dungeon Escape - Boss")]
+    [Header("Dungeon Escape")]
     [SerializeField]
     Transform _dungeonEscapeWayPoint1;
     [SerializeField]
@@ -46,6 +48,53 @@ public class WVDBoss : WVDBaseEntity
     [SerializeField]
     WVDBossCutsceneManager _bossCutsceneManagerScript;
 
+    [Header("Battle - General")]
+    [SerializeField]
+    float _minCombatIdleTime;
+    [SerializeField]
+    float _maxCombatIdleTime;
+    float _combatIdleTimer;
+    [SerializeField]
+    List<Transform> _battleWayPoints;
+    Transform _chosenBattleWayPoint;
+    BossFightStage _currentBossFightStage;
+
+    [Header("Battle - Fireball Attack")]
+    [SerializeField]
+    GameObject _fireballAttackPrefab;
+    [SerializeField]
+    float _fireballInBetweenAttacksDelay;
+    [SerializeField]
+    float _fireballPreLaunchDelay;
+    [SerializeField]
+    float _fireballTotalLaunchInterval;
+    [SerializeField]
+    float _fireballPostLaunchDelay;
+    [SerializeField]
+    int _fireballAttacksNumberStageOne;
+    [SerializeField]
+    int _fireballAttacksNumberStageTwo;
+    [SerializeField]
+    int _fireballAttacksNumberStageThree;
+    [SerializeField]
+    int _fireballsInArcNumberStageOne;
+    [SerializeField]
+    int _fireballsInArcNumberStageTwo;
+    [SerializeField]
+    int _fireballsInArcNumberStageThree;
+    int _currentFireballAttackNumber;
+    [SerializeField]
+    float _fireballLaunchArc;
+    [SerializeField]
+    Transform _middleFireballFirePoint;
+    BossFireballAttackState _currentBossFireballAttackState;
+
+    [Header("Battle - Fire Stream Attack")]
+    [SerializeField]
+    GameObject _fireStreamPrefab;
+    
+
+
     public BossState CurrentBossState 
     { 
         get => _currentBossState; 
@@ -56,8 +105,11 @@ public class WVDBoss : WVDBaseEntity
     {
         base.Start();
         _currentBossState = BossState.DungeonIdle;
+        _currentBossFightStage = BossFightStage.StageOne;
+        _currentBossFireballAttackState = BossFireballAttackState.BetweenAttacks;
         _dungeonIdleTimer = Random.Range(_minDungeonIdleTime, _maxDungeonIdleTime);
-        _chosenWayPoint = _dungeonIdleWayPoints[Random.Range(0, _dungeonIdleWayPoints.Count)];
+        _combatIdleTimer = Random.Range(_minCombatIdleTime, _maxCombatIdleTime);
+        _chosenDungeonWayPoint = _dungeonIdleWayPoints[Random.Range(0, _dungeonIdleWayPoints.Count)];
     }
 
     public override void Update()
@@ -71,13 +123,13 @@ public class WVDBoss : WVDBaseEntity
                     {
                         _dungeonIdleTimer = Random.Range(_minDungeonIdleTime, _maxDungeonIdleTime);
                         Transform initialChosenWayPoint = _dungeonIdleWayPoints[Random.Range(0, _dungeonIdleWayPoints.Count)];
-                        while (initialChosenWayPoint == _chosenWayPoint)
+                        while (initialChosenWayPoint == _chosenDungeonWayPoint)
                         {
                             initialChosenWayPoint = _dungeonIdleWayPoints[Random.Range(0, _dungeonIdleWayPoints.Count)]; // making sure we don't choose the same one
                         }
-                        _chosenWayPoint = initialChosenWayPoint;
-                        _movementVector = (_chosenWayPoint.position - transform.position).normalized;
-                        transform.LookAt(_chosenWayPoint);
+                        _chosenDungeonWayPoint = initialChosenWayPoint;
+                        _movementVector = (_chosenDungeonWayPoint.position - transform.position).normalized;
+                        transform.LookAt(_chosenDungeonWayPoint);
                         SwitchToAnimation(WVDAnimationStrings.BossFlyingAnimation);
                         _currentBossState = BossState.DungeonFlying;
                     }
@@ -90,7 +142,7 @@ public class WVDBoss : WVDBaseEntity
                 }
 
             case BossState.DungeonFlying:
-                if (Vector3.Distance(transform.position, _chosenWayPoint.position) < _wayPointThreshold)
+                if (Vector3.Distance(transform.position, _chosenDungeonWayPoint.position) < _wayPointThreshold)
                 {
                     SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
                     _currentBossState = BossState.DungeonIdle;
@@ -120,7 +172,7 @@ public class WVDBoss : WVDBaseEntity
                 break;
             case BossState.DungeonDoorExplodes:
                 _door.SetActive(false);
-                Instantiate(_doorExplosionFX, _door.transform.position, Quaternion.identity);
+                Instantiate(_doorExplosionFX, _door.transform.position + new Vector3(0.0f, -2.5f, 0.0f), Quaternion.identity);
                 TransitionToStateAfterDelay(BossState.DungeonBreakingDoorPart2, _destroyingDoorDelay2);
                 break;
             case BossState.DungeonBreakingDoorPart2:
@@ -144,6 +196,101 @@ public class WVDBoss : WVDBaseEntity
                 // Don't do anything, will move to another state shortly
                 break;
             case BossState.Idle:
+                if (_combatIdleTimer < 0.0f)
+                {
+                    _combatIdleTimer = Random.Range(_minCombatIdleTime, _maxCombatIdleTime);
+                    _currentBossState = BossState.FireStreamAttack;
+                    //_currentBossState = BossState.FireballAttack;
+                    //_currentFireballAttackNumber = 0;
+                    //int indexOfCurrentWayPoint = _battleWayPoints.IndexOf(_chosenBattleWayPoint);
+                    //int chosenIndex;
+                    //float rand = Random.Range(0.0f, 1.0f);
+                    //if (rand < 0.5f)
+                    //{
+                    //    chosenIndex = indexOfCurrentWayPoint + 1;
+                    //}
+                    //else
+                    //{
+                    //    chosenIndex = indexOfCurrentWayPoint - 1;
+                    //}
+                    //if (chosenIndex == -1)
+                    //{
+                    //    chosenIndex = _battleWayPoints.Count - 1;
+                    //}
+                    //else if (chosenIndex == _battleWayPoints.Count)
+                    //{
+                    //    chosenIndex = 0;
+                    //}
+                    //_chosenBattleWayPoint = _battleWayPoints[chosenIndex];
+                    //_movementVector = (_chosenBattleWayPoint.position - transform.position).normalized;
+                }
+                else
+                {
+                    LookAtPlayer();
+                    _combatIdleTimer -= Time.deltaTime;
+                }
+                break;
+
+            case BossState.FireballAttack:
+
+                if (Vector3.Distance(transform.position, _chosenBattleWayPoint.position) < _wayPointThreshold)
+                {
+                    SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
+                    _currentBossState = BossState.Idle;
+                    _currentBossFireballAttackState = BossFireballAttackState.BetweenAttacks;
+                }
+                else
+                {
+                    transform.position += _movementVector * MaxNormalSpeed * Time.deltaTime;
+                    LookAtPlayer();
+                    switch (_currentBossFireballAttackState)
+                    {
+                        case BossFireballAttackState.BetweenAttacks:
+                            {
+                                SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
+                                int currentFireballsNumber = _fireballAttacksNumberStageOne;
+                                if (_currentBossFightStage == BossFightStage.StageTwo)
+                                {
+                                    currentFireballsNumber = _fireballAttacksNumberStageTwo;
+                                }
+                                else if (_currentBossFightStage == BossFightStage.StageThree)
+                                {
+                                    currentFireballsNumber = _fireballAttacksNumberStageThree;
+                                }
+                                if (_currentFireballAttackNumber < currentFireballsNumber)
+                                {
+                                    _currentFireballAttackNumber++;
+                                    TransitionToStateAfterDelay(BossFireballAttackState.ChargingUpFireball, _fireballInBetweenAttacksDelay);
+                                }
+                                else
+                                {
+                                    // remain in BetweenAttacks state, will do so until reached waypoint
+                                }
+
+                                break;
+                            }
+
+                        case BossFireballAttackState.ChargingUpFireball:
+                            SwitchToAnimation(WVDAnimationStrings.BossFireballAttackAnimation);
+                            TransitionToStateAfterDelay(BossFireballAttackState.LaunchingFireball, _fireballPreLaunchDelay);
+                            break;
+                        case BossFireballAttackState.LaunchingFireball:
+                            {
+                                int currentFireballsInArc = _fireballsInArcNumberStageOne;
+                                if (_currentBossFightStage == BossFightStage.StageTwo)
+                                {
+                                    currentFireballsInArc = _fireballsInArcNumberStageTwo;
+                                }
+                                else if (_currentBossFightStage == BossFightStage.StageThree)
+                                {
+                                    currentFireballsInArc = _fireballsInArcNumberStageThree;
+                                }
+                                LaunchFireballsInArc(currentFireballsInArc);
+                                TransitionToStateAfterDelay(BossFireballAttackState.BetweenAttacks, _fireballPostLaunchDelay);
+                                break;
+                            }
+                    }
+                }
                 break;
 
         }
@@ -151,9 +298,18 @@ public class WVDBoss : WVDBaseEntity
 
     }
 
+    private void LookAtPlayer()
+    {
+        transform.LookAt(new Vector3(_player.transform.position.x, transform.position.y, _player.transform.position.z));
+    }
+
     public void CalculateMovementVectorToDoor()
     {
         _movementVector = (_dungeonEscapeWayPoint1.position - transform.position).normalized;
+    }
+    public void SetCurrentBattleWayPoint(Transform wayPoint)
+    {
+        _chosenBattleWayPoint = wayPoint;
     }
 
     async void TransitionToStateAfterDelay(BossState nextState, float delay)
@@ -165,6 +321,38 @@ public class WVDBoss : WVDBaseEntity
             await Task.Yield();
         }
         _currentBossState = nextState;
+    }
+    async void TransitionToStateAfterDelay(BossFireballAttackState nextState, float delay)
+    {
+        _currentBossFireballAttackState = BossFireballAttackState.Transitional;
+        float endTime = Time.time + delay;
+        while (Time.time < endTime)
+        {
+            await Task.Yield();
+        }
+        _currentBossFireballAttackState = nextState;
+    }
+
+    async void LaunchFireballsInArc(int numFireballs)
+    {
+        float timeIncrement = _fireballTotalLaunchInterval / numFireballs;
+        float arcIncrement = _fireballLaunchArc / (numFireballs - 1);
+        float currentAngle = -(_fireballLaunchArc / 2.0f);
+
+        Vector3 middleFireballDirection = (new Vector3(_player.transform.position.x, transform.position.y, _player.transform.position.z) - _middleFireballFirePoint.position).normalized; 
+        for (int i = 0; i < numFireballs; i++)
+        {
+            WVDBossProjectile fireball = Instantiate(_fireballAttackPrefab, _middleFireballFirePoint.position, Quaternion.Euler(0.0f, currentAngle, 0.0f) * transform.rotation).GetComponent<WVDBossProjectile>();
+            fireball.SetProjectileDirection(Quaternion.Euler(0.0f, currentAngle, 0.0f) * middleFireballDirection);
+            fireball.SetProjectileEffects(new WVDAttackEffects());
+
+            currentAngle += arcIncrement;
+            float endTime = Time.time + timeIncrement;
+            while (Time.time < endTime)
+            {
+                await Task.Yield();
+            }
+        }
     }
 
 
@@ -183,10 +371,35 @@ public class WVDBoss : WVDBaseEntity
 
         // During combat
         Idle,
-        FireballAttacking, // fireballs can destroy trees (they burn for a moment, turning black, before vanishing)
-        Flamestrike,
+        FireballAttack, // fireballs can destroy trees (they burn for a moment, turning black, before vanishing)
+        FireStreamAttack,
         Healing,
 
         Transitional // will move to another state after a small delay
+    }
+
+    public enum BossFireballAttackState
+    {
+        BetweenAttacks,
+        ChargingUpFireball,
+        LaunchingFireball,
+        WindingDownFireball, // Rest of animation, might not need todo
+
+        Transitional
+    }
+    public enum BossFireStreamAttackState
+    {
+        BetweenAttacks,
+        ChargingUpFireStream,
+        LaunchingFireStream,
+
+        Transitional
+    }
+
+    public enum BossFightStage
+    {
+        StageOne,
+        StageTwo,
+        StageThree
     }
 }

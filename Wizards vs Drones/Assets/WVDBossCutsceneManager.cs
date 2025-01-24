@@ -56,7 +56,9 @@ public class WVDBossCutsceneManager : MonoBehaviour
         {
             barrier.SetActive(true);
         }
-        _bossScript.gameObject.transform.position =_bossStartingPositions[Random.Range(0, _bossStartingPositions.Count)].position;
+        int rand = Random.Range(0, _bossStartingPositions.Count);
+        _bossScript.gameObject.transform.position =_bossStartingPositions[rand].position;
+        _bossScript.SetCurrentBattleWayPoint(_bossStartingPositions[rand]);
         _player.GetComponent<CharacterController>().enabled = false;
         _player.transform.position = _playerStartingPosition.position;
         _player.GetComponent<CharacterController>().enabled = true;
