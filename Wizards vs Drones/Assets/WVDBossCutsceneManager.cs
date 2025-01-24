@@ -25,6 +25,8 @@ public class WVDBossCutsceneManager : MonoBehaviour
     GameObject _playerCamera;
     [SerializeField]
     GameObject _canvas;
+    [SerializeField]
+    GameObject _bossHealthBar;
     void Start()
     {
         
@@ -65,5 +67,6 @@ public class WVDBossCutsceneManager : MonoBehaviour
         _playerCamera.SetActive(true);
         _cutsceneCamera.SetActive(false);
         _canvas.SetActive(true);
+        _bossHealthBar.SetActive(true);
     }
 }
