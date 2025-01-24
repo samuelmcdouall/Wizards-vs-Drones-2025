@@ -370,57 +370,58 @@ public class WVDBoss : WVDBaseEntity
                 //}
                 //else
                 //{
-                    //transform.position += _movementVector * MaxNormalSpeed * Time.deltaTime;
-                    //LookAtPlayer();
-                    switch (_currentBossFireStreamAttackState)
-                    {
-                        case BossFireStreamAttackState.BetweenAttacks:
+                //transform.position += _movementVector * MaxNormalSpeed * Time.deltaTime;
+                //LookAtPlayer();
+                LookAtPlayer();
+                switch (_currentBossFireStreamAttackState)
+                {
+                    case BossFireStreamAttackState.BetweenAttacks:
+                        {
+                            SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
+                            int currentFireStreamsNumber = _fireStreamsNumberStageOne;
+                            if (_currentBossFightStage == BossFightStage.StageTwo)
                             {
-                                SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
-                                int currentFireStreamsNumber = _fireStreamsNumberStageOne;
-                                if (_currentBossFightStage == BossFightStage.StageTwo)
-                                {
-                                    currentFireStreamsNumber = _fireStreamsNumberStageTwo;
-                                }
-                                else if (_currentBossFightStage == BossFightStage.StageThree)
-                                {
-                                    currentFireStreamsNumber = _fireStreamsNumberStageThree;
-                                }
-                                if (_currentFireStreamAttackNumber < currentFireStreamsNumber)
-                                {
-                                    _currentFireStreamAttackNumber++;
-                                    TransitionToStateAfterDelay(BossFireStreamAttackState.ChargingUpFireStream, _fireStreamInBetweenAttacksDelay);
-                                }
-                                else
-                                {
-                                    _currentBossState = BossState.Idle;
-                                }
-
-                                break;
+                                currentFireStreamsNumber = _fireStreamsNumberStageTwo;
+                            }
+                            else if (_currentBossFightStage == BossFightStage.StageThree)
+                            {
+                                currentFireStreamsNumber = _fireStreamsNumberStageThree;
+                            }
+                            if (_currentFireStreamAttackNumber < currentFireStreamsNumber)
+                            {
+                                _currentFireStreamAttackNumber++;
+                                TransitionToStateAfterDelay(BossFireStreamAttackState.ChargingUpFireStream, _fireStreamInBetweenAttacksDelay);
+                            }
+                            else
+                            {
+                                _currentBossState = BossState.Idle;
                             }
 
-                        case BossFireStreamAttackState.ChargingUpFireStream:
-                            SwitchToAnimation(WVDAnimationStrings.BossTridentAttackAnimation);
-                            TransitionToStateAfterDelay(BossFireStreamAttackState.LaunchingFireStream, _fireStreamPreLaunchDelay);
                             break;
-                        case BossFireStreamAttackState.LaunchingFireStream:
+                        }
+
+                    case BossFireStreamAttackState.ChargingUpFireStream:
+                        SwitchToAnimation(WVDAnimationStrings.BossTridentAttackAnimation);
+                        TransitionToStateAfterDelay(BossFireStreamAttackState.LaunchingFireStream, _fireStreamPreLaunchDelay);
+                        break;
+                    case BossFireStreamAttackState.LaunchingFireStream:
+                        {
+                            float currentFireStreamElementInterval = _fireStreamElementIntervalStageOne;
+                            if (_currentBossFightStage == BossFightStage.StageTwo)
                             {
-                                float currentFireStreamElementInterval = _fireStreamElementIntervalStageOne;
-                                if (_currentBossFightStage == BossFightStage.StageTwo)
-                                {
-                                    currentFireStreamElementInterval = _fireStreamElementIntervalStageTwo;
-                                }
-                                else if (_currentBossFightStage == BossFightStage.StageThree)
-                                {
-                                    currentFireStreamElementInterval = _fireStreamElementIntervalStageThree;
-                                }
-                                Vector3 directionToPlayer = (new Vector3(_player.transform.position.x, transform.position.y, _player.transform.position.z) - transform.position).normalized;
-                                WVDBossFireStreamElement fireStreamElement = Instantiate(_fireStreamElementPrefab, new Vector3(transform.position.x, 0.0f, transform.position.z) + directionToPlayer * 0.5f, Quaternion.identity).GetComponent<WVDBossFireStreamElement>();
-                                fireStreamElement.SetParameters(directionToPlayer, currentFireStreamElementInterval, 0);
-                                TransitionToStateAfterDelay(BossFireStreamAttackState.BetweenAttacks, _fireStreamPostLaunchDelay);
-                                break;
+                                currentFireStreamElementInterval = _fireStreamElementIntervalStageTwo;
                             }
-                    }
+                            else if (_currentBossFightStage == BossFightStage.StageThree)
+                            {
+                                currentFireStreamElementInterval = _fireStreamElementIntervalStageThree;
+                            }
+                            Vector3 directionToPlayer = (new Vector3(_player.transform.position.x, transform.position.y, _player.transform.position.z) - transform.position).normalized;
+                            WVDBossFireStreamElement fireStreamElement = Instantiate(_fireStreamElementPrefab, new Vector3(transform.position.x, 0.0f, transform.position.z) + directionToPlayer * 0.5f, Quaternion.identity).GetComponent<WVDBossFireStreamElement>();
+                            fireStreamElement.SetParameters(directionToPlayer, currentFireStreamElementInterval, 0);
+                            TransitionToStateAfterDelay(BossFireStreamAttackState.BetweenAttacks, _fireStreamPostLaunchDelay);
+                            break;
+                        }
+                }
                 //}
                 break;
             case BossState.Healing:
