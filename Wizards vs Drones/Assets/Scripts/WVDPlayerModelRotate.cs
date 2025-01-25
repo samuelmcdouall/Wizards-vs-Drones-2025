@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class WVDPlayerModelRotate : MonoBehaviour
 {
-
+    [SerializeField]
+    WVDOptionsManager _optionsManagerScript;
 
 
     void Start()
@@ -17,7 +18,7 @@ public class WVDPlayerModelRotate : MonoBehaviour
     {
         if (WVDFunctionsCheck.PlayerInputsAllowed())
         {
-            transform.Rotate(0.0f, Input.GetAxis("Mouse X") * 10.0f, 0.0f); // todo put in mouse sensitivity
+            transform.Rotate(0.0f, Input.GetAxis("Mouse X") * _optionsManagerScript.MouseSensitivity, 0.0f); // todo put in mouse sensitivity
         }
     }
 }

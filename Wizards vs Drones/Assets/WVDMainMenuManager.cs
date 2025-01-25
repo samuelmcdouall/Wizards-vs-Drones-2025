@@ -12,7 +12,7 @@ public class WVDMainMenuManager : MonoBehaviour
     [SerializeField]
     GameObject _gameModeScreen;
     [SerializeField]
-    GameObject _optionsModeScreen;
+    GameObject _optionsScreen;
     [SerializeField]
     Image _whiteFadeScreen;
     [SerializeField]
@@ -21,8 +21,14 @@ public class WVDMainMenuManager : MonoBehaviour
     AudioSource _musicAS;
     [SerializeField]
     float _musicFadePeriod;
+    [SerializeField]
+    WVDOptionsManager _optionsManagerScript;
 
 
+    void Start()
+    {
+
+    }
     public void WVDClickPlayButton()
     {
         _mainMenuScreen.SetActive(false);
@@ -40,10 +46,22 @@ public class WVDMainMenuManager : MonoBehaviour
     {
         _mainMenuScreen.SetActive(true);
         _gameModeScreen.SetActive(false);
-        _optionsModeScreen.SetActive(false);
+        _optionsScreen.SetActive(false);
     }
 
-    // todo music controls next + put in place for mouse sensitivity, then put in a system for swapping out between the different game/shop/boss music
+    public void WVDClickOptionsButton()
+    {
+        _mainMenuScreen.SetActive(false);
+        _optionsScreen.SetActive(true);
+    }
+
+    public void WVDChangeMusicSlider()
+    {
+        _optionsManagerScript.MusicVolume = _optionsManagerScript.MusicSlider.value;
+        _musicAS.volume = _optionsManagerScript.MusicVolume;
+        PlayerPrefs.SetFloat(WVDOptionsStrings.MusicVolume, _optionsManagerScript.MusicVolume);
+        PlayerPrefs.Save();
+    }
 
     async void FadeToWhite()
     {
@@ -51,7 +69,6 @@ public class WVDMainMenuManager : MonoBehaviour
         while (fadeInTimer < _whiteFadeDuration)
         {
             float opacity = Mathf.Lerp(0.0f, 1.0f, fadeInTimer / _whiteFadeDuration);
-            print("op: " + opacity);
             _whiteFadeScreen.color = new Color(1.0f,1.0f,1.0f, opacity);
             fadeInTimer += Time.deltaTime;
             await Task.Yield();
@@ -63,7 +80,7 @@ public class WVDMainMenuManager : MonoBehaviour
     async void FadeMusicOut()
     {
         float fadeOutTimer = 0.0f;
-        float fadeRate = _musicAS.volume * (1.0f / _musicFadePeriod);
+        float fadeRate = _optionsManagerScript.MusicVolume * (1.0f / _musicFadePeriod);
         while (fadeOutTimer < _musicFadePeriod)
         {
             _musicAS.volume -= fadeRate * Time.deltaTime;
@@ -71,6 +88,20 @@ public class WVDMainMenuManager : MonoBehaviour
             await Task.Yield();
         }
         _musicAS.volume = 0.0f;
+    }
+    public void FadeMusicIn() // keep the rest here in case want to fade in, but just having immediately play sounds better really for the main menu (if want it back, need to make this function async)
+    {
+        //_musicAS.volume = 0.0f;
+        //float fadeInTimer = 0.0f;
+        //float fadeRate = _optionsManagerScript.MusicVolume * (1.0f / _musicFadePeriod);
+        //while (fadeInTimer < _musicFadePeriod)
+        //{
+        //    _musicAS.volume += fadeRate * Time.deltaTime;
+        //    fadeInTimer += Time.deltaTime;
+        //    await Task.Yield();
+        //}
+        _musicAS.volume = _optionsManagerScript.MusicVolume; 
+
     }
 
 

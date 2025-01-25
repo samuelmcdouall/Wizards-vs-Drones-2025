@@ -15,6 +15,9 @@ public class WVDPlayerCameraRotate : MonoBehaviour
     [SerializeField]
     WVDPlayerInputs _playerMovementScript;
 
+    [SerializeField]
+    WVDOptionsManager _optionsManagerScript;
+
     
     void Update()
     {
@@ -30,8 +33,8 @@ public class WVDPlayerCameraRotate : MonoBehaviour
 
     void GetMouseInput()
     {
-        _mouseX += Input.GetAxis("Mouse X") * 10.0f; // todo put in mouse sensitivity setting here
-        _mouseY -= Input.GetAxis("Mouse Y") * 10.0f; // todo put in mouse sensitivity setting here
+        _mouseX += Input.GetAxis("Mouse X") * _optionsManagerScript.MouseSensitivity; // todo put in mouse sensitivity setting here
+        _mouseY -= Input.GetAxis("Mouse Y") * _optionsManagerScript.MouseSensitivity; // todo put in mouse sensitivity setting here
         _mouseY = Mathf.Clamp(_mouseY, _mouseYMinClamp, _mouseYMaxClamp);
     }
 }

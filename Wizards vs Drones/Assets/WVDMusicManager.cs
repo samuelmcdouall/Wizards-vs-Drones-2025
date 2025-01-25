@@ -21,7 +21,8 @@ public class WVDMusicManager : MonoBehaviour
     float _victoryMusicDelay;
     [SerializeField]
     float _musicFadePeriod;
-    public float CurrentSetVolume; // this will need to change as the volume changes in pause menu
+    [SerializeField]
+    WVDOptionsManager _optionsManagerScript;
     void Start()
     {
 
@@ -35,11 +36,10 @@ public class WVDMusicManager : MonoBehaviour
     }
 
     public void InitialMusicSetup() // called from other Start function
-    {
-        //CurrentSetVolume = set to what is in player prefs for music volume
-        CurrentSetVolume = 1.0f; // just for the moment todo set to above
+    {        
         _currentCombatMusicIndex = Random.Range(0, _combatMusic.Count);
         _currentShopMusicIndex = Random.Range(0, _shopMusic.Count);
+
     }
 
     public void FadeCurrentMusicOutAndBossMusicIn()
@@ -94,7 +94,7 @@ public class WVDMusicManager : MonoBehaviour
     public async void FadeCurrentMusicOutAndNewMusicIn(AudioClip clip)
     {
         float fadeOutTimer = 0.0f;
-        float fadeRate = _musicAS.volume * (1.0f / _musicFadePeriod);
+        float fadeRate = _optionsManagerScript.MusicVolume * (1.0f / _musicFadePeriod);
         while (fadeOutTimer < _musicFadePeriod)
         {
             _musicAS.volume -= fadeRate * Time.deltaTime;
@@ -111,13 +111,13 @@ public class WVDMusicManager : MonoBehaviour
         _musicAS.clip = clip;
         _musicAS.Play();
         float fadeInTimer = 0.0f;
-        float fadeRate = CurrentSetVolume * (1.0f / _musicFadePeriod);
+        float fadeRate = _optionsManagerScript.MusicVolume * (1.0f / _musicFadePeriod);
         while (fadeInTimer < _musicFadePeriod)
         {
             _musicAS.volume += fadeRate * Time.deltaTime;
             fadeInTimer += Time.deltaTime;
             await Task.Yield();
         }
-        _musicAS.volume = CurrentSetVolume;
+        _musicAS.volume = _optionsManagerScript.MusicVolume;
     }
 }
