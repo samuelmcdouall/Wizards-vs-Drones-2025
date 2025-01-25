@@ -26,6 +26,8 @@ public class WVDLevelManager : MonoBehaviour
     WVDBossCutsceneManager _bossCutsceneManagerScript;
     [SerializeField]
     float _bossCutsceneTriggerDelay;
+    [SerializeField]
+    WVDMusicManager _musicManagerScript;
 
     //public delegate void NotifyAddNewSection(UnlockableSections section); // todo can do this with delegates/events but not really worth it 
     //public event NotifyAddNewSection OnAddNewSection;
@@ -154,6 +156,7 @@ public class WVDLevelManager : MonoBehaviour
         _powerUpSpawnerScript.Spawning = false;
         _playerScript.CurrentHealth = _playerScript.MaxHealth;
         _skipShopGameObject.SetActive(true);
+        _musicManagerScript.FadeCurrentMusicOutAndNewMusicIn(_musicManagerScript.PickOtherShopMusicClip());
     }
 
     public void StartNewLevel()
@@ -191,11 +194,13 @@ public class WVDLevelManager : MonoBehaviour
             _droneSpawnerScript.Spawning = true;
             _powerUpSpawnerScript.Spawning = true;
             _levelUI.text = $"Level: {_level + 1} /8";
+            _musicManagerScript.FadeCurrentMusicOutAndNewMusicIn(_musicManagerScript.PickNewRandomCombatMusicClip());
         }
         else if (_level == 8) // i.e. boss level
         {
             Invoke("StartBossCutscene", _bossCutsceneTriggerDelay);
             _levelUI.text = "BOSS";
+            _musicManagerScript.FadeCurrentMusicOutAndBossMusicIn();
         }
 
 
@@ -213,6 +218,7 @@ public class WVDLevelManager : MonoBehaviour
     {
         // todo try event bus here for level complete, subscribe
         _shopTimer = _shopTime;
+        _musicManagerScript.InitialMusicSetup();
         StartNewLevel();
 
     }

@@ -12,6 +12,8 @@ public class WVDBoss : WVDBaseEntity
     [SerializeField]
     GameObject _player;
     BossState _currentBossState;
+    [SerializeField]
+    WVDMusicManager _musicManagerScript;
 
     [Header("Movement - Boss")]
     Vector3 _movementVector;
@@ -562,6 +564,7 @@ public class WVDBoss : WVDBaseEntity
                 _currentBossState = BossState.Dead;
                 SlowlyLowerPosition(0.5f, 2.0f);
                 SwitchToAnimation(WVDAnimationStrings.BossDieAnimation);
+                _musicManagerScript.FadeCurrentMusicOutAndVictoryMusicIn();
                 // todo put in victory screen
             }
         }

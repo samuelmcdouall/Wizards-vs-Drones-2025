@@ -17,6 +17,10 @@ public class WVDMainMenuManager : MonoBehaviour
     Image _whiteFadeScreen;
     [SerializeField]
     float _whiteFadeDuration;
+    [SerializeField]
+    AudioSource _musicAS;
+    [SerializeField]
+    float _musicFadePeriod;
 
 
     public void WVDClickPlayButton()
@@ -29,6 +33,7 @@ public class WVDMainMenuManager : MonoBehaviour
     {
         _whiteFadeScreen.gameObject.SetActive(true);
         FadeToWhite();
+        FadeMusicOut();
     }
 
     public void WVDClickBackButton()
@@ -37,6 +42,8 @@ public class WVDMainMenuManager : MonoBehaviour
         _gameModeScreen.SetActive(false);
         _optionsModeScreen.SetActive(false);
     }
+
+    // todo music controls next + put in place for mouse sensitivity, then put in a system for swapping out between the different game/shop/boss music
 
     async void FadeToWhite()
     {
@@ -51,6 +58,19 @@ public class WVDMainMenuManager : MonoBehaviour
         }
         _whiteFadeScreen.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         SceneManager.LoadScene("GameScene");
+    }
+
+    async void FadeMusicOut()
+    {
+        float fadeOutTimer = 0.0f;
+        float fadeRate = _musicAS.volume * (1.0f / _musicFadePeriod);
+        while (fadeOutTimer < _musicFadePeriod)
+        {
+            _musicAS.volume -= fadeRate * Time.deltaTime;
+            fadeOutTimer += Time.deltaTime;
+            await Task.Yield();
+        }
+        _musicAS.volume = 0.0f;
     }
 
 
