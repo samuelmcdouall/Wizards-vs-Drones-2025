@@ -190,7 +190,7 @@ public class WVDBoss : WVDBaseEntity
                 }
 
             case BossState.DungeonFlying:
-                if (Vector3.Distance(transform.position, _chosenDungeonWayPoint.position) < _wayPointThreshold)
+                if (Vector3.Distance(transform.position, _chosenDungeonWayPoint.position) < _wayPointThreshold) // todo sometimes boss overflies so best to make this in fixedupdate
                 {
                     SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
                     _currentBossState = BossState.DungeonIdle;
@@ -451,6 +451,7 @@ public class WVDBoss : WVDBaseEntity
                 }
                 break;
             case BossState.Victory:
+                SwitchToAnimation(WVDAnimationStrings.BossHealAnimation);
                 // nothing else, absorbing state
                 break;
         }

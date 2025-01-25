@@ -22,7 +22,7 @@ public class WVDBossCutsceneManager : MonoBehaviour
     [SerializeField]
     GameObject _cutsceneCamera;
     [SerializeField]
-    GameObject _playerCamera;
+    Camera _playerCamera;
     [SerializeField]
     GameObject _canvas;
     [SerializeField]
@@ -44,7 +44,7 @@ public class WVDBossCutsceneManager : MonoBehaviour
         WVDFunctionsCheck.InCutscene = true;
         _bossScript.CalculateMovementVectorToDoor();
         _bossScript.CurrentBossState = WVDBoss.BossState.DungeonFlyToDoor;
-        _playerCamera.SetActive(false);
+        _playerCamera.enabled = false;
         _cutsceneCamera.SetActive(true);
         _canvas.SetActive(false);
         _player.GetComponent<CharacterController>().enabled = false;
@@ -64,7 +64,7 @@ public class WVDBossCutsceneManager : MonoBehaviour
         int rand = Random.Range(0, _bossStartingPositions.Count);
         _bossScript.gameObject.transform.position =_bossStartingPositions[rand].position;
         _bossScript.SetCurrentBattleWayPoint(_bossStartingPositions[rand]);
-        _playerCamera.SetActive(true);
+        _playerCamera.enabled = true;
         _cutsceneCamera.SetActive(false);
         _canvas.SetActive(true);
         _bossHealthBar.SetActive(true);

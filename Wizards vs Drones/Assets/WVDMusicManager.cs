@@ -18,6 +18,8 @@ public class WVDMusicManager : MonoBehaviour
     [SerializeField]
     AudioClip _victoryMusic;
     [SerializeField]
+    float _victoryMusicDelay;
+    [SerializeField]
     float _musicFadePeriod;
     public float CurrentSetVolume; // this will need to change as the volume changes in pause menu
     void Start()
@@ -44,8 +46,14 @@ public class WVDMusicManager : MonoBehaviour
     {
         FadeCurrentMusicOutAndNewMusicIn(_bossMusic);
     }
-    public void FadeCurrentMusicOutAndVictoryMusicIn()
+    public async void FadeCurrentMusicOutAndVictoryMusicIn()
     {
+        float timer = 0.0f;
+        while (timer < _victoryMusicDelay)
+        {
+            timer += Time.deltaTime;
+            await Task.Yield();
+        }
         FadeCurrentMusicOutAndNewMusicIn(_victoryMusic);
     }
 
