@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4852351309047211471}
   - component: {fileID: 7538753260976375671}
   - component: {fileID: 1721365902791167088}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BossFireStreamElement
   m_TagString: BossFireStream
   m_Icon: {fileID: 0}
@@ -5045,7 +5045,7 @@ GameObject:
   - component: {fileID: 2853832742838565976}
   - component: {fileID: 6839053537014611676}
   - component: {fileID: 8108700219248408087}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9707,7 +9707,7 @@ GameObject:
   - component: {fileID: 4496593426050041953}
   - component: {fileID: 6085479982253645157}
   - component: {fileID: 3694095238583518405}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Ember
   m_TagString: Untagged
   m_Icon: {fileID: 0}

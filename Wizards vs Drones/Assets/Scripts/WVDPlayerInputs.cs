@@ -43,6 +43,7 @@ public class WVDPlayerInputs : MonoBehaviour
     bool _canAttack;
     [SerializeField]
     float _attackRechargeInterval;
+    LayerMask _layerMask;
 
     public PlayerMovementState CurrentPlayerMovementState 
     { 
@@ -72,6 +73,7 @@ public class WVDPlayerInputs : MonoBehaviour
         CurrentPlayerMovementState = PlayerMovementState.Still;
         CanDash = true;
         _canAttack = true;
+        _layerMask = LayerMask.GetMask("Ignore Raycast");
     }
 
     void Update()
@@ -117,7 +119,7 @@ public class WVDPlayerInputs : MonoBehaviour
                 // Determine projectile direction that fires from just in front of player but goes in direction desired, i.e. direction camera is looking
                 RaycastHit hit;
                 Vector3 direction = Vector3.zero;
-                if (Physics.Raycast(_camera.position, _camera.forward, out hit, 1000.0f))
+                if (Physics.Raycast(_camera.position, _camera.forward, out hit, 1000.0f, ~_layerMask))
                 {
                     direction = hit.point - _attackFirePoint.position;
                 }
