@@ -9,8 +9,14 @@ public class WVDPowerUp : MonoBehaviour
     WVDPlayerPowerUpManager.PowerUpType _selectedPowerUpType;
     WVDPowerUpSpawner _powerUpSpawner;
     Transform _spawnedTransform;
+    private WVDSoundManager _soundManager;
 
     public Transform SpawnedTransform { get => _spawnedTransform; set => _spawnedTransform = value; }
+
+    private void Start()
+    {
+        _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
+    }
 
     public void SetSpawnerParameters(WVDPowerUpSpawner spawner, Transform spawnedPosition)
     {
@@ -30,14 +36,18 @@ public class WVDPowerUp : MonoBehaviour
                     drone.ResolveAttack(100, new WVDAttackEffects());
                 }
                 _powerUpSpawner.TomeSpawned = false;
+                _soundManager.PlaySFXAtPlayer(_soundManager.TomePowerUpSFX);
             }
             else if (_selectedPowerUpType == WVDPlayerPowerUpManager.PowerUpType.Upgrade)
             {
                 other.gameObject.GetComponent<WVDPlayerPowerUpManager>().SecondaryPowerUpCountHeld++;
+                _soundManager.PlaySFXAtPlayer(_soundManager.PickupPowerUpSFX);
+
             }
             else
             {
                 other.gameObject.GetComponent<WVDPlayerPowerUpManager>().PrimaryPowerUpHeld = _selectedPowerUpType;
+                _soundManager.PlaySFXAtPlayer(_soundManager.PickupPowerUpSFX);
             }
             _powerUpSpawner.CurrentPowerUpsSpawned--;
             _powerUpSpawner.AvailableSpawnPositions.Add(_spawnedTransform);

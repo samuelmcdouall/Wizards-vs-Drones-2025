@@ -125,6 +125,7 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
     [Header("Other - General")]
     protected GameObject Player;
     protected WVDPlayer PlayerScript;
+    protected WVDSoundManager SoundManager;
 
     public virtual void Start()
     {
@@ -135,6 +136,7 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
         _currentSpeedModifier = 1.0f;
         Player = GameObject.FindGameObjectWithTag("Player");
         PlayerScript = Player.GetComponent<WVDPlayer>();
+        SoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
     }
 
     public virtual void Update()

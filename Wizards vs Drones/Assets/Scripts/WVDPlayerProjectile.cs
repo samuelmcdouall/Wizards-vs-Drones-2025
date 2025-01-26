@@ -6,7 +6,6 @@ public class WVDPlayerProjectile : WVDBaseProjectile
     [System.NonSerialized]
     public WVDPlayer PlayerScript;
     bool _noFurtherDamage;
-    WVDSoundManager _soundManager;
 
     public override void Start()
     {
@@ -17,7 +16,6 @@ public class WVDPlayerProjectile : WVDBaseProjectile
         {
             Damage *= 2;
         }
-        _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -54,8 +52,8 @@ public class WVDPlayerProjectile : WVDBaseProjectile
                 _canPierce = false;
                 if (!other.gameObject.CompareTag("InvisibleWall"))
                 {
-                    _soundManager.PlaySFX(_soundManager.PlayerProjectileLaunchSFX, transform.position);
                     Instantiate(ImpactFX, transform.position, Quaternion.identity);
+                    SoundManager.PlaySFXAtPoint(SoundManager.PlayerProjectileImpactSFX, transform.position);
                     Destroy(gameObject);
                 }
                 return;
@@ -68,8 +66,8 @@ public class WVDPlayerProjectile : WVDBaseProjectile
         }
         if (!other.gameObject.CompareTag("InvisibleWall"))
         {
-            _soundManager.PlaySFX(_soundManager.PlayerProjectileLaunchSFX, transform.position);
             Instantiate(ImpactFX, transform.position, Quaternion.identity);
+            SoundManager.PlaySFXAtPoint(SoundManager.PlayerProjectileImpactSFX, transform.position);
             Destroy(gameObject);
         }
     }

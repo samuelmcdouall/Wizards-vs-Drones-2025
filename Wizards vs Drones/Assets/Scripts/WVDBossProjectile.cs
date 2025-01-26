@@ -30,6 +30,7 @@ public class WVDBossProjectile : WVDBaseProjectile
         if (!other.gameObject.CompareTag("InvisibleWall"))
         {
             Instantiate(ImpactFX, transform.position, Quaternion.identity);
+            SoundManager.PlaySFXAtPoint(SoundManager.BossProjectileImpactSFX, transform.position);
             Destroy(gameObject);
         }
     }

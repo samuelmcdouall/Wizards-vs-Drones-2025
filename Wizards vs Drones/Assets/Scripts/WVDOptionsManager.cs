@@ -18,7 +18,7 @@ public class WVDOptionsManager : MonoBehaviour
 
     void Awake()
     {
-        MusicVolume = PlayerPrefs.GetFloat(WVDOptionsStrings.MusicVolume, 0.5f);
+        MusicVolume = PlayerPrefs.GetFloat(WVDOptionsStrings.MusicVolume, 0.3f);
         MusicSlider.value = MusicVolume;
         _mainMenuManagerScript?.FadeMusicIn();
         SFXVolume = PlayerPrefs.GetFloat(WVDOptionsStrings.SFXVolume, 0.5f);

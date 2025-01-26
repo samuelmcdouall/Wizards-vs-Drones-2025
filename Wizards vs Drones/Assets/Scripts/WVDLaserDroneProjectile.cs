@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if theres some common code in the different enemy projectile types in future
 {
+
     public override void Start()
     {
         base.Start();
@@ -34,6 +35,7 @@ public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if th
                 print("hit enemy");
             }
             Instantiate(ImpactFX, transform.position, Quaternion.identity);
+            SoundManager.PlaySFXAtPoint(SoundManager.DroneLaserCollideSFX, transform.position);
             Destroy(gameObject);
         }
 

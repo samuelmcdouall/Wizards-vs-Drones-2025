@@ -43,6 +43,8 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
     GameObject _primaryPowerUpIcon;
     [SerializeField]
     GameObject[] _secondaryPowerUpIcons;
+    WVDSoundManager _soundManager;
+
     public PowerUpType PrimaryPowerUpHeld
     {
         get => _primaryPowerUpHeld;
@@ -98,8 +100,8 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
 
     void Start()
     {
-        
         ResetPowerUps();
+        _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
     }
 
     void Update()
@@ -112,12 +114,15 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
                 {
                     case 0:
                         _playerScript.CurrentHealth += _healValueBase;
+                        _soundManager.PlaySFXAtPlayer(_soundManager.HealPowerUpSFX);
                         break;
                     case 1:
                         _playerScript.ApplyLifeStealForSeconds(_lifestealDuration);
+                        _soundManager.PlaySFXAtPlayer(_soundManager.LifestealPowerUpSFX);
                         break;
                     case 2:
                         _playerScript.ApplyInvulnerable(_invulnerableDuration); // invul for time
+                        _soundManager.PlaySFXAtPlayer(_soundManager.InvulnerablePowerUpSFX);
                         break;
                 }
             }
@@ -135,6 +140,7 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
                         _playerScript.SwitchOnShieldForSeconds(WVDPlayer.ShieldVersion.Electric, _shieldDuration);
                         break;
                 }
+                _soundManager.PlaySFXAtPlayer(_soundManager.ShieldPowerUpSFX);
             }
             else if (_primaryPowerUpHeld == PowerUpType.Trap)
             {
@@ -150,6 +156,7 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
                         _playerScript.DeployTrap(WVDPlayer.TrapVersion.Explosive);
                         break;
                 }
+                _soundManager.PlaySFXAtPlayer(_soundManager.TrapPowerUpSFX);
             }
             else if (_primaryPowerUpHeld == PowerUpType.Attack)
             {
@@ -157,12 +164,15 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
                 {
                     case 0:
                         DeployGrenade();
+                        _soundManager.PlaySFXAtPlayer(_soundManager.GrenadeThrowPowerUpSFX);
                         break;
                     case 1:
                         FullCircleAttack();
+                        _soundManager.PlaySFXAtPlayer(_soundManager.CirclePowerUpSFX);
                         break;
                     case 2:
                         DeployHomingAttack();
+                        _soundManager.PlaySFXAtPlayer(_soundManager.GhostPowerUpSFX);
                         break;
                 }
             }

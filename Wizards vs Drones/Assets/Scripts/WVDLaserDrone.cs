@@ -117,6 +117,7 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
                 {
                     GameObject laserDrone = Instantiate(_laserProjectilePrefab, _projectileFirePoint.position, _laserProjectilePrefab.transform.rotation);
                     laserDrone.GetComponent<WVDLaserDroneProjectile>().SetProjectileDirection(_projectileFirePoint.forward);
+                    SoundManager.PlaySFXAtPoint(SoundManager.DroneLaserLauchSFX, transform.position);
                 }
 
                 StartCoroutine(TransitionToStateAfterDelay(AttackDischargeDuration));

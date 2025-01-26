@@ -23,16 +23,18 @@ public class WVDMainMenuManager : MonoBehaviour
     float _musicFadePeriod;
     [SerializeField]
     WVDOptionsManager _optionsManagerScript;
-
+    WVDSoundManager _soundManager;
 
     void Start()
     {
-
+        Time.timeScale = 1.0f;
+        _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
     }
     public void WVDClickPlayButton()
     {
         _mainMenuScreen.SetActive(false);
         _gameModeScreen.SetActive(true);
+        _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
 
     public void WVDClickNormalModeButton()
@@ -40,6 +42,7 @@ public class WVDMainMenuManager : MonoBehaviour
         _whiteFadeScreen.gameObject.SetActive(true);
         FadeToWhite();
         FadeMusicOut();
+        _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
 
     public void WVDClickBackButton()
@@ -47,12 +50,14 @@ public class WVDMainMenuManager : MonoBehaviour
         _mainMenuScreen.SetActive(true);
         _gameModeScreen.SetActive(false);
         _optionsScreen.SetActive(false);
+        _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
 
     public void WVDClickOptionsButton()
     {
         _mainMenuScreen.SetActive(false);
         _optionsScreen.SetActive(true);
+        _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
 
     public void WVDChangeMusicSlider()
@@ -116,6 +121,8 @@ public class WVDMainMenuManager : MonoBehaviour
         _musicAS.volume = _optionsManagerScript.MusicVolume; 
 
     }
+
+
 
 
 

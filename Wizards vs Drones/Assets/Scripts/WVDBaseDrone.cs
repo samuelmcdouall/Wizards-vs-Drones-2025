@@ -112,7 +112,10 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         DroneNMA = GetComponent<NavMeshAgent>();
         DroneNMA.speed = MaxNormalSpeed;
 
-        _levelManagerScript = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<WVDLevelManager>();
+        _levelManagerScript = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<WVDLevelManager>(); 
+        SoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
+        SoundManager.PlaySFXAtPoint(SoundManager.DroneSpawnSFX, transform.position);
+
 
         if (!_isSpawnedFromBuff)
         {
@@ -199,6 +202,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         // todo add in fx
         print($"{gameObject.name} drone destroyed");
         Instantiate(DestroyPrefab, transform.position + ExplodeOffset, DestroyPrefab.transform.rotation);
+        SoundManager.PlaySFXAtPoint(SoundManager.DroneBlowUpSFX, transform.position);
         float rand = Random.Range(0.0f, 1.0f);
         if (rand < PickUpChance + BonusPickUpChanceFromLastHit)
         {

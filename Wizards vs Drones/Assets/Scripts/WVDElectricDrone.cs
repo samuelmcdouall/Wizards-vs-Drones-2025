@@ -123,6 +123,7 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
                 {
                     _attackHitBox.SetActive(true);
                     _attackHitBoxScript.CanDamage = true;
+                    SoundManager.PlaySFXAtPoint(SoundManager.DroneZapSFX, transform.position);
                 }
                 StartCoroutine(TransitionToStateAfterDelay(AttackDuration));
                 break;

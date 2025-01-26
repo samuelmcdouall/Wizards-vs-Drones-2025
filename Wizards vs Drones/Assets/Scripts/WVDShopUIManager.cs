@@ -15,6 +15,7 @@ public class WVDShopUIManager : MonoBehaviour
     int[] _possibleDiscounts;
     [SerializeField]
     TMP_Text _batteriesText;
+    WVDSoundManager _soundManager;
 
     [Header("Three Arc")]
     [SerializeField]
@@ -198,6 +199,7 @@ public class WVDShopUIManager : MonoBehaviour
         SetDiscountPrice(_attackSpeedBasePrice, ref _attackSpeedFinalPrice, _attackSpeedPriceText);
         SetDiscountPrice(_dashRechargeBasePrice, ref _dashRechargeFinalPrice, _dashRechargePriceText);
         SetDiscountPrice(_lowHealthDamageBasePrice, ref _lowHealthDamageFinalPrice, _lowHealthDamagePriceText);
+        _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
     }
     void UpdateBuyableItems()
     {
@@ -223,6 +225,8 @@ public class WVDShopUIManager : MonoBehaviour
         _threeArcPurchaseButton.enabled = false;
         _threeArcPurchasedImage.SetActive(true);
         UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
+        
     }
 
     public void PurchaseStun()
@@ -233,6 +237,7 @@ public class WVDShopUIManager : MonoBehaviour
         _stunPurchaseButton.enabled = false;
         _stunPurchasedImage.SetActive(true);
         UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
 
     public void PurchaseDropRateIncrease()
@@ -242,6 +247,7 @@ public class WVDShopUIManager : MonoBehaviour
         _dropRateIncreasePurchaseButton.enabled = false;
         _dropRateIncreasePurchasedImage.SetActive(true);
         UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
 
     public void PurchaseSlow()
@@ -253,6 +259,7 @@ public class WVDShopUIManager : MonoBehaviour
         _slowPurchaseButton.enabled = false;
         _slowPurchasedImage.SetActive(true);
         UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
 
     public void PurchaseDOT()
@@ -265,6 +272,7 @@ public class WVDShopUIManager : MonoBehaviour
         _dotPurchaseButton.enabled = false;
         _dotPurchasedImage.SetActive(true);
         UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
 
     public void PurchasePierce()
@@ -274,6 +282,7 @@ public class WVDShopUIManager : MonoBehaviour
         _piercePurchaseButton.enabled = false;
         _piercePurchasedImage.SetActive(true);
         UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
 
     public void PurchaseExplodeOnDeath()
@@ -283,6 +292,7 @@ public class WVDShopUIManager : MonoBehaviour
         _explodeOnDeathPurchaseButton.enabled = false;
         _explodeOnDeathPurchasedImage.SetActive(true);
         UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
 
     public void PurchaseCritical()
@@ -292,6 +302,7 @@ public class WVDShopUIManager : MonoBehaviour
         _criticalPurchaseButton.enabled = false;
         _criticalPurchasedImage.SetActive(true);
         UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
 
     public void PurchaseHealthIncrease()
@@ -303,6 +314,7 @@ public class WVDShopUIManager : MonoBehaviour
         _healthIncreasePurchaseButton.enabled = false;
         _healthIncreasePurchasedImage.SetActive(true);
         UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
 
     public void PurchaseAttackSpeed()
@@ -312,6 +324,7 @@ public class WVDShopUIManager : MonoBehaviour
         _attackSpeedPurchaseButton.enabled = false;
         _attackSpeedPurchasedImage.SetActive(true);
         UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
 
     public void PurchaseDashRecharge()
@@ -321,6 +334,7 @@ public class WVDShopUIManager : MonoBehaviour
         _dashRechargePurchaseButton.enabled = false;
         _dashRechargePurchasedImage.SetActive(true);
         UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
 
     public void PurchaseLowHealthDamage()
@@ -330,6 +344,7 @@ public class WVDShopUIManager : MonoBehaviour
         _lowHealthDamagePurchaseButton.enabled = false;
         _lowHealthDamagePurchasedImage.SetActive(true);
         UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
 
 

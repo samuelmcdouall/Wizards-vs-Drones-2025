@@ -17,6 +17,7 @@ public class WVDBatteryPickUp : MonoBehaviour
     [SerializeField]
     GameObject _batteryModel;
     Coroutine _flashCoroutine;
+    WVDSoundManager _soundManager;
 
     private void Start()
     {
@@ -31,6 +32,7 @@ public class WVDBatteryPickUp : MonoBehaviour
         randY = Random.Range(-100.0f, 100.0f);
         randZ = Random.Range(-100.0f, 100.0f);
         _rb.AddTorque(new Vector3(randX, randY, randZ));
+        _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -38,6 +40,7 @@ public class WVDBatteryPickUp : MonoBehaviour
         if (other.gameObject.CompareTag("PickUpTrigger"))
         {
             other.gameObject.transform.parent.gameObject.GetComponent<WVDPlayer>().BatteryCount += _value;
+            _soundManager.PlaySFXAtPlayer(_soundManager.PickupBatterySFX);
             Destroy(gameObject);
         }
     }

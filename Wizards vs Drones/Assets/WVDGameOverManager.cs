@@ -16,10 +16,24 @@ public class WVDGameOverManager : MonoBehaviour
     [SerializeField]
     float _gameOverMenuDelay;
     [SerializeField]
-    GameObject _gameOverMenu;
+    GameObject _gameOverMenu; 
+    [SerializeField]
+    AudioSource _musicAS;
+    [SerializeField]
+    float _musicFadePeriod;
+    [SerializeField]
+    WVDOptionsManager _optionsManagerScript;
+    [SerializeField]
+    GameObject _victoryScreen;
+    [SerializeField]
+    GameObject _challengeModeText;
+    [SerializeField]
+    bool _ifBeatenGameBefore;
+    WVDSoundManager _soundManager;
+
     void Start()
     {
-        
+        _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
     }
 
     // Update is called once per frame
@@ -45,13 +59,40 @@ public class WVDGameOverManager : MonoBehaviour
         _gameOverMenu.SetActive(true);
     }
 
-    public void WVDClickTryAgainButton()
+    public void WVDClickTryAgainButton() // Also play again if victory
     {
+        _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
+        FadeMusicOut();
         FadeToWhiteAndLoadScene("GameScene");
     }
     public void WVDClickQuitToMainMenuButton()
     {
+        _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
+        FadeMusicOut();
         FadeToWhiteAndLoadScene("MainMenuScene");
+    }
+
+    public void ShowVictoryScreenAfterDelay(float delay)
+    {
+        Invoke("ShowVictoryScreen", delay);
+    }
+
+    void ShowVictoryScreen()
+    {
+        WVDFunctionsCheck.HasWon = true;
+        foreach (GameObject ui in _UIElementsToTurnOff)
+        {
+            ui.SetActive(false);
+        }
+        if (!_ifBeatenGameBefore) // will get this from the save file
+        {
+            _challengeModeText.SetActive(true);
+            // set the above boolean to true
+        }
+        _victoryScreen.SetActive(true);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
     }
 
 
@@ -68,5 +109,18 @@ public class WVDGameOverManager : MonoBehaviour
         }
         _whiteFadeScreen.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         SceneManager.LoadScene(sceneToLoad);
+    }
+
+    async void FadeMusicOut()
+    {
+        float fadeOutTimer = 0.0f;
+        float fadeRate = _optionsManagerScript.MusicVolume * (1.0f / _musicFadePeriod);
+        while (fadeOutTimer < _musicFadePeriod)
+        {
+            _musicAS.volume -= fadeRate * Time.unscaledDeltaTime;
+            fadeOutTimer += Time.unscaledDeltaTime;
+            await Task.Yield();
+        }
+        _musicAS.volume = 0.0f;
     }
 }

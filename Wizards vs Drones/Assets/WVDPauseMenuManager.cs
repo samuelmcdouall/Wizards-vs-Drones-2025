@@ -21,9 +21,11 @@ public class WVDPauseMenuManager : MonoBehaviour
     float _musicFadePeriod;
     [SerializeField]
     WVDOptionsManager _optionsManagerScript;
+    WVDSoundManager _soundManager;
+
     void Start()
     {
-        
+        _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
     }
 
     // Update is called once per frame
@@ -33,11 +35,16 @@ public class WVDPauseMenuManager : MonoBehaviour
         {
             if (_pauseOptionsMenuScreen.activeSelf)
             {
-                WVDClickOptionsBackButton();
+                _pauseMenuScreen.SetActive(true);
+                _pauseOptionsMenuScreen.SetActive(false);
             }
             else if (_pauseMenuScreen.activeSelf)
             {
-                WVDClickResumeButton();
+                _pauseMenuScreen.SetActive(false);
+                WVDFunctionsCheck.InPauseMenu = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                Time.timeScale = 1.0f;
             }
             else
             {
@@ -62,18 +69,25 @@ public class WVDPauseMenuManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         Time.timeScale = 1.0f;
+        _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
 
     public void WVDClickOptionsButton()
     {
         _pauseMenuScreen.SetActive(false);
         _pauseOptionsMenuScreen.SetActive(true);
+        Time.timeScale = 1.0f;
+        _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
+        Time.timeScale = 0.0f;
     }
 
     public void WVDClickOptionsBackButton()
     {
         _pauseMenuScreen.SetActive(true);
         _pauseOptionsMenuScreen.SetActive(false);
+        Time.timeScale = 1.0f;
+        _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
+        Time.timeScale = 0.0f;
     }
 
     public void WVDClickQuitToMenuButton()
@@ -81,6 +95,9 @@ public class WVDPauseMenuManager : MonoBehaviour
         _whiteFadeScreen.gameObject.SetActive(true);
         FadeToWhite();
         FadeMusicOut();
+        Time.timeScale = 1.0f;
+        _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
+        Time.timeScale = 0.0f;
     }
 
     public void WVDChangeMusicSlider()
@@ -111,11 +128,11 @@ public class WVDPauseMenuManager : MonoBehaviour
         {
             float opacity = Mathf.Lerp(0.0f, 1.0f, fadeInTimer / _whiteFadeDuration);
             _whiteFadeScreen.color = new Color(1.0f, 1.0f, 1.0f, opacity);
-            fadeInTimer += Time.deltaTime;
+            fadeInTimer += Time.unscaledDeltaTime;
             await Task.Yield();
         }
         _whiteFadeScreen.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("MainMenuScene");
     }
 
     async void FadeMusicOut()
@@ -124,8 +141,8 @@ public class WVDPauseMenuManager : MonoBehaviour
         float fadeRate = _optionsManagerScript.MusicVolume * (1.0f / _musicFadePeriod);
         while (fadeOutTimer < _musicFadePeriod)
         {
-            _musicAS.volume -= fadeRate * Time.deltaTime;
-            fadeOutTimer += Time.deltaTime;
+            _musicAS.volume -= fadeRate * Time.unscaledDeltaTime;
+            fadeOutTimer += Time.unscaledDeltaTime;
             await Task.Yield();
         }
         _musicAS.volume = 0.0f;

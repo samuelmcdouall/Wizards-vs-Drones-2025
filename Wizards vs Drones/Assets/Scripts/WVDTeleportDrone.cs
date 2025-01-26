@@ -115,6 +115,7 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
                 {
                     GameObject projectile = Instantiate(_teleportProjectilePrefab, _projectileFirePoint.position, _teleportProjectilePrefab.transform.rotation);
                     projectile.GetComponent<WVDLaserDroneProjectile>().SetProjectileDirection(_projectileFirePoint.forward);
+                    SoundManager.PlaySFXAtPoint(SoundManager.DroneLaserLauchSFX, transform.position);
                 }
                 StartCoroutine(TransitionToStateAfterDelay(AttackDuration));
                 break;
@@ -134,6 +135,7 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
                 {
                     pos = RandomTeleportPosition();
                 }
+                SoundManager.PlaySFXAtPoint(SoundManager.DroneTeleportSFX, transform.position);
                 pos += transform.position;
                 DroneNMA.Warp(pos);
                 _teleportChargingFX.SetActive(false);

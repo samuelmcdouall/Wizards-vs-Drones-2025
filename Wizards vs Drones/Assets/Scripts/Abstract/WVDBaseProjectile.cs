@@ -18,6 +18,7 @@ public abstract class WVDBaseProjectile : MonoBehaviour
     [Header("SFX/FX - General")]
     [SerializeField]
     protected GameObject ImpactFX;
+    protected WVDSoundManager SoundManager;
 
     public Vector3 Direction
     {
@@ -29,6 +30,7 @@ public abstract class WVDBaseProjectile : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _rb.velocity = _direction * _speed;
+        SoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
         Destroy(gameObject, _lifeTime);
     }
 

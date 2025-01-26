@@ -189,6 +189,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+
     }
 
     //private void InitialShieldSetup()
@@ -203,6 +204,10 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     public override void Update()
     {
         base.Update();
+        if (WVDFunctionsCheck.HasWon)
+        {
+            SwitchToAnimation(WVDAnimationStrings.PlayerIdleAnimation);
+        }
         if (LifeSteal)
         {
             if (_lifeStealTimer <= 0.0f)
@@ -344,7 +349,12 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         print($"Player on {CurrentHealth} health");
         if (IsFullyDamaged())
         {
+            SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] {SoundManager.PlayerDeathSFX1, SoundManager.PlayerDeathSFX2, SoundManager.PlayerDeathSFX3});
             PlayerDies();
+        }
+        else if (!Invulnerable)
+        {
+            SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] {SoundManager.PlayerHitSFX1, SoundManager.PlayerHitSFX2, SoundManager.PlayerHitSFX3});
         }
     }
 

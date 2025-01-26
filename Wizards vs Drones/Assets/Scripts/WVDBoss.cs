@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static WVDBaseDrone;
 using UnityEngine.AI;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
@@ -14,6 +13,10 @@ public class WVDBoss : WVDBaseEntity
     BossState _currentBossState;
     [SerializeField]
     WVDMusicManager _musicManagerScript;
+    [SerializeField]
+    WVDGameOverManager _gameOverManager;
+    [SerializeField]
+    float _victoryScreenDelay;
 
     [Header("Movement - Boss")]
     Vector3 _movementVector;
@@ -160,6 +163,51 @@ public class WVDBoss : WVDBaseEntity
         _bossHealthUIOriginalColor = HealthUIFill.color;
     }
 
+    private void FixedUpdate() // these states have been moved here so that the boss does not overshoot its waypoint before it comes into combat
+    {
+        switch (_currentBossState)
+        {
+            case BossState.DungeonFlying:
+                if (Vector3.Distance(transform.position, _chosenDungeonWayPoint.position) < _wayPointThreshold) // todo sometimes boss overflies so best to make this in fixedupdate
+                {
+                    SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
+                    _currentBossState = BossState.DungeonIdle;
+                }
+                else
+                {
+                    transform.position += _movementVector * MaxNormalSpeed * Time.fixedDeltaTime;
+                }
+                break;
+            case BossState.DungeonFlyToDoor:
+                if (Vector3.Distance(transform.position, _dungeonEscapeWayPoint1.position) < _wayPointThreshold)
+                {
+                    SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
+                    TransitionToStateAfterDelay(BossState.DungeonBreakingDoorPart1, _waitAtDoorDelay);
+                    SoundManager.PlaySFXAtPlayer(SoundManager.BossEvilShortLaughSFX, volumeModifier: 1.25f);
+                }
+                else
+                {
+                    transform.LookAt(_dungeonEscapeWayPoint1);
+                    transform.position += _movementVector * MaxNormalSpeed * Time.fixedDeltaTime;
+                }
+                break;
+            case BossState.DungeonEscaping:
+                if (Vector3.Distance(transform.position, _dungeonEscapeWayPoint2.position) < _wayPointThreshold)
+                {
+                    SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
+                    _currentBossState = BossState.Idle;
+                    BossInBattle = true;
+                    _bossCutsceneManagerScript.EndBossCutscene();
+                }
+                else
+                {
+                    SwitchToAnimation(WVDAnimationStrings.BossFlyingAnimation);
+                    transform.position += _movementVector * MaxNormalSpeed * Time.fixedDeltaTime;
+                }
+                break;
+        }
+    }
+
     public override void Update()
     {
         //base.Update(); todo probably don't need this as boss cannot be slowed/stunned or invul
@@ -189,29 +237,30 @@ public class WVDBoss : WVDBaseEntity
                     break;
                 }
 
-            case BossState.DungeonFlying:
-                if (Vector3.Distance(transform.position, _chosenDungeonWayPoint.position) < _wayPointThreshold) // todo sometimes boss overflies so best to make this in fixedupdate
-                {
-                    SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
-                    _currentBossState = BossState.DungeonIdle;
-                }
-                else
-                {
-                    transform.position += _movementVector * MaxNormalSpeed * Time.deltaTime;
-                }
-                break;
-            case BossState.DungeonFlyToDoor:
-                if (Vector3.Distance(transform.position, _dungeonEscapeWayPoint1.position) < _wayPointThreshold)
-                {
-                    SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
-                    TransitionToStateAfterDelay(BossState.DungeonBreakingDoorPart1, _waitAtDoorDelay);
-                }
-                else
-                {
-                    transform.LookAt(_dungeonEscapeWayPoint1);
-                    transform.position += _movementVector * MaxNormalSpeed * Time.deltaTime;
-                }
-                break;
+            //case BossState.DungeonFlying:
+            //    if (Vector3.Distance(transform.position, _chosenDungeonWayPoint.position) < _wayPointThreshold) // todo sometimes boss overflies so best to make this in fixedupdate
+            //    {
+            //        SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
+            //        _currentBossState = BossState.DungeonIdle;
+            //    }
+            //    else
+            //    {
+            //        transform.position += _movementVector * MaxNormalSpeed * Time.deltaTime;
+            //    }
+            //    break;
+            //case BossState.DungeonFlyToDoor:
+            //    if (Vector3.Distance(transform.position, _dungeonEscapeWayPoint1.position) < _wayPointThreshold)
+            //    {
+            //        SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
+            //        TransitionToStateAfterDelay(BossState.DungeonBreakingDoorPart1, _waitAtDoorDelay);
+            //        SoundManager.PlaySFXAtPlayer(SoundManager.BossEvilShortLaughSFX);
+            //    }
+            //    else
+            //    {
+            //        transform.LookAt(_dungeonEscapeWayPoint1);
+            //        transform.position += _movementVector * MaxNormalSpeed * Time.deltaTime;
+            //    }
+            //    break;
             case BossState.DungeonBreakingDoorPart1:
                 transform.LookAt(_dungeonEscapeWayPoint2);
                 _movementVector = (_dungeonEscapeWayPoint2.position - _dungeonEscapeWayPoint1.position).normalized;
@@ -221,26 +270,27 @@ public class WVDBoss : WVDBaseEntity
             case BossState.DungeonDoorExplodes:
                 _door.SetActive(false);
                 Instantiate(_doorExplosionFX, _door.transform.position + new Vector3(0.0f, -2.5f, 0.0f), Quaternion.identity);
+                SoundManager.PlaySFXAtPlayer(SoundManager.BossBlowUpGateSFX);
                 TransitionToStateAfterDelay(BossState.DungeonBreakingDoorPart2, _destroyingDoorDelay2);
                 break;
             case BossState.DungeonBreakingDoorPart2:
                 SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
                 TransitionToStateAfterDelay(BossState.DungeonEscaping, _waitBeforeEscapingDelay);
                 break;
-            case BossState.DungeonEscaping:
-                if (Vector3.Distance(transform.position, _dungeonEscapeWayPoint2.position) < _wayPointThreshold)
-                {
-                    SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
-                    _currentBossState = BossState.Idle;
-                    BossInBattle = true;
-                    _bossCutsceneManagerScript.EndBossCutscene();
-                }
-                else
-                {
-                    SwitchToAnimation(WVDAnimationStrings.BossFlyingAnimation);
-                    transform.position += _movementVector * MaxNormalSpeed * Time.deltaTime;
-                }
-                break;
+            //case BossState.DungeonEscaping:
+            //    if (Vector3.Distance(transform.position, _dungeonEscapeWayPoint2.position) < _wayPointThreshold)
+            //    {
+            //        SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
+            //        _currentBossState = BossState.Idle;
+            //        BossInBattle = true;
+            //        _bossCutsceneManagerScript.EndBossCutscene();
+            //    }
+            //    else
+            //    {
+            //        SwitchToAnimation(WVDAnimationStrings.BossFlyingAnimation);
+            //        transform.position += _movementVector * MaxNormalSpeed * Time.deltaTime;
+            //    }
+            //    break;
             case BossState.Transitional:
                 // Don't do anything, will move to another state shortly
                 break;
@@ -404,6 +454,9 @@ public class WVDBoss : WVDBaseEntity
 
                     case BossFireStreamAttackState.ChargingUpFireStream:
                         SwitchToAnimation(WVDAnimationStrings.BossTridentAttackAnimation);
+                        SoundManager.PlaySFXAtPlayer(SoundManager.BossSpawnFireElementSFX);
+                            //Player.transform.position + (transform.position - Player.transform.position).normalized * 1.0f
+                            //);
                         TransitionToStateAfterDelay(BossFireStreamAttackState.LaunchingFireStream, _fireStreamPreLaunchDelay);
                         break;
                     case BossFireStreamAttackState.LaunchingFireStream:
@@ -462,6 +515,7 @@ public class WVDBoss : WVDBaseEntity
     void BeginHealingWithHealElementNumber(int elementNumber)
     {
         SwitchToAnimation(WVDAnimationStrings.BossHealAnimation);
+        SoundManager.PlaySFXAtPlayer(SoundManager.BossEvilLongLaughSFX);
         _currentBossState = BossState.Healing;
         Invulnerable = true;
         HealthUIFill.color = Color.green;
@@ -530,6 +584,11 @@ public class WVDBoss : WVDBaseEntity
 
     async void LaunchFireballsInArc(int numFireballs)
     {
+        SoundManager.PlayRandomSFXAtPlayer(
+            new AudioClip[] { SoundManager.BossSpawnProjectileSFX1, SoundManager.BossSpawnProjectileSFX2, SoundManager.BossSpawnProjectileSFX3 });
+            //Player.transform.position + (transform.position - Player.transform.position).normalized * 1.0f
+            //);
+
         float timeIncrement = _fireballTotalLaunchInterval / numFireballs;
         float arcIncrement = _fireballLaunchArc / (numFireballs - 1);
         float currentAngle = -(_fireballLaunchArc / 2.0f);
@@ -565,7 +624,9 @@ public class WVDBoss : WVDBaseEntity
                 _currentBossState = BossState.Dead;
                 SlowlyLowerPosition(0.5f, 2.0f);
                 SwitchToAnimation(WVDAnimationStrings.BossDieAnimation);
+                SoundManager.PlaySFXAtPlayer(SoundManager.BossDeathSFX);
                 _musicManagerScript.FadeCurrentMusicOutAndVictoryMusicIn();
+                _gameOverManager.ShowVictoryScreenAfterDelay(_victoryScreenDelay);
                 // todo put in victory screen
             }
         }

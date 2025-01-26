@@ -23,6 +23,8 @@ public class WVDLevelManager : MonoBehaviour
     [SerializeField]
     TMP_Text _levelUI;
     [SerializeField]
+    TMP_Text _bossTextUI;
+    [SerializeField]
     WVDBossCutsceneManager _bossCutsceneManagerScript;
     [SerializeField]
     float _bossCutsceneTriggerDelay;
@@ -199,7 +201,9 @@ public class WVDLevelManager : MonoBehaviour
         else if (_level == 8) // i.e. boss level
         {
             Invoke("StartBossCutscene", _bossCutsceneTriggerDelay);
-            _levelUI.text = "BOSS";
+            _levelUI.gameObject.SetActive(false);
+            _dronesAndShopTimerUI.gameObject.SetActive(false);
+            _bossTextUI.gameObject.SetActive(true);
             _musicManagerScript.FadeCurrentMusicOutAndBossMusicIn();
         }
 
@@ -219,6 +223,7 @@ public class WVDLevelManager : MonoBehaviour
         // todo try event bus here for level complete, subscribe
         _shopTimer = _shopTime;
         _musicManagerScript.InitialMusicSetup();
+        WVDFunctionsCheck.SetToDefault();
         StartNewLevel();
 
     }

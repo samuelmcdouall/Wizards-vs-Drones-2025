@@ -137,7 +137,7 @@ public class WVDPlayerInputs : MonoBehaviour
                 magicMissile.Damage += bonusDamage;
                 magicMissile.PlayerScript = _playerScript;
 
-                _soundManager.PlaySFXAtPlayer(_soundManager.PlayerProjectileLaunchSFX);
+                _soundManager.PlayRandomSFXAtPlayer(new AudioClip[] { _soundManager.PlayerProjectileLaunchSFX1, _soundManager.PlayerProjectileLaunchSFX2 });
 
                 if (_playerScript.PurchasedUpgrades.ShootThreeArc)
                 {
@@ -210,6 +210,7 @@ public class WVDPlayerInputs : MonoBehaviour
     public async void DashInDirection(Vector3 dashDirection)
     {
         _dashFX.SetActive(true);
+        _soundManager.PlaySFXAtPlayer(_soundManager.PlayerDashSFX);
         float endDashTime = Time.time + _dashInterval;
         while (Time.time < endDashTime)
         {
