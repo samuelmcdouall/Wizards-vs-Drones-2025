@@ -91,6 +91,19 @@ public class WVDPauseMenuManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    public void WVDChangeSFXSlider()
+    {
+        _optionsManagerScript.SFXVolume = _optionsManagerScript.SFXSlider.value;
+        PlayerPrefs.SetFloat(WVDOptionsStrings.SFXVolume, _optionsManagerScript.SFXVolume);
+        PlayerPrefs.Save();
+    }
+    public void WVDChangeMouseSensitivitySlider()
+    {
+        _optionsManagerScript.MouseSensitivity = _optionsManagerScript.MouseSlider.value;
+        PlayerPrefs.SetFloat(WVDOptionsStrings.MouseSensitivity, _optionsManagerScript.MouseSensitivity);
+        PlayerPrefs.Save();
+    }
+
     async void FadeToWhite()
     {
         float fadeInTimer = 0.0f;
