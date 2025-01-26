@@ -44,6 +44,7 @@ public class WVDPlayerInputs : MonoBehaviour
     [SerializeField]
     float _attackRechargeInterval;
     LayerMask _layerMask;
+    WVDSoundManager _soundManager;
 
     public PlayerMovementState CurrentPlayerMovementState 
     { 
@@ -74,6 +75,7 @@ public class WVDPlayerInputs : MonoBehaviour
         CanDash = true;
         _canAttack = true;
         _layerMask = LayerMask.GetMask("Ignore Raycast");
+        _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
     }
 
     void Update()
@@ -134,6 +136,8 @@ public class WVDPlayerInputs : MonoBehaviour
                 magicMissile.SetProjectileEffects(currentEffects);
                 magicMissile.Damage += bonusDamage;
                 magicMissile.PlayerScript = _playerScript;
+
+                _soundManager.PlaySFXAtPlayer(_soundManager.PlayerProjectileLaunchSFX);
 
                 if (_playerScript.PurchasedUpgrades.ShootThreeArc)
                 {
