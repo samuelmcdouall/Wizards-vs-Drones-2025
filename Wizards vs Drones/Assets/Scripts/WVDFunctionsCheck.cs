@@ -5,10 +5,11 @@ public static class WVDFunctionsCheck
     public static bool IsDead;
     public static bool InCutscene;
     public static bool HasWon;
+    public static bool InTutorial;
 
     public static bool PlayerInputsAllowed()
     {
-        return !InShopMenu && !InPauseMenu && !IsDead && !InCutscene && !HasWon;
+        return !InShopMenu && !InPauseMenu && !IsDead && !InCutscene && !HasWon && !InTutorial;
     }
     public static void SetToDefault()
     {
@@ -17,5 +18,6 @@ public static class WVDFunctionsCheck
         IsDead = false;
         InCutscene = false;
         HasWon = false;
+        InTutorial = false;
     }
 }

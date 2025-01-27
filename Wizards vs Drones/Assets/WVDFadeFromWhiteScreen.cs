@@ -13,6 +13,8 @@ public class WVDFadeFromWhiteScreen : MonoBehaviour
     float _whiteFadeDuration;
     [SerializeField]
     bool _cursorVisibleAtStart;
+    WVDTutorialManager _tutorialManager;
+
     void Start()
     {
         if (_cursorVisibleAtStart)
@@ -26,7 +28,8 @@ public class WVDFadeFromWhiteScreen : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
         WVDFunctionsCheck.IsDead = false;
-        Invoke("FadeFromWhite", 1.0f);    
+        Invoke("FadeFromWhite", 1.0f);
+        _tutorialManager = GameObject.FindGameObjectWithTag("TutorialManager")?.GetComponent<WVDTutorialManager>();
     }
 
     // Update is called once per frame
@@ -47,5 +50,6 @@ public class WVDFadeFromWhiteScreen : MonoBehaviour
         }
         _whiteFadeScreen.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
         _whiteFadeScreen.gameObject.SetActive(false);
+        _tutorialManager?.DisplayTutorial(WVDTutorialManager.TutorialPart.Intro, 1.0f);
     }
 }

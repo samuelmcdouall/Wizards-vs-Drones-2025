@@ -28,6 +28,7 @@ TagManager:
   - BossCellBarrier
   - SoundManager
   - StatsManager
+  - TutorialManager
   layers:
   - Default
   - TransparentFX

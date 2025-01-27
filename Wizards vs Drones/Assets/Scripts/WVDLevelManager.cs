@@ -85,6 +85,7 @@ public class WVDLevelManager : MonoBehaviour
     GameObject _battlementsBarrier;
     [SerializeField]
     GameObject _dungeonBarrier;
+    WVDTutorialManager _tutorialManager;
 
     public float SkipShopProgress 
     { 
