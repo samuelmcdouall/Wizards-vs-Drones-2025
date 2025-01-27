@@ -106,7 +106,7 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetMouseButtonDown(1) && WVDFunctionsCheck.PlayerInputsAllowed())
         {
             if (_primaryPowerUpHeld == PowerUpType.Heal)
             {

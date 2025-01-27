@@ -19,7 +19,7 @@ public class WVDTutorialManager : MonoBehaviour
 
     private void Start()
     {
-        _tutorialDictionary.Add(TutorialPart.Intro, new WVDTutorialDetails("Oh no! Looks like almost everyone is away from the castle and these weird flying boxes called <color=#CC0000>drones</color> are invading! You'll need to defend the castle with that <color=#CC0000>fireball spell</color> you learnt recently (left click). <color=#CC0000>Navigate round the castle</color> (WASD) and don't forget you can make a quick escape with the <color=#CC0000>blink spell</color> (spacebar). Look out for those <color=#CC0000>power up gems</color> scattered around, they'll give you a nifty bonus (Q). I'll come and find you when things have died down a bit... good luck!", false)); // need to get the boolean values from JSON saved
+        _tutorialDictionary.Add(TutorialPart.Intro, new WVDTutorialDetails("Oh no! Looks like almost everyone is away from the castle and these weird flying boxes called <color=#CC0000>drones</color> are invading! You'll need to defend the castle with that <color=#CC0000>fireball spell</color> you learnt recently (left click). <color=#CC0000>Navigate round the castle</color> (WASD) and don't forget you can make a quick escape with the <color=#CC0000>blink spell</color> (spacebar). Look out for those <color=#CC0000>power up gems</color> scattered around, they'll give you a nifty bonus (right click). I'll come and find you when things have died down a bit... good luck!", false)); // need to get the boolean values from JSON saved
         _tutorialDictionary.Add(TutorialPart.ElectricDrone, new WVDTutorialDetails("oh no!!!!", false));
     }
     public enum TutorialPart
