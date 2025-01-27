@@ -27,6 +27,7 @@ TagManager:
   - Flammable
   - BossCellBarrier
   - SoundManager
+  - StatsManager
   layers:
   - Default
   - TransparentFX

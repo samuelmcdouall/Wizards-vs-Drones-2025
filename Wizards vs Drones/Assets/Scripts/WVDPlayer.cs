@@ -352,7 +352,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
             SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] {SoundManager.PlayerDeathSFX1, SoundManager.PlayerDeathSFX2, SoundManager.PlayerDeathSFX3});
             PlayerDies();
         }
-        else if (!Invulnerable)
+        else if (!Invulnerable && !WVDFunctionsCheck.IsDead)
         {
             SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] {SoundManager.PlayerHitSFX1, SoundManager.PlayerHitSFX2, SoundManager.PlayerHitSFX3});
         }

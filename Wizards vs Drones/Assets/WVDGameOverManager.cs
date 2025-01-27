@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -26,10 +27,14 @@ public class WVDGameOverManager : MonoBehaviour
     [SerializeField]
     GameObject _victoryScreen;
     [SerializeField]
-    GameObject _challengeModeText;
+    TMP_Text _victoryText;
     [SerializeField]
     bool _ifBeatenGameBefore;
     WVDSoundManager _soundManager;
+    [SerializeField]
+    WVDStatsManager _statsManager;
+    [SerializeField]
+    TMP_Text _statsText;
 
     void Start()
     {
@@ -86,9 +91,31 @@ public class WVDGameOverManager : MonoBehaviour
         }
         if (!_ifBeatenGameBefore) // will get this from the save file
         {
-            _challengeModeText.SetActive(true);
+            _victoryText.text += "\nChallenge mode has now been unlocked!";
             // set the above boolean to true
         }
+
+        _statsManager.TimerStopped = true;
+        int totalSeconds = (int)_statsManager.TimeTaken;
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        string secondsString;
+        if (seconds < 10)
+        {
+            secondsString = "0" + seconds;
+        }
+        else
+        {
+            secondsString = "" + seconds;
+        }
+        _statsText.text = $"Electric drones destroyed: {_statsManager.ElectricDronesDestroyed}\n" +
+                          $"Laser drones destroyed: {_statsManager.LaserDronesDestroyed}\n" +
+                          $"Fast drones destroyed: {_statsManager.FastDronesDestroyed}\n" +
+                          $"Teleport drones destroyed: {_statsManager.TeleportDronesDestroyed}\n" +
+                          $"Batteries collected: {_statsManager.BatteriesCollected}\n" +
+                          $"Time taken: {minutes}:{secondsString}";
+
+
         _victoryScreen.SetActive(true);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;

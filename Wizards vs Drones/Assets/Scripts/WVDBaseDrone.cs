@@ -21,7 +21,11 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     protected GameObject ExplodePrefab;
     DroneBuff _selectedDroneBuff;
     WVDLevelManager _levelManagerScript;
-    [SerializeField] WVDDroneSpawner _droneSpawner; // todo just to see if getting ref
+    [SerializeField] 
+    WVDDroneSpawner _droneSpawner; // todo just to see if getting ref
+    [SerializeField]
+    protected DroneType SelectedDroneType;
+    protected WVDStatsManager StatsManager;
 
     [Header("Movement - Base Drone")]
     [SerializeField]
@@ -114,6 +118,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
 
         _levelManagerScript = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<WVDLevelManager>(); 
         SoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
+        StatsManager = GameObject.FindGameObjectWithTag("StatsManager").GetComponent<WVDStatsManager>();
         SoundManager.PlaySFXAtPoint(SoundManager.DroneSpawnSFX, transform.position);
 
 
@@ -221,6 +226,22 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             SpawnDroneFromBuff();
         }
 
+        switch (SelectedDroneType)
+        {
+            case DroneType.Electric:
+                StatsManager.ElectricDronesDestroyed++;
+                break;
+            case DroneType.Laser:
+                StatsManager.LaserDronesDestroyed++;
+                break;
+            case DroneType.Fast:
+                StatsManager.FastDronesDestroyed++;
+                break;
+            case DroneType.Teleport:
+                StatsManager.TeleportDronesDestroyed++;
+                break;
+        }
+
         _droneSpawner.CurrentDronesSpawned--;
         _droneSpawner.LevelDronesRemaining--;
     }
@@ -290,5 +311,13 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         Shield,
         Slow
 
+    }
+
+    public enum DroneType
+    {
+        Electric,
+        Laser,
+        Fast,
+        Teleport
     }
 }
