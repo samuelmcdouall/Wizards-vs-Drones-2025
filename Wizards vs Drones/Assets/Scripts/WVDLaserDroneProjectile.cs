@@ -12,6 +12,7 @@ public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if th
 
     private void OnTriggerEnter(Collider other)
     {
+        print("Laser drone projectile hit: " + other.name);
         if (other.gameObject.CompareTag("Fountain") ||
             other.gameObject.CompareTag("PowerUp"))
         {

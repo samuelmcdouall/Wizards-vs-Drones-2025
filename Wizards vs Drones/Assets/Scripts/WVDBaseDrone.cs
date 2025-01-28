@@ -240,7 +240,6 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         // todo add in fx
         print($"{gameObject.name} drone destroyed");
         Instantiate(DestroyPrefab, transform.position + ExplodeOffset, DestroyPrefab.transform.rotation);
-        SoundManager.PlaySFXAtPoint(SoundManager.DroneBlowUpSFX, transform.position);
         DropBattery();
         if (_challengeModeManager.ChallengeModeActive)
         {

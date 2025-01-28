@@ -31,6 +31,7 @@ TagManager:
   - TutorialManager
   - SaveDataManager
   - ChallengeModeManager
+  - BossShield
   layers:
   - Default
   - TransparentFX

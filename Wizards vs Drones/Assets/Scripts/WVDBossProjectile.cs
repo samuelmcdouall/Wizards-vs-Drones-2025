@@ -15,7 +15,8 @@ public class WVDBossProjectile : WVDBaseProjectile
         if (
             other.gameObject.CompareTag("PickUpTrigger") ||
             other.gameObject.CompareTag("Fountain") ||
-            other.gameObject.CompareTag("Boss"))
+            other.gameObject.CompareTag("Boss") ||
+            other.gameObject.CompareTag("BossFireStream"))
         {
             return;
         }

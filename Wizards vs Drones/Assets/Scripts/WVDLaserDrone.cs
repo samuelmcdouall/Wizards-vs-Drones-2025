@@ -33,10 +33,14 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
         PlayerScript.RemoveDroneFromPlayerList(this);
         Destroy(gameObject);
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, bool playDamageSFX)
     {
         print($"Laser drone took {damage} damage");
         CurrentHealth -= damage;
+        if (playDamageSFX)
+        {
+            SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.DroneTakeDamageSFX1, SoundManager.DroneTakeDamageSFX2 });
+        }
         if (IsFullyDamaged())
         {
             if (!DestroySequenceCompleted)
@@ -144,7 +148,7 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
     {
         BonusPickUpChanceFromLastHit = effects.DropRateIncrease;
         ExplodeOnDeathChanceFromLastHit = effects.ExplodeOnDeathChance;
-        TakeDamage(damage);
+        TakeDamage(damage, true);
         ApplyEffects(effects);
     }
 
@@ -165,12 +169,12 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
         {
             if (Time.time > intervalTime)
             {
-                TakeDamage(damage);
+                TakeDamage(damage, true);
                 intervalTime = Time.time + interval;
             }
             await Task.Yield();
         }
-        TakeDamage(damage); // Final damage to make the last damaging tick of damage
+        TakeDamage(damage, true); // Final damage to make the last damaging tick of damage
     }
 
     public Transform GetModelTransform()

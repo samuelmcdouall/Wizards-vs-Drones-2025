@@ -50,7 +50,7 @@ public class WVDBossFireStreamElement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player") && _canDamage)
         {
-            other.GetComponent<WVDPlayer>().TakeDamage(_damage);
+            other.GetComponent<WVDPlayer>().TakeDamage(_damage, true);
             _canDamage = false;
             Invoke("CanDamageAgain", _canDamageInterval);
         }
@@ -64,7 +64,7 @@ public class WVDBossFireStreamElement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player") && _canDamage)
         {
-            other.GetComponent<WVDPlayer>().TakeDamage(_damage);
+            other.GetComponent<WVDPlayer>().TakeDamage(_damage, true);
             _canDamage = false;
             Invoke("CanDamageAgain", _canDamageInterval);
         }

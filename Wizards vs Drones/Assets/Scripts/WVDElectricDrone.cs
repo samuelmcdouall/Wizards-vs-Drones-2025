@@ -41,10 +41,15 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
         PlayerScript.RemoveDroneFromPlayerList(this); // todo apart from this line, could probably put the base function of this into the base drone function. Still have each drone implementing the Damageable interface, and an override function here
         Destroy(gameObject);
     }
-    public virtual void TakeDamage(int damage) // for tank, do an override of this + need a go beserk function to increase stats + (maybe this not needed)do a start/update with just the base function
+    public virtual void TakeDamage(int damage, bool playDamageSFX) // for tank, do an override of this + need a go beserk function to increase stats + (maybe this not needed)do a start/update with just the base function
     {
         print($"Electric drone took {damage} damage");
         CurrentHealth -= damage;
+        if (playDamageSFX)
+        {
+            SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.DroneTakeDamageSFX1, SoundManager.DroneTakeDamageSFX2 });
+        }
+        
         if (IsFullyDamaged())
         {
             if (!DestroySequenceCompleted)
@@ -155,7 +160,7 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
     {
         BonusPickUpChanceFromLastHit = effects.DropRateIncrease; // todo this is drone specific, maybe later on combine this into the base drone class, or possibly put into the apply effects
         ExplodeOnDeathChanceFromLastHit = effects.ExplodeOnDeathChance;
-        TakeDamage(damage);
+        TakeDamage(damage, true);
         ApplyEffects(effects);
     }
 
@@ -176,12 +181,12 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
         {
             if (Time.time > intervalTime)
             {
-                TakeDamage(damage);
+                TakeDamage(damage, true);
                 intervalTime = Time.time + interval;
             }
             await Task.Yield();
         }
-        TakeDamage(damage); // Final damage to make the last damaging tick of damage
+        TakeDamage(damage, true); // Final damage to make the last damaging tick of damage
     }
 
     public Transform GetModelTransform()

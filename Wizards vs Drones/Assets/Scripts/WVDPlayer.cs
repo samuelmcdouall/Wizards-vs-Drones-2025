@@ -231,7 +231,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
             {
                 if (Vector3.Distance(drone.GetTransform().position, transform.position) <= _shieldElectricDamageThreshold)
                 {
-                    drone.TakeDamage(1000); // Insta-kill, something stupidly high
+                    drone.TakeDamage(1000, true); // Insta-kill, something stupidly high
                     WVDShieldElectricAttackFX attackFX = Instantiate(_shieldElectricAttackFXPrefab, transform.position, Quaternion.identity).GetComponent<WVDShieldElectricAttackFX>();
                     Vector3 directionToDrone = (drone.GetModelTransform().position - transform.position).normalized;
                     Vector3 startPos = transform.position + directionToDrone * _shieldAttackOffset;
@@ -344,7 +344,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     }
 
     // todo implement this, this is next
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, bool playDamageSFX)
     {
         if (!WVDFunctionsCheck.IsDead)
         {
@@ -433,7 +433,7 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
 
     public void ResolveAttack(int damage, WVDAttackEffects effects)
     {
-        TakeDamage(damage);
+        TakeDamage(damage, true);
         ApplyEffects(effects);
     }
 
@@ -454,12 +454,12 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         {
             if (Time.time > intervalTime)
             {
-                TakeDamage(damage);
+                TakeDamage(damage, true);
                 intervalTime = Time.time + interval;
             }
             await Task.Yield();
         }
-        TakeDamage(damage); // Final damage to make the last damaging tick of damage
+        TakeDamage(damage, true); // Final damage to make the last damaging tick of damage
     }
 
     //public void StartBurning(int damagePerSecond)
@@ -511,6 +511,15 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     public Transform GetModelTransform()
     {
         return _playerModel.transform;
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Boss") || other.gameObject.CompareTag("BossShield"))
+        {
+            TakeDamage(100, true); // insta kill if touch boss
+        }
     }
 
     public enum ShieldVersion

@@ -93,6 +93,7 @@ public class WVDBoss : WVDBaseEntity
     [SerializeField]
     Transform _middleFireballFirePoint;
     BossFireballAttackState _currentBossFireballAttackState;
+    int _consecutiveTimesPlayedFireball;
 
     [Header("Battle - Fire Stream Attack")]
     [SerializeField]
@@ -117,6 +118,7 @@ public class WVDBoss : WVDBaseEntity
     [SerializeField]
     float _fireStreamElementIntervalStageThree;
     BossFireStreamAttackState _currentBossFireStreamAttackState;
+    int _consecutiveTimesPlayedFireStream;
 
     [Header("Battle - Healing")]
     [SerializeField]
@@ -141,8 +143,7 @@ public class WVDBoss : WVDBaseEntity
     [System.NonSerialized]
     public bool BossInBattle;
     Color _bossHealthUIOriginalColor;
-
-
+    WVDChallengeModeManager _challengeModeManager;
 
     public BossState CurrentBossState 
     { 
@@ -161,6 +162,14 @@ public class WVDBoss : WVDBaseEntity
         _combatIdleTimer = Random.Range(_minCombatIdleTime, _maxCombatIdleTime);
         _chosenDungeonWayPoint = _dungeonIdleWayPoints[Random.Range(0, _dungeonIdleWayPoints.Count)];
         _bossHealthUIOriginalColor = HealthUIFill.color;
+        _challengeModeManager = GameObject.FindGameObjectWithTag("ChallengeModeManager").GetComponent<WVDChallengeModeManager>();
+        if (_challengeModeManager.ChallengeModeActive)
+        {
+            MaxHealth = 90;
+            CurrentHealth = 90;
+            _stageTwoHealthThreshold = 60;
+            _stageThreeHealthThreshold = 30;
+        }
     }
 
     private void FixedUpdate() // these states have been moved here so that the boss does not overshoot its waypoint before it comes into combat
@@ -309,39 +318,27 @@ public class WVDBoss : WVDBaseEntity
                         _currentBossFightStage = BossFightStage.StageThree;
                         BeginHealingWithHealElementNumber(_healElementNumberStageThree);
                     }
-                    else // pick either fire stream or fireball attack
+                    else // pick either fire stream or fireball attack, shouldn't play more than twice in a row
                     {
-                        if (Random.Range(0.0f, 1.0f) < 1.0f)
+                        if (_consecutiveTimesPlayedFireball > 1)
                         {
-                            _currentBossState = BossState.FireStreamAttack;
-                            _currentFireStreamAttackNumber = 0;
+                            SwitchToFireStreamAttack();
                         }
-
+                        else if (_consecutiveTimesPlayedFireStream > 1)
+                        {
+                            SwitchToFireballAttack();
+                        }
                         else
                         {
-                            _currentBossState = BossState.FireballAttack;
-                            _currentFireballAttackNumber = 0;
-                            int indexOfCurrentWayPoint = _battleWayPoints.IndexOf(_chosenBattleWayPoint);
-                            int chosenIndex;
-                            float rand = Random.Range(0.0f, 1.0f);
-                            if (rand < 0.5f)
+                            if (Random.Range(0.0f, 1.0f) < 0.5f)
                             {
-                                chosenIndex = indexOfCurrentWayPoint + 1;
+                                SwitchToFireStreamAttack();
                             }
+
                             else
                             {
-                                chosenIndex = indexOfCurrentWayPoint - 1;
+                                SwitchToFireballAttack();
                             }
-                            if (chosenIndex == -1)
-                            {
-                                chosenIndex = _battleWayPoints.Count - 1;
-                            }
-                            else if (chosenIndex == _battleWayPoints.Count)
-                            {
-                                chosenIndex = 0;
-                            }
-                            _chosenBattleWayPoint = _battleWayPoints[chosenIndex];
-                            _movementVector = (_chosenBattleWayPoint.position - transform.position).normalized;
                         }
                     }
                 }
@@ -513,6 +510,43 @@ public class WVDBoss : WVDBaseEntity
 
     }
 
+    private void SwitchToFireStreamAttack()
+    {
+        _currentBossState = BossState.FireStreamAttack;
+        _currentFireStreamAttackNumber = 0;
+        _consecutiveTimesPlayedFireStream++;
+        _consecutiveTimesPlayedFireball = 0;
+    }
+
+    private void SwitchToFireballAttack()
+    {
+        _currentBossState = BossState.FireballAttack;
+        _currentFireballAttackNumber = 0;
+        int indexOfCurrentWayPoint = _battleWayPoints.IndexOf(_chosenBattleWayPoint);
+        int chosenIndex;
+        float rand = Random.Range(0.0f, 1.0f);
+        if (rand < 0.5f)
+        {
+            chosenIndex = indexOfCurrentWayPoint + 1;
+        }
+        else
+        {
+            chosenIndex = indexOfCurrentWayPoint - 1;
+        }
+        if (chosenIndex == -1)
+        {
+            chosenIndex = _battleWayPoints.Count - 1;
+        }
+        else if (chosenIndex == _battleWayPoints.Count)
+        {
+            chosenIndex = 0;
+        }
+        _chosenBattleWayPoint = _battleWayPoints[chosenIndex];
+        _movementVector = (_chosenBattleWayPoint.position - transform.position).normalized;
+        _consecutiveTimesPlayedFireball++;
+        _consecutiveTimesPlayedFireStream = 0;
+    }
+
     void BeginHealingWithHealElementNumber(int elementNumber)
     {
         SwitchToAnimation(WVDAnimationStrings.BossHealAnimation);
@@ -643,7 +677,8 @@ public class WVDBoss : WVDBaseEntity
         }
         transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
     }
-    
+
+
 
 
     public enum BossState

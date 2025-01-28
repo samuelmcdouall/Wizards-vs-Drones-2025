@@ -35,7 +35,8 @@ public class WVDSoundManager : MonoBehaviour
     public AudioClip DroneLaserLauchSFX;
     public AudioClip DroneLaserCollideSFX; // yet to find
     public AudioClip DroneTeleportSFX;
-    public AudioClip DroneBlowUpSFX;
+    public AudioClip DroneTakeDamageSFX1;
+    public AudioClip DroneTakeDamageSFX2;
     public AudioClip BossBlowUpGateSFX;
     public AudioClip BossEvilShortLaughSFX; // blowing up gate
     public AudioClip BossEvilLongLaughSFX; // healing

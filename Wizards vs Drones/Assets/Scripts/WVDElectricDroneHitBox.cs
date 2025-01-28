@@ -11,7 +11,7 @@ public class WVDElectricDroneHitBox : MonoBehaviour
     {
         if (CanDamage && other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<WVDPlayer>().TakeDamage(_droneScript.ZapDamage);
+            other.gameObject.GetComponent<WVDPlayer>().TakeDamage(_droneScript.ZapDamage, true);
             CanDamage = false;
         }
     }

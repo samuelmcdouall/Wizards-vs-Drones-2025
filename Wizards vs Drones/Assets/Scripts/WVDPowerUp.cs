@@ -50,7 +50,7 @@ public class WVDPowerUp : MonoBehaviour
                 List<IWVDDamageable> drones = other.gameObject.GetComponent<WVDPlayer>().Drones;
                 foreach (IWVDDamageable drone in drones.ToList())
                 {
-                    drone.ResolveAttack(100, new WVDAttackEffects());
+                    drone.TakeDamage(100, false); // don't want to deafen the player with every out drone playing damage effect;
                 }
                 _powerUpSpawner.TomeSpawned = false;
                 _soundManager.PlaySFXAtPlayer(_soundManager.TomePowerUpSFX);

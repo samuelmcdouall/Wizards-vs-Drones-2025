@@ -19,10 +19,15 @@ public class WVDTankDrone : WVDElectricDrone, IWVDDamageable
     float _enrageAttackDuration;
     [SerializeField]
     float _enrageAttackDischargeDuration;
-    public override void TakeDamage(int damage) // for tank, do an override of this + need a go enrage function to increase stats + (maybe this not needed)do a start/update with just the base function
+    public override void TakeDamage(int damage, bool playDamageSFX) // for tank, do an override of this + need a go enrage function to increase stats + (maybe this not needed)do a start/update with just the base function
     {
         print($"Tank drone took {damage} damage");
         CurrentHealth -= damage;
+
+        if (playDamageSFX)
+        {
+            SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.DroneTakeDamageSFX1, SoundManager.DroneTakeDamageSFX2 });
+        }
         if (IsFullyDamaged())
         {
             if (!DestroySequenceCompleted)
