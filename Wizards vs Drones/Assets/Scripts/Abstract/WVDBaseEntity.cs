@@ -62,7 +62,7 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
     }
     bool _invulnerable;
     [SerializeField]
-    GameObject _invulnerableFX;
+    protected GameObject InvulnerableFX;
     float _invulnerableTimer;
     [SerializeField] public bool Invulnerable 
     { 
@@ -70,7 +70,6 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
         set
         {
             print($"Invulnerable: {value}");
-            _invulnerableFX?.SetActive(value);
             _invulnerable = value;
 
         }
@@ -175,6 +174,10 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
             {
                 print("Entity no longer invulnerable");
                 Invulnerable = false;
+                if (InvulnerableFX)
+                {
+                    InvulnerableFX.SetActive(false);
+                }
             }
             else
             {
@@ -244,6 +247,7 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
         {
             print("Invulnerable!");
             Invulnerable = true;
+            InvulnerableFX?.SetActive(true);
             _invulnerableTimer = time;
         }
     }

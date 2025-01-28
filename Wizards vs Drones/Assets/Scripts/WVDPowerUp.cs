@@ -10,12 +10,29 @@ public class WVDPowerUp : MonoBehaviour
     WVDPowerUpSpawner _powerUpSpawner;
     Transform _spawnedTransform;
     private WVDSoundManager _soundManager;
+    WVDTutorialManager _tutorialManager;
 
     public Transform SpawnedTransform { get => _spawnedTransform; set => _spawnedTransform = value; }
 
     private void Start()
     {
         _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
+        _tutorialManager = GameObject.FindGameObjectWithTag("TutorialManager").GetComponent<WVDTutorialManager>();
+        switch (_selectedPowerUpType)
+        {
+            case WVDPlayerPowerUpManager.PowerUpType.Attack:
+                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.AttackPowerUp, 1.0f);
+                break;
+            case WVDPlayerPowerUpManager.PowerUpType.Shield:
+                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.ShieldPowerUp, 1.0f);
+                break;
+            case WVDPlayerPowerUpManager.PowerUpType.Heal:
+                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.HealPowerUp, 1.0f);
+                break;
+            case WVDPlayerPowerUpManager.PowerUpType.Trap:
+                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.TrapPowerUp, 1.0f);
+                break;
+        }
     }
 
     public void SetSpawnerParameters(WVDPowerUpSpawner spawner, Transform spawnedPosition)
@@ -37,6 +54,7 @@ public class WVDPowerUp : MonoBehaviour
                 }
                 _powerUpSpawner.TomeSpawned = false;
                 _soundManager.PlaySFXAtPlayer(_soundManager.TomePowerUpSFX);
+                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.Tome, 1.0f);
             }
             else if (_selectedPowerUpType == WVDPlayerPowerUpManager.PowerUpType.Upgrade)
             {

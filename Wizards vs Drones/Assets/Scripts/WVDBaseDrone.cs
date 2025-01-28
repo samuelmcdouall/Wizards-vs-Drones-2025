@@ -26,7 +26,8 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     [SerializeField]
     protected DroneType SelectedDroneType;
     protected WVDStatsManager StatsManager;
-
+    WVDTutorialManager _tutorialManager;
+    
     [Header("Movement - Base Drone")]
     [SerializeField]
     protected float AttackRayCastDistance;
@@ -76,6 +77,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     float _slowBuffCheckTimer;
     [SerializeField]
     float _slowBuffThreshold;
+    bool _slowTutorialBeenChecked;
 
 
     public DroneState CurrentDroneState 
@@ -97,6 +99,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             if (!_shieldOn)
             {
                 _shieldObject.SetActive(false);
+                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.ShieldBuff, 1.0f);
                 Invoke("SwitchShieldBackOn", _shieldRechargeDelay);
             }
         }
@@ -119,6 +122,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         _levelManagerScript = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<WVDLevelManager>(); 
         SoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
         StatsManager = GameObject.FindGameObjectWithTag("StatsManager").GetComponent<WVDStatsManager>();
+        _tutorialManager = GameObject.FindGameObjectWithTag("TutorialManager").GetComponent<WVDTutorialManager>();
         SoundManager.PlaySFXAtPoint(SoundManager.DroneSpawnSFX, transform.position);
 
 
@@ -129,6 +133,22 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         else
         {
             _selectedDroneBuff = DroneBuff.None;
+        }
+
+        switch (SelectedDroneType)
+        {
+            case DroneType.Electric:
+                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.ElectricDrone, 1.0f);
+                break;
+            case DroneType.Laser:
+                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.LaserDrone, 1.0f);
+                break;
+            case DroneType.Fast:
+                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.FastDrone, 1.0f);
+                break;
+            case DroneType.Teleport:
+                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.TeleportDrone, 1.0f);
+                break;
         }
     }
 
@@ -193,6 +213,11 @@ public abstract class WVDBaseDrone : WVDBaseEntity
                 if (Vector3.Distance(transform.position, Player.transform.position) <= _slowBuffThreshold)
                 {
                     PlayerScript.ApplySlow(_slowBuffPercent, _slowBuffDuration);
+                    if (!_slowTutorialBeenChecked)
+                    {
+                        _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.SlowBuff, 1.0f); // Need a work around as this may end up queueing multiple tutorial displays of the same type due to when this is played
+                        _slowTutorialBeenChecked = true;
+                    }
                 }
             }
             else
@@ -224,6 +249,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         {
             SpawnDroneFromBuff();
             SpawnDroneFromBuff();
+            _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.SpawnOnDeathBuff, 1.0f);
         }
 
         switch (SelectedDroneType)

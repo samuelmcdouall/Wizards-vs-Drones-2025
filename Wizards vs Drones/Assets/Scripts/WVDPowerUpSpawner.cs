@@ -44,6 +44,7 @@ public class WVDPowerUpSpawner : MonoBehaviour
     [SerializeField]
     int _minLevelTomeCanSpawn;
     bool _tomeSpawned; // Counts towards the max number of power ups but can only have one of these out at a time
+    bool _firstSpawn; // very first spawn has to be a coloured power up to explain mechanic
 
     [Header("Spawning Times")]
     [SerializeField]
@@ -83,6 +84,8 @@ public class WVDPowerUpSpawner : MonoBehaviour
     {
         _spawnTimer = Random.Range(_spawnTimeMin, _spawnTimeMax);
         _currentPowerUpsSpawned = 0;
+        _firstSpawn = true;
+        AddRandomColouredPowerUpToList();
     }
 
     void Update()
@@ -159,9 +162,10 @@ public class WVDPowerUpSpawner : MonoBehaviour
         }
         else
         {
-            if (Random.Range(0.0f, 1.0f) < _chanceSpawnColouredPowerUp)
+            if (Random.Range(0.0f, 1.0f) < _chanceSpawnColouredPowerUp || _firstSpawn)
             {
                 chosenPowerUp = _availableColouredPowerUps[Random.Range(0, _availableColouredPowerUps.Count)];
+                _firstSpawn = false;
             }
             else
             {

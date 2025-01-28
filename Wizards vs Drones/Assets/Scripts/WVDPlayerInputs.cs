@@ -209,6 +209,7 @@ public class WVDPlayerInputs : MonoBehaviour
 
     public async void DashInDirection(Vector3 dashDirection)
     {
+        _playerScript.Invulnerable = true;
         _dashFX.SetActive(true);
         _soundManager.PlaySFXAtPlayer(_soundManager.PlayerDashSFX);
         float endDashTime = Time.time + _dashInterval;
@@ -223,6 +224,7 @@ public class WVDPlayerInputs : MonoBehaviour
         CurrentPlayerMovementState = PlayerMovementState.Moving;
         _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerIdleAnimation); // This is so that input after the dash allows the animation to change back to running
         _dashFX.SetActive(false);
+        _playerScript.Invulnerable = false;
     }
     public async void RechargeDash()
     {

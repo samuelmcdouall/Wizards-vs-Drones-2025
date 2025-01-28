@@ -208,6 +208,11 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         {
             SwitchToAnimation(WVDAnimationStrings.PlayerIdleAnimation);
         }
+
+        if (WVDFunctionsCheck.IsDead)
+        {
+            SwitchToAnimation(WVDAnimationStrings.PlayerDieAnimation);
+        }
         if (LifeSteal)
         {
             if (_lifeStealTimer <= 0.0f)
@@ -341,20 +346,23 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     // todo implement this, this is next
     public void TakeDamage(int damage)
     {
-        print($"Player took {damage} damage");
-        if (!Invulnerable)
+        if (!WVDFunctionsCheck.IsDead)
         {
-            CurrentHealth -= damage;
-        }
-        print($"Player on {CurrentHealth} health");
-        if (IsFullyDamaged())
-        {
-            SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] {SoundManager.PlayerDeathSFX1, SoundManager.PlayerDeathSFX2, SoundManager.PlayerDeathSFX3});
-            PlayerDies();
-        }
-        else if (!Invulnerable && !WVDFunctionsCheck.IsDead)
-        {
-            SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] {SoundManager.PlayerHitSFX1, SoundManager.PlayerHitSFX2, SoundManager.PlayerHitSFX3});
+            print($"Player took {damage} damage");
+            if (!Invulnerable)
+            {
+                CurrentHealth -= damage;
+            }
+            print($"Player on {CurrentHealth} health");
+            if (IsFullyDamaged())
+            {
+                SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.PlayerDeathSFX1, SoundManager.PlayerDeathSFX2, SoundManager.PlayerDeathSFX3 });
+                PlayerDies();
+            }
+            else if (!Invulnerable)
+            {
+                SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.PlayerHitSFX1, SoundManager.PlayerHitSFX2, SoundManager.PlayerHitSFX3 });
+            }
         }
     }
 

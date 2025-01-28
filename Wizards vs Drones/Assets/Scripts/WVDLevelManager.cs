@@ -74,7 +74,8 @@ public class WVDLevelManager : MonoBehaviour
     float _skipShopProgress;
     readonly float _skipShopProgressComplete = 1.0f; // seconds need to hold down to skip
     readonly float _skippedShopTimeRemaining = 5.0f;
-    
+    WVDTutorialManager _tutorialManager;
+
 
     [Header("Section Barriers")]
     [SerializeField]
@@ -85,7 +86,6 @@ public class WVDLevelManager : MonoBehaviour
     GameObject _battlementsBarrier;
     [SerializeField]
     GameObject _dungeonBarrier;
-    WVDTutorialManager _tutorialManager;
 
     public float SkipShopProgress 
     { 
@@ -115,10 +115,12 @@ public class WVDLevelManager : MonoBehaviour
             case UnlockableSections.GreatHall:
                 _greatHallBarrier.SetActive(false);
                 _availableShops.Add(_greatHallShop);
+                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.GreatHall, 2.0f);
                 break;
             case UnlockableSections.Tower:
                 _towerBarrier.SetActive(false);
                 _availableShops.Add(_towerShop);
+                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.Library, 2.0f);
                 break;
             case UnlockableSections.Battlements:
                 _battlementsBarrier.SetActive(false);
@@ -127,6 +129,7 @@ public class WVDLevelManager : MonoBehaviour
             case UnlockableSections.Dungeon:
                 _dungeonBarrier.SetActive(false);
                 _availableShops.Add(_dungeonShop);
+                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.Dungeon, 2.0f);
                 break;
         }
 
@@ -160,6 +163,10 @@ public class WVDLevelManager : MonoBehaviour
         _playerScript.CurrentHealth = _playerScript.MaxHealth;
         _skipShopGameObject.SetActive(true);
         _musicManagerScript.FadeCurrentMusicOutAndNewMusicIn(_musicManagerScript.PickOtherShopMusicClip());
+        if (_level == 0)
+        {
+            _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.Shop, 1.0f);
+        }
     }
 
     public void StartNewLevel()
@@ -209,6 +216,8 @@ public class WVDLevelManager : MonoBehaviour
         }
 
 
+
+
     }
 
     void StartBossCutscene()
@@ -222,6 +231,7 @@ public class WVDLevelManager : MonoBehaviour
     private void Start()
     {
         // todo try event bus here for level complete, subscribe
+        _tutorialManager = GameObject.FindGameObjectWithTag("TutorialManager").GetComponent<WVDTutorialManager>();
         _shopTimer = _shopTime;
         _musicManagerScript.InitialMusicSetup();
         WVDFunctionsCheck.SetToDefault();

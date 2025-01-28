@@ -311,7 +311,7 @@ public class WVDBoss : WVDBaseEntity
                     }
                     else // pick either fire stream or fireball attack
                     {
-                        if (Random.Range(0.0f, 1.0f) < 0.5f)
+                        if (Random.Range(0.0f, 1.0f) < 1.0f)
                         {
                             _currentBossState = BossState.FireStreamAttack;
                             _currentFireStreamAttackNumber = 0;
@@ -498,6 +498,7 @@ public class WVDBoss : WVDBaseEntity
                     SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
                     _currentBossState = BossState.Idle;
                     Invulnerable = false;
+                    InvulnerableFX?.SetActive(false);
                     HealthUIFill.color = _bossHealthUIOriginalColor;
                     _healTimer = _healingInterval;
                     _healElementRotateBaseObject.SetActive(false);
@@ -518,6 +519,7 @@ public class WVDBoss : WVDBaseEntity
         SoundManager.PlaySFXAtPlayer(SoundManager.BossEvilLongLaughSFX);
         _currentBossState = BossState.Healing;
         Invulnerable = true;
+        InvulnerableFX?.SetActive(true);
         HealthUIFill.color = Color.green;
         _healTimer = _healingInterval;
         _healElementRotateBaseObject.SetActive(true);

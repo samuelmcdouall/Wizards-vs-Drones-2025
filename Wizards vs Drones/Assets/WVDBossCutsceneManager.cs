@@ -11,6 +11,7 @@ public class WVDBossCutsceneManager : MonoBehaviour
     WVDBoss _bossScript;
     [SerializeField]
     GameObject _player;
+    WVDTutorialManager _tutorialManager;
 
     [Header("Starting Positions")]
     [SerializeField]
@@ -27,9 +28,10 @@ public class WVDBossCutsceneManager : MonoBehaviour
     GameObject _canvas;
     [SerializeField]
     GameObject _bossHealthBar;
+
     void Start()
     {
-        
+        _tutorialManager = GameObject.FindGameObjectWithTag("TutorialManager").GetComponent<WVDTutorialManager>();
     }
 
     // Update is called once per frame
@@ -68,5 +70,6 @@ public class WVDBossCutsceneManager : MonoBehaviour
         _cutsceneCamera.SetActive(false);
         _canvas.SetActive(true);
         _bossHealthBar.SetActive(true);
+        _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.Boss, 1.0f);
     }
 }
