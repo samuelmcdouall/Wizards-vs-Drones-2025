@@ -24,11 +24,28 @@ public class WVDMainMenuManager : MonoBehaviour
     [SerializeField]
     WVDOptionsManager _optionsManagerScript;
     WVDSoundManager _soundManager;
+    [SerializeField]
+    WVDSaveDataManager _saveDataManager;
+    [SerializeField]
+    GameObject _challengeModeLocked;
+    [SerializeField]
+    GameObject _challengeModeUnlocked;
+    WVDChallengeModeManager _challengeModeManager;
+
 
     void Start()
     {
         Time.timeScale = 1.0f;
         _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
+        _challengeModeManager = GameObject.FindGameObjectWithTag("ChallengeModeManager").GetComponent<WVDChallengeModeManager>();
+        if (_saveDataManager.SaveData.ChallengeModeUnlocked)
+        {
+            _challengeModeUnlocked.SetActive(true);
+        }
+        else
+        {
+            _challengeModeLocked.SetActive(true);
+        }
     }
     public void WVDClickPlayButton()
     {
@@ -40,6 +57,15 @@ public class WVDMainMenuManager : MonoBehaviour
     public void WVDClickNormalModeButton()
     {
         _whiteFadeScreen.gameObject.SetActive(true);
+        _challengeModeManager.ChallengeModeActive = false;
+        FadeToWhite();
+        FadeMusicOut();
+        _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
+    }
+    public void WVDClickChallengeModeButton() // todo add challenge mode going into
+    {
+        _whiteFadeScreen.gameObject.SetActive(true);
+        _challengeModeManager.ChallengeModeActive = true;
         FadeToWhite();
         FadeMusicOut();
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
@@ -79,6 +105,13 @@ public class WVDMainMenuManager : MonoBehaviour
         _optionsManagerScript.MouseSensitivity = _optionsManagerScript.MouseSlider.value;
         PlayerPrefs.SetFloat(WVDOptionsStrings.MouseSensitivity, _optionsManagerScript.MouseSensitivity);
         PlayerPrefs.Save();
+    }
+
+    public void WVDResetTutorialTipsButton()
+    {
+        WVDSaveData saveData = new WVDSaveData(_saveDataManager.SaveData.ChallengeModeUnlocked);
+        _saveDataManager.SaveNewData(saveData);
+        _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
 
     async void FadeToWhite()

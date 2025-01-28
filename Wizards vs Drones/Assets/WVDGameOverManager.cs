@@ -28,13 +28,13 @@ public class WVDGameOverManager : MonoBehaviour
     GameObject _victoryScreen;
     [SerializeField]
     TMP_Text _victoryText;
-    [SerializeField]
-    bool _ifBeatenGameBefore;
     WVDSoundManager _soundManager;
     [SerializeField]
     WVDStatsManager _statsManager;
     [SerializeField]
     TMP_Text _statsText;
+    [SerializeField]
+    WVDSaveDataManager _saveDataManager;
 
     void Start()
     {
@@ -89,10 +89,11 @@ public class WVDGameOverManager : MonoBehaviour
         {
             ui.SetActive(false);
         }
-        if (!_ifBeatenGameBefore) // will get this from the save file
+        if (!_saveDataManager.SaveData.ChallengeModeUnlocked) // will get this from the save file
         {
             _victoryText.text += "\nChallenge mode has now been unlocked!";
-            // set the above boolean to true
+            _saveDataManager.SaveData.ChallengeModeUnlocked = true;
+            _saveDataManager.SaveNewData();
         }
 
         _statsManager.TimerStopped = true;

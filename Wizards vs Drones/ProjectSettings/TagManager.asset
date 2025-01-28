@@ -29,6 +29,8 @@ TagManager:
   - SoundManager
   - StatsManager
   - TutorialManager
+  - SaveDataManager
+  - ChallengeModeManager
   layers:
   - Default
   - TransparentFX

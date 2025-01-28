@@ -27,6 +27,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     protected DroneType SelectedDroneType;
     protected WVDStatsManager StatsManager;
     WVDTutorialManager _tutorialManager;
+    WVDChallengeModeManager _challengeModeManager;
     
     [Header("Movement - Base Drone")]
     [SerializeField]
@@ -123,7 +124,14 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         SoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
         StatsManager = GameObject.FindGameObjectWithTag("StatsManager").GetComponent<WVDStatsManager>();
         _tutorialManager = GameObject.FindGameObjectWithTag("TutorialManager").GetComponent<WVDTutorialManager>();
+        _challengeModeManager = GameObject.FindGameObjectWithTag("ChallengeModeManager").GetComponent<WVDChallengeModeManager>();
         SoundManager.PlaySFXAtPoint(SoundManager.DroneSpawnSFX, transform.position);
+
+        if (_challengeModeManager.ChallengeModeActive)
+        {
+            MaxHealth *= 2;
+            CurrentHealth *= 2;
+        }
 
 
         if (!_isSpawnedFromBuff)
@@ -233,12 +241,12 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         print($"{gameObject.name} drone destroyed");
         Instantiate(DestroyPrefab, transform.position + ExplodeOffset, DestroyPrefab.transform.rotation);
         SoundManager.PlaySFXAtPoint(SoundManager.DroneBlowUpSFX, transform.position);
-        float rand = Random.Range(0.0f, 1.0f);
-        if (rand < PickUpChance + BonusPickUpChanceFromLastHit)
+        DropBattery();
+        if (_challengeModeManager.ChallengeModeActive)
         {
-            Instantiate(BatteryPickUp, transform.position + ExplodeOffset, BatteryPickUp.transform.rotation);
+            DropBattery(); // possibly drop another if in challenge mode
         }
-        rand = Random.Range(0.0f, 1.0f);
+        float rand = Random.Range(0.0f, 1.0f);
         if (rand < ExplodeOnDeathChanceFromLastHit)
         {
             Instantiate(ExplodePrefab, transform.position + ExplodeOffset, ExplodePrefab.transform.rotation);
@@ -270,6 +278,15 @@ public abstract class WVDBaseDrone : WVDBaseEntity
 
         _droneSpawner.CurrentDronesSpawned--;
         _droneSpawner.LevelDronesRemaining--;
+    }
+
+    private void DropBattery()
+    {
+        float rand = Random.Range(0.0f, 1.0f);
+        if (rand < PickUpChance + BonusPickUpChanceFromLastHit)
+        {
+            Instantiate(BatteryPickUp, transform.position + ExplodeOffset, BatteryPickUp.transform.rotation);
+        }
     }
 
     private void SpawnDroneFromBuff()

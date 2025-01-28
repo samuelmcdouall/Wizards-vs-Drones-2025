@@ -26,6 +26,7 @@ public class WVDPauseMenuManager : MonoBehaviour
     void Start()
     {
         _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
+        Time.timeScale = 1.0f;
     }
 
     // Update is called once per frame
