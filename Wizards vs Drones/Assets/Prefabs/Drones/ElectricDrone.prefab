@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7804933572855391692}
   - component: {fileID: 4754904956639735279}
   - component: {fileID: 8680067150267678546}
-  - component: {fileID: 3017601350383211190}
   m_Layer: 0
   m_Name: ElectricDrone
   m_TagString: Enemy
@@ -114,27 +113,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 7
   m_ObstacleAvoidanceType: 4
---- !u!65 &3017601350383211190
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 172903995431153877}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1.375, z: 1}
-  m_Center: {x: 0, y: 1.26, z: 0}
 --- !u!1 &357467698400742949
 GameObject:
   m_ObjectHideFlags: 0
@@ -30585,9 +30563,10 @@ GameObject:
   - component: {fileID: 2634958319028421231}
   - component: {fileID: 8435769720743151071}
   - component: {fileID: 7340445498986333092}
+  - component: {fileID: 6065385195308598409}
   m_Layer: 6
   m_Name: ElectricDroneModel
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30682,6 +30661,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!135 &6065385195308598409
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7327297950316064290}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2.2
+  m_Center: {x: -0.00000005960464, y: -0.47, z: 0.00000011920928}
 --- !u!1 &7691969898147157884
 GameObject:
   m_ObjectHideFlags: 0

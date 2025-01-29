@@ -39,13 +39,13 @@ public class WVDPlayerProjectile : WVDBaseProjectile
         {
             return;
         }
-        if (other.gameObject.CompareTag("Enemy") && other.gameObject.GetComponent<IWVDDamageable>() != null)
+        if (other.gameObject.CompareTag("Enemy") && other.transform.root.gameObject.GetComponent<IWVDDamageable>() != null)
         {
             if (Effects.LifeSteal)
             {
                 PlayerScript.CurrentHealth++;
             }
-            other.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
+            other.transform.root.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
             print("hit enemy");
             if (_canPierce)
             {

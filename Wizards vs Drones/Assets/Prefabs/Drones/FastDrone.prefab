@@ -20317,9 +20317,10 @@ GameObject:
   - component: {fileID: 5742070895828880571}
   - component: {fileID: 6526937764866553400}
   - component: {fileID: 5842473388982056090}
+  - component: {fileID: 1677563679042746000}
   m_Layer: 6
   m_Name: ElectricDroneModel
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20414,6 +20415,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!135 &1677563679042746000
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5470173196719373155}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2.2
+  m_Center: {x: -0.00000005960464, y: -0.47, z: 0.00000011920928}
 --- !u!1 &5514254642657618807
 GameObject:
   m_ObjectHideFlags: 0

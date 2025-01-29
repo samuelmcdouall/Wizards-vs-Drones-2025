@@ -20220,9 +20220,10 @@ GameObject:
   - component: {fileID: 8166304089371848709}
   - component: {fileID: 9201150457882171965}
   - component: {fileID: 2535157486705305653}
+  - component: {fileID: 6390676310877866829}
   m_Layer: 6
   m_Name: LaserDroneModel
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20317,6 +20318,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!135 &6390676310877866829
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6857841057507126081}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2.2
+  m_Center: {x: -0.00000005960464, y: -0.47, z: 0.00000011920928}
 --- !u!1 &7925508309294882128
 GameObject:
   m_ObjectHideFlags: 0
