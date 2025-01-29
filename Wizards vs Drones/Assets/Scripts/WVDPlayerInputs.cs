@@ -304,7 +304,7 @@ public class WVDPlayerInputs : MonoBehaviour
             }
         }
 
-        return new WVDPlayerDirection(movement, inputVector);
+        return new WVDPlayerDirection(movement.normalized, inputVector);
     }
 
     void HandleJumpingInput()
