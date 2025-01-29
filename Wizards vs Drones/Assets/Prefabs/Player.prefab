@@ -17204,7 +17204,7 @@ MonoBehaviour:
   _maxHealth: 5
   _healthUI: {fileID: 0}
   HealthUIFill: {fileID: 0}
-  _invulnerableFX: {fileID: 2617686807921103593}
+  InvulnerableFX: {fileID: 0}
   _maxNormalSpeed: 5
   _maxSideBackSpeed: 2
   _slowedFX: {fileID: 2636078708812786214}
@@ -22920,6 +22920,7 @@ GameObject:
   - component: {fileID: 8944349048850581128}
   - component: {fileID: 3323543805850013801}
   - component: {fileID: 2310217334011428468}
+  - component: {fileID: 7056027701562218272}
   m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -23099,6 +23100,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7056027701562218272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7987964972609906609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79168a2613b8a014e9419ae537a0dedf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8104616105165397355
 GameObject:
   m_ObjectHideFlags: 0
