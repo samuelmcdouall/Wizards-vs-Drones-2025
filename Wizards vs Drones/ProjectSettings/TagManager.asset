@@ -33,6 +33,7 @@ TagManager:
   - ChallengeModeManager
   - BossShield
   - HelpDroneUIParent
+  - CameraRotatePoint
   layers:
   - Default
   - TransparentFX
@@ -42,7 +43,7 @@ TagManager:
   - UI
   - IgnoreNavMesh
   - IgnoreTrailNavMesh
-  - 
+  - Camera
   - 
   - 
   - 
