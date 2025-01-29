@@ -145,7 +145,10 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
             if (_slowedTimer <= 0.0f)
             {
                 print("Entity no longer slowed");
-                _slowedFX?.SetActive(false);
+                if (_slowedFX)
+                {
+                    _slowedFX.SetActive(false);
+                }
                 _slowed = false;
                 _maxNormalSpeed = _initialMaxNormalSpeed;
                 _maxSideBackSpeed = _initialMaxSideBackSpeed;
@@ -220,7 +223,10 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
             _maxNormalSpeed = _initialMaxNormalSpeed * percentage;
             _maxSideBackSpeed = _initialMaxSideBackSpeed * percentage;
             _currentSpeedModifier = percentage;
-            _slowedFX?.SetActive(true);
+            if (_slowedFX)
+            {
+                _slowedFX.SetActive(true);
+            }
             _slowed = true;
         }
 

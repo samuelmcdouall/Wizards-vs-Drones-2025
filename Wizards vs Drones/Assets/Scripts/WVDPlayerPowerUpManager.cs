@@ -220,7 +220,7 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
         homingAttack.GetComponent<WVDHomingProjectile>().SetProjectileDirection(_redPowerUpFirePoint.forward); // unless there are no enemies currently out, this will immediately change, but just gives it something so it doesn't sit there in this scenario
     }
 
-    void ResetPowerUps()
+    public void ResetPowerUps()
     {
         _primaryPowerUpHeld = PowerUpType.None;
         _secondaryPowerUpCountHeld = 0;

@@ -27,6 +27,10 @@ public class WVDBossCutsceneManager : MonoBehaviour
     [SerializeField]
     GameObject _canvas;
     [SerializeField]
+    GameObject _powerUpIcon;
+    [SerializeField]
+    WVDPlayerPowerUpManager _powerUpManager;
+    [SerializeField]
     GameObject _bossHealthBar;
 
     void Start()
@@ -70,6 +74,8 @@ public class WVDBossCutsceneManager : MonoBehaviour
         _cutsceneCamera.SetActive(false);
         _canvas.SetActive(true);
         _bossHealthBar.SetActive(true);
+        _powerUpIcon.SetActive(false);
+        _powerUpManager.ResetPowerUps();
         _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.Boss, 1.0f);
     }
 }
