@@ -28,6 +28,9 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     protected WVDStatsManager StatsManager;
     WVDTutorialManager _tutorialManager;
     WVDChallengeModeManager _challengeModeManager;
+    [SerializeField]
+    GameObject _droneRemainingHelpUIPrefab;
+    GameObject _droneRemainingHelpUIInstance;
     
     [Header("Movement - Base Drone")]
     [SerializeField]
@@ -158,6 +161,18 @@ public abstract class WVDBaseDrone : WVDBaseEntity
                 _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.TeleportDrone, 1.0f);
                 break;
         }
+
+        if (_droneSpawner.LevelDronesRemaining <= _droneSpawner.DronesRemainingHelpUIThreshold) // If a new drone is spawned and we are below threshold then this one must show its UI
+        {
+            SpawnDroneRemainingHelpUI();
+        }
+    }
+
+    public void SpawnDroneRemainingHelpUI()
+    {
+        _droneRemainingHelpUIInstance = Instantiate(_droneRemainingHelpUIPrefab, transform.position, Quaternion.identity);
+        _droneRemainingHelpUIInstance.transform.SetParent(GameObject.FindGameObjectWithTag("HelpDroneUIParent").transform, false);
+        _droneRemainingHelpUIInstance.GetComponent<WVDDroneRemainingHelpUI>().SetDroneTransform(transform);
     }
 
     void DetermineDroneBuff()
@@ -277,6 +292,11 @@ public abstract class WVDBaseDrone : WVDBaseEntity
 
         _droneSpawner.CurrentDronesSpawned--;
         _droneSpawner.LevelDronesRemaining--;
+
+        if (_droneRemainingHelpUIInstance)
+        {
+            Destroy(_droneRemainingHelpUIInstance);
+        }
     }
 
     private void DropBattery()

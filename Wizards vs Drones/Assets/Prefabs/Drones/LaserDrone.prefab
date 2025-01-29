@@ -9904,7 +9904,7 @@ MonoBehaviour:
   _maxHealth: 1
   _healthUI: {fileID: 0}
   HealthUIFill: {fileID: 0}
-  _invulnerableFX: {fileID: 0}
+  InvulnerableFX: {fileID: 0}
   _maxNormalSpeed: 5
   _maxSideBackSpeed: 0
   _slowedFX: {fileID: 0}
@@ -9915,6 +9915,7 @@ MonoBehaviour:
   ExplodePrefab: {fileID: 6079881615369700989, guid: 299187d6c354ee54fa595cc064d8e4b0, type: 3}
   _droneSpawner: {fileID: 0}
   SelectedDroneType: 1
+  _droneRemainingHelpUIPrefab: {fileID: 294024403823195208, guid: dcd15da30b2d940439c98ef6cc98142d, type: 3}
   AttackRayCastDistance: 10
   RayCastPoints:
   - {fileID: 8656636969500964961}

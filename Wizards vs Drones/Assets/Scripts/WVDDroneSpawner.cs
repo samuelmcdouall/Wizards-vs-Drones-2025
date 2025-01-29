@@ -11,6 +11,8 @@ public class WVDDroneSpawner : MonoBehaviour
     WVDLevelManager _levelManagerScript;
     [SerializeField]
     Transform _player;
+    [SerializeField]
+    WVDPlayer _playerScript;
 
     [Header("Drones Spawn Stats")]
     [SerializeField]
@@ -62,6 +64,8 @@ public class WVDDroneSpawner : MonoBehaviour
     int _levelDronesRemaining;
     [SerializeField]
     TMP_Text _levelDronesRemainingUI; // this UI is also used for the shop timer, switches to it in the level manager after a level is completed
+    public int DronesRemainingHelpUIThreshold;
+    bool _triggeredHelpUIThisLevel;
 
     public int CurrentDronesSpawned 
     { 
@@ -89,6 +93,14 @@ public class WVDDroneSpawner : MonoBehaviour
         {
             _levelDronesRemaining = value;
             _levelDronesRemainingUI.text = "Drones remaining: " + _levelDronesRemaining;
+            if (!_triggeredHelpUIThisLevel && _levelDronesRemaining <= DronesRemainingHelpUIThreshold) // If the drones reach below threshold then all ones already spawned must show their UI
+            {
+                foreach (IWVDDamageable drone in _playerScript.Drones)
+                {
+                    drone.GetTransform().gameObject.GetComponent<WVDBaseDrone>().SpawnDroneRemainingHelpUI();
+                }
+                _triggeredHelpUIThisLevel = true;
+            }
         }
     }
 
@@ -97,6 +109,7 @@ public class WVDDroneSpawner : MonoBehaviour
         get => _dronesPerRound; 
         set => _dronesPerRound = value; 
     }
+    public bool TriggeredHelpUIThisLevel { get => _triggeredHelpUIThisLevel; set => _triggeredHelpUIThisLevel = value; }
 
     // Start is called before the first frame update
     void Start()

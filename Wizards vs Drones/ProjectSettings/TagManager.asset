@@ -32,6 +32,7 @@ TagManager:
   - SaveDataManager
   - ChallengeModeManager
   - BossShield
+  - HelpDroneUIParent
   layers:
   - Default
   - TransparentFX

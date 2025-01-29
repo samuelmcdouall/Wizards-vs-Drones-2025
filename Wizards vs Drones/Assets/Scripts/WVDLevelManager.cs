@@ -160,6 +160,7 @@ public class WVDLevelManager : MonoBehaviour
         _powerUpSpawnerScript.TomeSpawned = false;
         _powerUpSpawnerScript.SpawnedPowerUps.Clear();
         _powerUpSpawnerScript.Spawning = false;
+        _droneSpawnerScript.TriggeredHelpUIThisLevel = false;
         _playerScript.CurrentHealth = _playerScript.MaxHealth;
         _skipShopGameObject.SetActive(true);
         _musicManagerScript.FadeCurrentMusicOutAndNewMusicIn(_musicManagerScript.PickOtherShopMusicClip());
