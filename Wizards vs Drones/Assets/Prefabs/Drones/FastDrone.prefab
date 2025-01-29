@@ -25601,7 +25601,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentHealth: 0
-  _maxHealth: 2
+  _maxHealth: 3
   _healthUI: {fileID: 0}
   HealthUIFill: {fileID: 0}
   InvulnerableFX: {fileID: 0}

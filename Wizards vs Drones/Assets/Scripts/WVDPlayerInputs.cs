@@ -108,7 +108,7 @@ public class WVDPlayerInputs : MonoBehaviour
         //}
         //else
         {
-            if (WVDFunctionsCheck.PlayerInputsAllowed() && _canAttack && Input.GetMouseButtonDown(0)) // todo change back to MouseButton once got cooldown in
+            if (WVDFunctionsCheck.PlayerInputsAllowed() && _canAttack && Input.GetMouseButton(0)) // todo change back to MouseButton once got cooldown in
             {
                 int bonusDamage = 0;
                 if (_playerScript.CurrentHealth <= _playerScript.MaxHealth / 2)

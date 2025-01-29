@@ -5,21 +5,22 @@ using UnityEngine;
 
 public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if theres some common code in the different enemy projectile types in future
 {
-    bool _reflected;
+    public bool Reflected;
     GameObject _parentDrone;
 
 
     public override void Start()
     {
         base.Start();
-        _reflected = false;
+        Reflected = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         print("Laser drone projectile hit: " + other.name);
         if (other.gameObject.CompareTag("Fountain") ||
-            other.gameObject.CompareTag("PowerUp"))
+            other.gameObject.CompareTag("PowerUp") ||
+            (other.gameObject.CompareTag("DroneShield") && !Reflected))
         {
             return;
         }
@@ -27,7 +28,7 @@ public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if th
         {
             print("REBOUND PROJECTILE");
             SetProjectileDirection(-Direction);
-            _reflected = true;
+            Reflected = true;
         }
         else
         {
@@ -40,8 +41,7 @@ public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if th
                     CannotDamageAgain = true;
                 }
             }
-            else if ((other.gameObject.CompareTag("Enemy") && other.transform.root.gameObject != _parentDrone) || // either hit another enemy or hit yourself and the laser has been reflected
-                     (other.gameObject.CompareTag("Enemy") && other.transform.root.gameObject == _parentDrone && _reflected))
+            else if ((other.gameObject.CompareTag("Enemy") && Reflected))
             {
                 if (other.transform.root.gameObject.GetComponent<IWVDDamageable>() != null)
                 {
@@ -50,10 +50,11 @@ public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if th
                         other.transform.root.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
                         print("hit enemy");
                         CannotDamageAgain = true;
+                        return;
                     }
                 }
             }
-            if (!(other.gameObject.CompareTag("Enemy") && other.transform.root.gameObject == _parentDrone && !_reflected))
+            if (!(other.gameObject.CompareTag("Enemy") && !Reflected))// || !(other.gameObject.CompareTag("DroneShield") && !Reflected))
             {
                 Instantiate(ImpactFX, transform.position, Quaternion.identity);
                 SoundManager.PlaySFXAtPoint(SoundManager.DroneLaserCollideSFX, transform.position);
