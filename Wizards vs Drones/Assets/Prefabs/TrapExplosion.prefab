@@ -5090,7 +5090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lifetime: 0.5
-  _damage: 1
+  _damage: 3
   _canDamageEnemies: 1
   _canDamagePlayer: 0
 --- !u!135 &8539571824685614408

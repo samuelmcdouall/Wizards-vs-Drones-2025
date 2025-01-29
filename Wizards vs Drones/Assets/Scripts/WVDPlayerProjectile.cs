@@ -35,7 +35,10 @@ public class WVDPlayerProjectile : WVDBaseProjectile
             other.gameObject.CompareTag("PowerUp") ||
             other.gameObject.CompareTag("Fountain") || 
             other.gameObject.CompareTag("EnemyHitBox") ||
-            other.gameObject.CompareTag("BossFireStream"))
+            other.gameObject.CompareTag("BossFireStream") ||
+            other.gameObject.CompareTag("ShieldRegular") ||
+            other.gameObject.CompareTag("ShieldDeflect") ||
+            other.gameObject.CompareTag("ShieldElectric"))
         {
             return;
         }
@@ -45,13 +48,17 @@ public class WVDPlayerProjectile : WVDBaseProjectile
             {
                 PlayerScript.CurrentHealth++;
             }
-            other.transform.root.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
+            if (!CannotDamageAgain)
+            {
+                other.transform.root.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
+            }
             print("hit enemy");
             if (_canPierce)
             {
                 _canPierce = false;
                 if (!other.gameObject.CompareTag("InvisibleWall"))
                 {
+                    CannotDamageAgain = true;
                     Instantiate(ImpactFX, transform.position, Quaternion.identity);
                     SoundManager.PlaySFXAtPoint(SoundManager.PlayerProjectileImpactSFX, transform.position);
                     Destroy(gameObject);
@@ -66,6 +73,7 @@ public class WVDPlayerProjectile : WVDBaseProjectile
         }
         if (!other.gameObject.CompareTag("InvisibleWall"))
         {
+            CannotDamageAgain = true;
             Instantiate(ImpactFX, transform.position, Quaternion.identity);
             SoundManager.PlaySFXAtPoint(SoundManager.PlayerProjectileImpactSFX, transform.position);
             Destroy(gameObject);

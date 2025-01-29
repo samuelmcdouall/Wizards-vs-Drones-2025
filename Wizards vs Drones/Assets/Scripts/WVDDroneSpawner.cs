@@ -115,7 +115,7 @@ public class WVDDroneSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _spawnTimer = Random.Range(_spawnTimeMin, _spawnTimeMax);
+        _spawnTimer = 4.0f; // need time to show tutorial before drones start spawning in
     }
 
     // Update is called once per frame

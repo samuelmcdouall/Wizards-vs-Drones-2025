@@ -30,9 +30,9 @@ public class WVDTrapPowerUp : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Enemy") && other.gameObject.GetComponent<IWVDDamageable>() != null)
+        if (other.gameObject.CompareTag("Enemy") && other.transform.root.gameObject.GetComponent<IWVDDamageable>() != null)
         {
-            other.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(_damage, _trapEffects);
+            other.transform.root.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(_damage, _trapEffects);
             if (_trapType == TrapType.Explosive)
             {
                 Instantiate(_explosionPrefab, transform.position, Quaternion.identity);

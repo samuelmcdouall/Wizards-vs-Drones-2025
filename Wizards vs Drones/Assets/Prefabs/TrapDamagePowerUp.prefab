@@ -10045,7 +10045,7 @@ MonoBehaviour:
   _trapType: 1
   _slowPercentage: 0
   _slowDuration: 0
-  _damage: 1
+  _damage: 3
   _explosionPrefab: {fileID: 0}
 --- !u!1 &8218691344393827095
 GameObject:

@@ -120,8 +120,9 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
                 // Fire projectile here
                 if (!Stunned)
                 {
-                    GameObject laserDrone = Instantiate(_laserProjectilePrefab, _projectileFirePoint.position, _laserProjectilePrefab.transform.rotation);
-                    laserDrone.GetComponent<WVDLaserDroneProjectile>().SetProjectileDirection(_projectileFirePoint.forward);
+                    WVDLaserDroneProjectile laserDrone = Instantiate(_laserProjectilePrefab, _projectileFirePoint.position, _laserProjectilePrefab.transform.rotation).GetComponent<WVDLaserDroneProjectile>();
+                    laserDrone.SetProjectileDirection(_projectileFirePoint.forward);
+                    laserDrone.SetParentDrone(gameObject);
                     SoundManager.PlaySFXAtPoint(SoundManager.DroneLaserLauchSFX, transform.position);
                 }
 

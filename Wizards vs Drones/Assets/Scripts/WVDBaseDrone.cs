@@ -259,7 +259,8 @@ public abstract class WVDBaseDrone : WVDBaseEntity
                 _remainingDroneStuckTimer = _remainingDroneStuckTime;
                 Vector3 randomAvailablePosition = _droneSpawner.AvailableSpawnPositions[Random.Range(0, _droneSpawner.AvailableSpawnPositions.Count)].position;
                 DroneNMA.Warp(randomAvailablePosition);
-                
+                print($"Drone is stuck, teleporting to: {randomAvailablePosition}");
+
             }
         }
     }

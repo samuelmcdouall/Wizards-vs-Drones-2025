@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WVDBossProjectile : WVDBaseProjectile
 {
+
     public override void Start()
     {
         base.Start();
@@ -20,9 +21,14 @@ public class WVDBossProjectile : WVDBaseProjectile
         {
             return;
         }
-        if (other.gameObject.CompareTag("Player") && other.gameObject.GetComponent<IWVDDamageable>() != null)
+        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("PickUpTrigger"))
         {
-            other.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
+            if (!CannotDamageAgain)
+            {
+                other.transform.root.gameObject.GetComponent<WVDPlayer>().ResolveAttack(Damage, Effects); // todo might just use IWVDDamageable here as well
+                print("hit player");
+                CannotDamageAgain = true;
+            }
         }
         else if (other.gameObject.CompareTag("Flammable"))
         {

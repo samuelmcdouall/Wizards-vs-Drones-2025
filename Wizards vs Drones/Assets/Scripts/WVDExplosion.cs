@@ -18,9 +18,9 @@ public class WVDExplosion : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (_canDamageEnemies && other.gameObject.CompareTag("Enemy") && other.gameObject.GetComponent<IWVDDamageable>() != null)
+        if (_canDamageEnemies && other.gameObject.CompareTag("Enemy") && other.transform.root.gameObject.GetComponent<IWVDDamageable>() != null)
         {
-            other.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(_damage, new WVDAttackEffects());
+            other.transform.root.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(_damage, new WVDAttackEffects());
             print("hit enemy with explosive trap");
         }
         if (_canDamagePlayer && other.gameObject.CompareTag("Player"))

@@ -40,9 +40,9 @@ public class WVDHomingProjectile : WVDBaseProjectile
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Enemy") && other.gameObject.GetComponent<IWVDDamageable>() != null)
+        if (other.gameObject.CompareTag("Enemy") && other.transform.root.gameObject.GetComponent<IWVDDamageable>() != null)
         {
-            other.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
+            other.transform.root.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
             print("hit enemy");
         }
     }
