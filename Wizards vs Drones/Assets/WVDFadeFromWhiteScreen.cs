@@ -30,6 +30,7 @@ public class WVDFadeFromWhiteScreen : MonoBehaviour
         WVDFunctionsCheck.IsDead = false;
         Invoke("FadeFromWhite", 1.0f);
         _tutorialManager = GameObject.FindGameObjectWithTag("TutorialManager")?.GetComponent<WVDTutorialManager>();
+        WVDFunctionsCheck.WhiteScreenFading = true;
     }
 
     // Update is called once per frame
@@ -51,5 +52,6 @@ public class WVDFadeFromWhiteScreen : MonoBehaviour
         _whiteFadeScreen.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
         _whiteFadeScreen.gameObject.SetActive(false);
         _tutorialManager?.DisplayTutorial(WVDTutorialManager.TutorialPart.Intro, 1.0f);
+        WVDFunctionsCheck.WhiteScreenFading = false;
     }
 }

@@ -39,7 +39,7 @@ public class WVDPauseMenuManager : MonoBehaviour
                 _pauseMenuScreen.SetActive(true);
                 _pauseOptionsMenuScreen.SetActive(false);
             }
-            else if (_pauseMenuScreen.activeSelf)
+            else if (_pauseMenuScreen.activeSelf && !WVDFunctionsCheck.WhiteScreenFading)
             {
                 _pauseMenuScreen.SetActive(false);
                 WVDFunctionsCheck.InPauseMenu = false;
@@ -47,7 +47,13 @@ public class WVDPauseMenuManager : MonoBehaviour
                 Cursor.visible = false;
                 Time.timeScale = 1.0f;
             }
-            else
+            else if (!WVDFunctionsCheck.WhiteScreenFading && 
+                     !WVDFunctionsCheck.IsDead && 
+                     !WVDFunctionsCheck.InCutscene && 
+                     !WVDFunctionsCheck.HasWon && 
+                     !WVDFunctionsCheck.InTutorial && 
+                     !WVDFunctionsCheck.InShopMenu
+                     )
             {
                 ShowOptionsMenu();
             }
@@ -94,6 +100,7 @@ public class WVDPauseMenuManager : MonoBehaviour
     public void WVDClickQuitToMenuButton()
     {
         _whiteFadeScreen.gameObject.SetActive(true);
+        WVDFunctionsCheck.WhiteScreenFading = true;
         FadeToWhite();
         FadeMusicOut();
         Time.timeScale = 1.0f;

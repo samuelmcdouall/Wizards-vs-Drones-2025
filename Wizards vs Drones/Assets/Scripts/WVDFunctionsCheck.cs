@@ -6,6 +6,7 @@ public static class WVDFunctionsCheck
     public static bool InCutscene;
     public static bool HasWon;
     public static bool InTutorial;
+    public static bool WhiteScreenFading;
 
     public static bool PlayerInputsAllowed()
     {
@@ -19,5 +20,6 @@ public static class WVDFunctionsCheck
         InCutscene = false;
         HasWon = false;
         InTutorial = false;
+        WhiteScreenFading = false;
     }
 }

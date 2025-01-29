@@ -127,6 +127,7 @@ public class WVDGameOverManager : MonoBehaviour
     async void FadeToWhiteAndLoadScene(string sceneToLoad)
     {
         _whiteFadeScreen.gameObject.SetActive(true);
+        WVDFunctionsCheck.WhiteScreenFading = true;
         float fadeInTimer = 0.0f;
         while (fadeInTimer < _whiteFadeDuration)
         {
