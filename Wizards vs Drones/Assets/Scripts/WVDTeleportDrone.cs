@@ -35,6 +35,7 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
     {
         print($"Teleport drone took {damage} damage");
         CurrentHealth -= damage;
+        ResetRemainingStuckTimer();
         if (playDamageSFX)
         {
             SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.DroneTakeDamageSFX1, SoundManager.DroneTakeDamageSFX2 });

@@ -45,6 +45,7 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
     {
         print($"Electric drone took {damage} damage");
         CurrentHealth -= damage;
+        ResetRemainingStuckTimer();
         if (playDamageSFX)
         {
             SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.DroneTakeDamageSFX1, SoundManager.DroneTakeDamageSFX2 });

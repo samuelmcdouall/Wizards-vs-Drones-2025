@@ -37,6 +37,7 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
     {
         print($"Laser drone took {damage} damage");
         CurrentHealth -= damage;
+        ResetRemainingStuckTimer();
         if (playDamageSFX)
         {
             SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.DroneTakeDamageSFX1, SoundManager.DroneTakeDamageSFX2 });

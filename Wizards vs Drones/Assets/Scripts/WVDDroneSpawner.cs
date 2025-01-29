@@ -110,6 +110,7 @@ public class WVDDroneSpawner : MonoBehaviour
         set => _dronesPerRound = value; 
     }
     public bool TriggeredHelpUIThisLevel { get => _triggeredHelpUIThisLevel; set => _triggeredHelpUIThisLevel = value; }
+    public List<Transform> AvailableSpawnPositions { get => _availableSpawnPositions; set => _availableSpawnPositions = value; }
 
     // Start is called before the first frame update
     void Start()

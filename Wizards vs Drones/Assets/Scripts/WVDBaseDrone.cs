@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -31,6 +29,8 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     [SerializeField]
     GameObject _droneRemainingHelpUIPrefab;
     GameObject _droneRemainingHelpUIInstance;
+    float _remainingDroneStuckTime = 120.0f;
+    float _remainingDroneStuckTimer;
     
     [Header("Movement - Base Drone")]
     [SerializeField]
@@ -166,6 +166,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         {
             SpawnDroneRemainingHelpUI();
         }
+        _remainingDroneStuckTimer = _remainingDroneStuckTime;
     }
 
     public void SpawnDroneRemainingHelpUI()
@@ -248,6 +249,24 @@ public abstract class WVDBaseDrone : WVDBaseEntity
                 _slowBuffCheckTimer -= Time.deltaTime;
             }
         }
+
+        // as a failsafe if a drone is stuck somewhere and its one of the last ones (i.e. it has spawned its UI helper), it will be teleported to a random spawn point after a timer to stop the game locking
+        if (_droneRemainingHelpUIInstance) 
+        {
+            _remainingDroneStuckTimer -= Time.deltaTime;
+            if (_remainingDroneStuckTimer < 0.0f)
+            {
+                _remainingDroneStuckTimer = _remainingDroneStuckTime;
+                Vector3 randomAvailablePosition = _droneSpawner.AvailableSpawnPositions[Random.Range(0, _droneSpawner.AvailableSpawnPositions.Count)].position;
+                DroneNMA.Warp(randomAvailablePosition);
+                
+            }
+        }
+    }
+
+    protected void ResetRemainingStuckTimer() // If the player damages a drone then they're in combat with it and the timer is reset
+    {
+        _remainingDroneStuckTimer = _remainingDroneStuckTime;
     }
 
     public virtual void DestroyFullyDamaged()
