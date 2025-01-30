@@ -39,27 +39,30 @@ public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if th
                     other.transform.root.gameObject.GetComponent<WVDPlayer>().ResolveAttack(Damage, Effects); // todo might just use IWVDDamageable here as well
                     print("hit player");
                     CannotDamageAgain = true;
+                    DestroyProjectile();
                 }
             }
-            else if ((other.gameObject.CompareTag("Enemy") && Reflected))
+            else if ((other.gameObject.CompareTag("Enemy")))
             {
                 if (other.transform.root.gameObject.GetComponent<IWVDDamageable>() != null)
                 {
-                    if (!CannotDamageAgain)
+                    if (!CannotDamageAgain && Reflected)
                     {
                         other.transform.root.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
                         print("hit enemy");
                         CannotDamageAgain = true;
-                        return;
+                        DestroyProjectile();
                     }
                 }
             }
-            if (!(other.gameObject.CompareTag("Enemy") && !Reflected))// || !(other.gameObject.CompareTag("DroneShield") && !Reflected))
+            else
             {
-                Instantiate(ImpactFX, transform.position, Quaternion.identity);
-                SoundManager.PlaySFXAtPoint(SoundManager.DroneLaserCollideSFX, transform.position);
-                Destroy(gameObject);
+                DestroyProjectile();
             }
+            //if (!(other.gameObject.CompareTag("Enemy") && !Reflected))// || !(other.gameObject.CompareTag("DroneShield") && !Reflected))
+            //{
+
+            //}
         }
 
     }
@@ -67,5 +70,12 @@ public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if th
     public void SetParentDrone(GameObject parentDrone)
     {
         _parentDrone = parentDrone;
+    }
+
+    void DestroyProjectile()
+    {
+        Instantiate(ImpactFX, transform.position, Quaternion.identity);
+        SoundManager.PlaySFXAtPoint(SoundManager.DroneLaserCollideSFX, transform.position);
+        Destroy(gameObject);
     }
 }
