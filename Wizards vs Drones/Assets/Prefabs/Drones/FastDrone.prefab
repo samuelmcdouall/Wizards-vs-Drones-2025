@@ -25611,7 +25611,7 @@ MonoBehaviour:
   _animator: {fileID: 5842473388982056090}
   DestroyPrefab: {fileID: 7663171341061898199, guid: 83f1842858af0b349a90c12ea4468b09, type: 3}
   BatteryPickUp: {fileID: 291795202343636061, guid: a192c1e4f9336b34eb83019ca895833a, type: 3}
-  PickUpChance: 0.5
+  PickUpChance: 0.65
   ExplodePrefab: {fileID: 6079881615369700989, guid: 299187d6c354ee54fa595cc064d8e4b0, type: 3}
   _droneSpawner: {fileID: 0}
   SelectedDroneType: 2
