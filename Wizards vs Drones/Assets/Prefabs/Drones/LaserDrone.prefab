@@ -9921,7 +9921,7 @@ MonoBehaviour:
   - {fileID: 8656636969500964961}
   - {fileID: 4114185758289083412}
   - {fileID: 270562617482284340}
-  ChargingTurnFactor: 2.5
+  ChargingTurnFactor: 4
   DroneModel: {fileID: 6857841057507126081}
   AttackChargeUpDuration: 0.75
   AttackDuration: 0
@@ -20222,7 +20222,8 @@ GameObject:
   - component: {fileID: 9201150457882171965}
   - component: {fileID: 2535157486705305653}
   - component: {fileID: 6390676310877866829}
-  m_Layer: 6
+  - component: {fileID: 5088044867961738704}
+  m_Layer: 2
   m_Name: LaserDroneModel
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -20340,6 +20341,27 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.2
   m_Center: {x: -0.00000005960464, y: -0.47, z: 0.00000011920928}
+--- !u!65 &5088044867961738704
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6857841057507126081}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 3.575495, y: 4.27, z: 3.9624014}
+  m_Center: {x: -0.00000005960464, y: -0.32, z: 0.00000011920928}
 --- !u!1 &7925508309294882128
 GameObject:
   m_ObjectHideFlags: 0

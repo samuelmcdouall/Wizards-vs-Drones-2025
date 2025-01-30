@@ -20318,7 +20318,7 @@ GameObject:
   - component: {fileID: 6526937764866553400}
   - component: {fileID: 5842473388982056090}
   - component: {fileID: 1677563679042746000}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: ElectricDroneModel
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -25441,7 +25441,7 @@ GameObject:
   - component: {fileID: 5101263837062753251}
   - component: {fileID: 497370090457592531}
   - component: {fileID: 6292856808572627479}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: HitBox
   m_TagString: EnemyHitBox
   m_Icon: {fileID: 0}

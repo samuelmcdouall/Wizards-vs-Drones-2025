@@ -5,7 +5,7 @@ public class WVDPlayerProjectile : WVDBaseProjectile
     bool _canPierce;
     [System.NonSerialized]
     public WVDPlayer PlayerScript;
-    bool _noFurtherDamage;
+    GameObject _hitEnemy;
 
     public override void Start()
     {
@@ -18,18 +18,19 @@ public class WVDPlayerProjectile : WVDBaseProjectile
         }
     }
 
+
     private void OnTriggerEnter(Collider other)
     {
         print("PROJECTILE HIT: " + other.gameObject.name);
-        if (_noFurtherDamage)
+        if (CannotDamageAgain)
         {
             return;
         }
         if (other.gameObject.CompareTag("DroneShield"))
         {
-            _noFurtherDamage = true; // stops player projectile from doing any more if it travels beyond the shield before being destroyed, shouldn't really be an issue most of the time but this is here just in case
+            DestroyProjectile();
         }
-        if (other.gameObject.CompareTag("Player") ||
+        else if (other.gameObject.CompareTag("Player") ||
             other.gameObject.CompareTag("PlayerProjectile") ||
             other.gameObject.CompareTag("PickUpTrigger") ||
             other.gameObject.CompareTag("PowerUp") ||
@@ -42,41 +43,59 @@ public class WVDPlayerProjectile : WVDBaseProjectile
         {
             return;
         }
-        if (other.gameObject.CompareTag("Enemy") && other.transform.root.gameObject.GetComponent<IWVDDamageable>() != null)
+        else if (other.gameObject.CompareTag("Enemy") && 
+                 other.transform.root.gameObject.GetComponent<IWVDDamageable>() != null
+                 )
         {
-            if (Effects.LifeSteal)
+            if (other.transform.root.gameObject != _hitEnemy)
             {
-                PlayerScript.CurrentHealth++;
+                print("hit enemy");
+                if (Effects.LifeSteal)
+                {
+                    PlayerScript.CurrentHealth++;
+                }
+
+                if (!CannotDamageAgain)
+                {
+                    other.transform.root.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
+                }
+
+                if (_hitEnemy == null)
+                {
+                    _hitEnemy = other.transform.root.gameObject;
+                }
+
+                if (_canPierce)
+                {
+                    print("Pierced enemy");
+                    _canPierce = false;
+                }
+                else
+                {
+                    DestroyProjectile();
+                }
             }
+        }
+        else if (other.gameObject.CompareTag("Boss"))
+        {
             if (!CannotDamageAgain)
             {
-                other.transform.root.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
+                other.gameObject.GetComponent<WVDBoss>().TakeDamage(Damage);
             }
-            print("hit enemy");
-            if (_canPierce)
-            {
-                _canPierce = false;
-                if (!other.gameObject.CompareTag("InvisibleWall"))
-                {
-                    CannotDamageAgain = true;
-                    Instantiate(ImpactFX, transform.position, Quaternion.identity);
-                    SoundManager.PlaySFXAtPoint(SoundManager.PlayerProjectileImpactSFX, transform.position);
-                    Destroy(gameObject);
-                }
-                return;
-            }
-        }
-        if (other.gameObject.CompareTag("Boss"))
-        {
-            other.gameObject.GetComponent<WVDBoss>().TakeDamage(Damage);
+            DestroyProjectile();
 
         }
-        if (!other.gameObject.CompareTag("InvisibleWall"))
+        else if (!other.gameObject.CompareTag("InvisibleWall"))
         {
-            CannotDamageAgain = true;
-            Instantiate(ImpactFX, transform.position, Quaternion.identity);
-            SoundManager.PlaySFXAtPoint(SoundManager.PlayerProjectileImpactSFX, transform.position);
-            Destroy(gameObject);
+            DestroyProjectile();
         }
+    }
+
+    void DestroyProjectile()
+    {
+        CannotDamageAgain = true;
+        Instantiate(ImpactFX, transform.position, Quaternion.identity);
+        SoundManager.PlaySFXAtPoint(SoundManager.PlayerProjectileImpactSFX, transform.position);
+        Destroy(gameObject);
     }
 }

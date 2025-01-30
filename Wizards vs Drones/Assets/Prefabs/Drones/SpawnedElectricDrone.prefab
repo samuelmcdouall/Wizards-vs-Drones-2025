@@ -56,7 +56,7 @@ MonoBehaviour:
   _healthUI: {fileID: 0}
   HealthUIFill: {fileID: 0}
   InvulnerableFX: {fileID: 0}
-  _maxNormalSpeed: 6
+  _maxNormalSpeed: 5
   _maxSideBackSpeed: 0
   _slowedFX: {fileID: 0}
   _animator: {fileID: 7340445498986333092}
@@ -15405,7 +15405,7 @@ GameObject:
   - component: {fileID: 1946717941509297100}
   - component: {fileID: 6971535310961368936}
   - component: {fileID: 1063651367686975407}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: HitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25344,7 +25344,7 @@ GameObject:
   - component: {fileID: 8435769720743151071}
   - component: {fileID: 7340445498986333092}
   - component: {fileID: 6169717781011372447}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: ElectricDroneModel
   m_TagString: Enemy
   m_Icon: {fileID: 0}

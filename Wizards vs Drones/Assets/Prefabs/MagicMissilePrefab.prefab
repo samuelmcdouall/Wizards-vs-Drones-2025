@@ -4912,7 +4912,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5432368540722010777}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 100000
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -4961,6 +4961,7 @@ MonoBehaviour:
     CriticalChance: 0
     DropRateIncrease: 0
     LifeSteal: 0
+  CannotDamageAgain: 0
   ImpactFX: {fileID: 5395027156059856893, guid: 6cd17a3b815a12c47b18b6a5bf3d8f1a, type: 3}
 --- !u!1 &5742160393761371193
 GameObject:
