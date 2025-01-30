@@ -242,6 +242,10 @@ public class WVDLevelManager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            _level = 7;
+        }
         if (_shopOpen)
         {
             if (Vector3.Distance(_playerScript.gameObject.transform.position, _chosenShop.transform.position) > _playerToShopTrailThreshold)

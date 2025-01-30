@@ -13,6 +13,7 @@ public class WVDDroneSpawner : MonoBehaviour
     Transform _player;
     [SerializeField]
     WVDPlayer _playerScript;
+    WVDChallengeModeManager _challengeModeManager;
 
     [Header("Drones Spawn Stats")]
     [SerializeField]
@@ -45,7 +46,6 @@ public class WVDDroneSpawner : MonoBehaviour
     float _spawnTimeMax;
     [SerializeField]
     float _spawnTimer;
-
     [Header("Drones")]
     [SerializeField]
     GameObject _electricDrone;
@@ -116,6 +116,7 @@ public class WVDDroneSpawner : MonoBehaviour
     void Start()
     {
         _spawnTimer = 4.0f; // need time to show tutorial before drones start spawning in
+        _challengeModeManager = GameObject.FindGameObjectWithTag("ChallengeModeManager").GetComponent<WVDChallengeModeManager>();
     }
 
     // Update is called once per frame
@@ -151,11 +152,21 @@ public class WVDDroneSpawner : MonoBehaviour
         WVDDroneSpawnRound dronesForThisRound = _dronesPerRound[level];
         _maxDronesSpawned = dronesForThisRound.MaxDroneLimit;
 
-        AddDroneNumberToPool(_electricDrone, dronesForThisRound.MinElectric, dronesForThisRound.MaxElectric);
-        AddDroneNumberToPool(_laserDrone, dronesForThisRound.MinLaser, dronesForThisRound.MaxLaser);
-        AddDroneNumberToPool(_fastDrone, dronesForThisRound.MinFast, dronesForThisRound.MaxFast);
-        AddDroneNumberToPool(_teleportDrone, dronesForThisRound.MinTeleport, dronesForThisRound.MaxTeleport);
-        AddDroneNumberToPool(_tankDrone, dronesForThisRound.MinTank, dronesForThisRound.MaxTank);
+        float modifier = 1.0f;
+        if (_challengeModeManager.SelectedDifficulty == WVDChallengeModeManager.Difficulty.Medium)
+        {
+            modifier = 0.75f;
+        }
+        else if (_challengeModeManager.SelectedDifficulty == WVDChallengeModeManager.Difficulty.Easy)
+        {
+            modifier = 0.5f;
+        }
+
+        AddDroneNumberToPool(_electricDrone, (int)(modifier * dronesForThisRound.MinElectric), (int)(modifier * dronesForThisRound.MaxElectric));
+        AddDroneNumberToPool(_laserDrone, (int)(modifier * dronesForThisRound.MinLaser), (int)(modifier * dronesForThisRound.MaxLaser));
+        AddDroneNumberToPool(_fastDrone, (int)(modifier * dronesForThisRound.MinFast), (int)(modifier * dronesForThisRound.MaxFast));
+        AddDroneNumberToPool(_teleportDrone, (int)(modifier * dronesForThisRound.MinTeleport), (int)(modifier * dronesForThisRound.MaxTeleport));
+        AddDroneNumberToPool(_tankDrone, (int)(modifier * dronesForThisRound.MinTank), (int)(modifier * dronesForThisRound.MaxTank));
         LevelDronesRemaining = _spawnPool.Count;
 
     }
@@ -194,6 +205,7 @@ public class WVDDroneSpawner : MonoBehaviour
         {
             _spawnPool.Add(drone);
         }
+        print($"Added {randNumDrones} {drone.name} to the pool ({min} - {max})");
     }
 
     void SpawnRandomDrone()

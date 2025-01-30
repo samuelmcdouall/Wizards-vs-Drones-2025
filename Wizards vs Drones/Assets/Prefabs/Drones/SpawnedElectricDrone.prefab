@@ -56,7 +56,7 @@ MonoBehaviour:
   _healthUI: {fileID: 0}
   HealthUIFill: {fileID: 0}
   InvulnerableFX: {fileID: 0}
-  _maxNormalSpeed: 4
+  _maxNormalSpeed: 6
   _maxSideBackSpeed: 0
   _slowedFX: {fileID: 0}
   _animator: {fileID: 7340445498986333092}
@@ -72,7 +72,7 @@ MonoBehaviour:
   - {fileID: 4276460905100774699}
   - {fileID: 6433807987052952977}
   - {fileID: 5172347234902557499}
-  ChargingTurnFactor: 2.5
+  ChargingTurnFactor: 4
   DroneModel: {fileID: 7327297950316064290}
   AttackChargeUpDuration: 0.75
   AttackDuration: 0.5

@@ -6,6 +6,7 @@ public class WVDChallengeModeManager : MonoBehaviour
 {
     public static WVDChallengeModeManager Instance;
     public bool ChallengeModeActive;
+    public Difficulty SelectedDifficulty;
 
     void Awake()
     {
@@ -19,5 +20,12 @@ public class WVDChallengeModeManager : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
 
+    }
+
+    public enum Difficulty
+    {
+        Easy,
+        Medium,
+        Hard
     }
 }

@@ -98,7 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _value: 1
   _lifeTime: 10
-  _startFlashingThreshold: 5
+  _startFlashingThreshold: 3
   _flashPeriod: 0.25
   _batteryModel: {fileID: 4713412198875900444}
 --- !u!1 &3203747190362693770

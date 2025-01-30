@@ -46,31 +46,34 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
     }
     public virtual void TakeDamage(int damage, bool playDamageSFX) // for tank, do an override of this + need a go beserk function to increase stats + (maybe this not needed)do a start/update with just the base function
     {
-        print($"Electric drone took {damage} damage");
-        CurrentHealth -= damage;
-        Vector3 randomSpawnOffset = new Vector3(Random.Range(-0.4f, 0.4f), 0.0f, Random.Range(-0.4f, 0.4f));
-        TMP_Text text = Instantiate(_damageMarker, transform.position + Vector3.up * 2.0f + randomSpawnOffset, Quaternion.identity).GetComponent<TMP_Text>();
-        if (damage > 10)
+        if (!IsFullyDamaged())
         {
-            text.text = "X"; // i.e. insta kill
-        }
-        else
-        {
-            text.text = "" + damage;
-        }
-
-        ResetRemainingStuckTimer();
-        if (playDamageSFX)
-        {
-            SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.DroneTakeDamageSFX1, SoundManager.DroneTakeDamageSFX2 });
-        }
-        
-        if (IsFullyDamaged())
-        {
-            if (!DestroySequenceCompleted)
+            print($"Electric drone took {damage} damage");
+            CurrentHealth -= damage;
+            Vector3 randomSpawnOffset = new Vector3(Random.Range(-0.4f, 0.4f), 0.0f, Random.Range(-0.4f, 0.4f));
+            TMP_Text text = Instantiate(_damageMarker, transform.position + Vector3.up * 2.0f + randomSpawnOffset, Quaternion.identity).GetComponent<TMP_Text>();
+            if (damage > 10)
             {
-                DestroySequenceCompleted = true;
-                DestroyFullyDamaged();
+                text.text = "X"; // i.e. insta kill
+            }
+            else
+            {
+                text.text = "" + damage;
+            }
+
+            ResetRemainingStuckTimer();
+            if (playDamageSFX)
+            {
+                SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.DroneTakeDamageSFX1, SoundManager.DroneTakeDamageSFX2 });
+            }
+
+            if (IsFullyDamaged())
+            {
+                if (!DestroySequenceCompleted)
+                {
+                    DestroySequenceCompleted = true;
+                    DestroyFullyDamaged();
+                }
             }
         }
     }
