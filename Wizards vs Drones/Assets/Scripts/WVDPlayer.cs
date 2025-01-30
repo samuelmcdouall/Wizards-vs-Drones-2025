@@ -343,6 +343,12 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
 
     }
 
+    public void UpgradeAttackSpeedAnimation() 
+    {
+        Animator.SetFloat("AttackSpeedAnimation", 1.33f);
+    }
+
+
     // todo implement this, this is next
     public void TakeDamage(int damage, bool playDamageSFX)
     {

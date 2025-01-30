@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2279240877258813422}
   - component: {fileID: 8539571824685614408}
   - component: {fileID: 2894697663770633799}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TrapExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}

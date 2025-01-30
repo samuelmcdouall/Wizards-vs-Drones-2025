@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3658386218581835493}
   - component: {fileID: 5167295346490605690}
   - component: {fileID: 7121175734851027760}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BatteryPickUp
   m_TagString: Battery
   m_Icon: {fileID: 0}

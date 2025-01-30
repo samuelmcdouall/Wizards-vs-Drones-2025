@@ -155,6 +155,7 @@ public class WVDPlayerInputs : MonoBehaviour
 
                 CurrentPlayerMovementState = PlayerMovementState.Attacking;
                 _playerScript.SwitchToAnimation(WVDAnimationStrings.PlayerAttackAnimation);
+
                 _canAttack = false;
                 RechargeAttack();
             }

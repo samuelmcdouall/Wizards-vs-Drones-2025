@@ -321,6 +321,7 @@ public class WVDShopUIManager : MonoBehaviour
     {
         _playerScript.BatteryCount -= _attackSpeedFinalPrice;
         _playerScript.PurchasedUpgrades.AttackSpeedModifier = 1.5f;
+        _playerScript.UpgradeAttackSpeedAnimation();
         _attackSpeedPurchaseButton.enabled = false;
         _attackSpeedPurchasedImage.SetActive(true);
         UpdateBuyableItems();

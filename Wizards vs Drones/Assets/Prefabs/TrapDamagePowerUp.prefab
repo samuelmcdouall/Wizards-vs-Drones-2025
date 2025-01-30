@@ -5009,7 +5009,7 @@ GameObject:
   - component: {fileID: 5845401759833507104}
   - component: {fileID: 8844327851682793804}
   - component: {fileID: 5574519895883909121}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TrapDamagePowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}

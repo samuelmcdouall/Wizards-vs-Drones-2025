@@ -35,7 +35,7 @@ public class AnimationScript : MonoBehaviour {
 
        
         
-        if(isAnimated)
+        if(isAnimated && !WVDFunctionsCheck.InPauseMenu)
         {
             if(isRotating)
             {

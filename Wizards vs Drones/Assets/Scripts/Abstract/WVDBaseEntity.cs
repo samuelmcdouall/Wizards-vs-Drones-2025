@@ -120,6 +120,7 @@ public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
         get => _currentPlayingAnimation; 
         set => _currentPlayingAnimation = value; 
     }
+    public Animator Animator { get => _animator; set => _animator = value; }
 
     [Header("Other - General")]
     protected GameObject Player;
