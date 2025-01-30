@@ -12,6 +12,8 @@ public class WVDMainMenuManager : MonoBehaviour
     [SerializeField]
     GameObject _gameModeScreen;
     [SerializeField]
+    GameObject _difficultyScreen;
+    [SerializeField]
     GameObject _optionsScreen;
     [SerializeField]
     Image _whiteFadeScreen;
@@ -50,6 +52,29 @@ public class WVDMainMenuManager : MonoBehaviour
     public void WVDClickPlayButton()
     {
         _mainMenuScreen.SetActive(false);
+        _difficultyScreen.SetActive(true);
+        _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
+    }
+    public void WVDClickEasyButton()
+    {
+        ToGameModeScreen();
+        _challengeModeManager.SelectedDifficulty = WVDChallengeModeManager.Difficulty.Easy;
+    }
+
+    public void WVDClickMediumButton()
+    {
+        ToGameModeScreen();
+        _challengeModeManager.SelectedDifficulty = WVDChallengeModeManager.Difficulty.Medium;
+    }
+    public void WVDClickHardButton()
+    {
+        ToGameModeScreen();
+        _challengeModeManager.SelectedDifficulty = WVDChallengeModeManager.Difficulty.Hard;
+    }
+
+    private void ToGameModeScreen()
+    {
+        _difficultyScreen.SetActive(false);
         _gameModeScreen.SetActive(true);
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
@@ -74,6 +99,7 @@ public class WVDMainMenuManager : MonoBehaviour
     public void WVDClickBackButton()
     {
         _mainMenuScreen.SetActive(true);
+        _difficultyScreen.SetActive(false);
         _gameModeScreen.SetActive(false);
         _optionsScreen.SetActive(false);
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
