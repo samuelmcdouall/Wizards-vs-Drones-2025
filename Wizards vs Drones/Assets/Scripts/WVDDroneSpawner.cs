@@ -150,7 +150,6 @@ public class WVDDroneSpawner : MonoBehaviour
     {
         _spawnPool.Clear();
         WVDDroneSpawnRound dronesForThisRound = _dronesPerRound[level];
-        _maxDronesSpawned = dronesForThisRound.MaxDroneLimit;
 
         float modifier = 1.0f;
         if (_challengeModeManager.SelectedDifficulty == WVDChallengeModeManager.Difficulty.Medium)
@@ -161,6 +160,9 @@ public class WVDDroneSpawner : MonoBehaviour
         {
             modifier = 0.5f;
         }
+        print($"Challenge modifier: {modifier}");
+        _maxDronesSpawned = (int)(modifier * dronesForThisRound.MaxDroneLimit);
+        print($"Max drones at one time this round: {_maxDronesSpawned}");
 
         AddDroneNumberToPool(_electricDrone, (int)(modifier * dronesForThisRound.MinElectric), (int)(modifier * dronesForThisRound.MaxElectric));
         AddDroneNumberToPool(_laserDrone, (int)(modifier * dronesForThisRound.MinLaser), (int)(modifier * dronesForThisRound.MaxLaser));
