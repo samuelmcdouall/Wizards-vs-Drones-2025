@@ -25638,6 +25638,7 @@ MonoBehaviour:
   _slowBuffDuration: 0.3
   _slowBuffCheckInterval: 0.25
   _slowBuffThreshold: 5
+  _damageMarker: {fileID: 5627463235418246015, guid: ef6342c8e83cce94086bb3bc2b83b5a3, type: 3}
   _attackHitBox: {fileID: 6279241513131582985}
   _attackHitBoxScript: {fileID: 6292856808572627479}
   _zapDamage: 1

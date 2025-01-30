@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
 {
     [Header("General - Laser Drone")]
+    [SerializeField]
+    GameObject _damageMarker;
 
     [Header("Movement - Laser Drone")]
 
@@ -37,6 +40,17 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
     {
         print($"Laser drone took {damage} damage");
         CurrentHealth -= damage;
+        Vector3 randomSpawnOffset = new Vector3(Random.Range(-0.4f, 0.4f), 0.0f, Random.Range(-0.4f, 0.4f));
+        TMP_Text text = Instantiate(_damageMarker, transform.position + Vector3.up * 2.0f + randomSpawnOffset, Quaternion.identity).GetComponent<TMP_Text>();
+        if (damage > 10)
+        {
+            text.text = "X"; // i.e. insta kill
+        }
+        else
+        {
+            text.text = "" + damage;
+        }
+
         ResetRemainingStuckTimer();
         if (playDamageSFX)
         {

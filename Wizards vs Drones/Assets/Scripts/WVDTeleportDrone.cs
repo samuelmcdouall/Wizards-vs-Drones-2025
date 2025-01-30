@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is similar to the laser drone, possible to combine?
 {
     [Header("General - Teleport Drone")]
+    [SerializeField]
+    GameObject _damageMarker;
 
     [Header("Movement - Teleport Drone")]
     [SerializeField]
@@ -35,6 +38,16 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
     {
         print($"Teleport drone took {damage} damage");
         CurrentHealth -= damage;
+        Vector3 randomSpawnOffset = new Vector3(Random.Range(-0.4f, 0.4f), 0.0f, Random.Range(-0.4f, 0.4f));
+        TMP_Text text = Instantiate(_damageMarker, transform.position + Vector3.up * 2.0f + randomSpawnOffset, Quaternion.identity).GetComponent<TMP_Text>();
+        if (damage > 10)
+        {
+            text.text = "X"; // i.e. insta kill
+        }
+        else
+        {
+            text.text = "" + damage;
+        }
         ResetRemainingStuckTimer();
         if (playDamageSFX)
         {
