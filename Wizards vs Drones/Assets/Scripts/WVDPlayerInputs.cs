@@ -20,7 +20,7 @@ public class WVDPlayerInputs : MonoBehaviour
     bool _spacePressed;
     [SerializeField]
     float _jumpHeight;
-    readonly float _gravity = -9.81f;
+    readonly float _gravity = -190.62f;
     Vector3 _velocity;
     float _initialJumpVelocity;
     [SerializeField]
@@ -358,9 +358,9 @@ public class WVDPlayerInputs : MonoBehaviour
 
     void ApplyGravity()
     {
-        if (_groundCheckScript.IsGrounded && _velocity.y < -4.0f)
+        if (_groundCheckScript.IsGrounded && _velocity.y < -8.0f)
         {
-            _velocity.y = -4.0f;
+            _velocity.y = -8.0f;
         }
 
         _velocity.y += _gravity * Time.deltaTime;

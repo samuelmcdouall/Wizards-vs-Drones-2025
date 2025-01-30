@@ -52,14 +52,15 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
             CurrentHealth -= damage;
             Vector3 randomSpawnOffset = new Vector3(Random.Range(-0.4f, 0.4f), 0.0f, Random.Range(-0.4f, 0.4f));
             TMP_Text text = Instantiate(_damageMarker, transform.position + Vector3.up * 2.0f + randomSpawnOffset, Quaternion.identity).GetComponent<TMP_Text>();
-            if (damage > 10)
+            if (damage <= 0)
             {
-                text.text = "X"; // i.e. insta kill
+                text.text = ""; // i.e. no damage from attack
             }
-            else
+            else if (damage <= 10)
             {
                 text.text = "" + damage;
             }
+            // otherwise insta kill and leave as "X"
 
             ResetRemainingStuckTimer();
             if (playDamageSFX)

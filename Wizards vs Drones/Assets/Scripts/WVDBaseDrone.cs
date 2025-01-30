@@ -171,6 +171,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
 
     public void SpawnDroneRemainingHelpUI()
     {
+        print("One of the last few drones, spawning UI helper for: " + gameObject.name);
         _droneRemainingHelpUIInstance = Instantiate(_droneRemainingHelpUIPrefab, transform.position, Quaternion.identity);
         _droneRemainingHelpUIInstance.transform.SetParent(GameObject.FindGameObjectWithTag("HelpDroneUIParent").transform, false);
         _droneRemainingHelpUIInstance.GetComponent<WVDDroneRemainingHelpUI>().SetDroneTransform(transform);
