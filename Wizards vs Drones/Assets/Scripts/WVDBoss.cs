@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
+using TMPro;
 
 public class WVDBoss : WVDBaseEntity
 {
@@ -17,6 +18,8 @@ public class WVDBoss : WVDBaseEntity
     WVDGameOverManager _gameOverManager;
     [SerializeField]
     float _victoryScreenDelay;
+    [SerializeField]
+    GameObject _damageMarker;
 
     [Header("Movement - Boss")]
     Vector3 _movementVector;
@@ -652,7 +655,16 @@ public class WVDBoss : WVDBaseEntity
         if (BossInBattle)
         {
             print($"Boss took {damage} damage");
-            CurrentHealth -= damage;
+            CurrentHealth -= damage; Vector3 randomSpawnOffset = new Vector3(Random.Range(-0.4f, 0.4f), 0.0f, Random.Range(-0.4f, 0.4f));
+            TMP_Text text = Instantiate(_damageMarker, transform.position + Vector3.up * 4.0f + randomSpawnOffset, Quaternion.identity).GetComponent<TMP_Text>();
+            if (damage <= 0)
+            {
+                text.text = ""; // i.e. no damage from attack
+            }
+            else if (damage <= 10)
+            {
+                text.text = "" + damage;
+            }
             if (IsFullyDamaged() &&
                 _currentBossState != BossState.Victory &&
                 _currentBossState != BossState.Dead)
