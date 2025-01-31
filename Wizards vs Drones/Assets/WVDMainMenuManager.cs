@@ -83,7 +83,7 @@ public class WVDMainMenuManager : MonoBehaviour
     {
         _whiteFadeScreen.gameObject.SetActive(true);
         _challengeModeManager.ChallengeModeActive = false;
-        FadeToWhite();
+        FadeToWhite(true);
         FadeMusicOut();
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
@@ -91,7 +91,7 @@ public class WVDMainMenuManager : MonoBehaviour
     {
         _whiteFadeScreen.gameObject.SetActive(true);
         _challengeModeManager.ChallengeModeActive = true;
-        FadeToWhite();
+        FadeToWhite(true);
         FadeMusicOut();
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
@@ -109,6 +109,14 @@ public class WVDMainMenuManager : MonoBehaviour
     {
         _mainMenuScreen.SetActive(false);
         _optionsScreen.SetActive(true);
+        _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
+    }
+
+    public void WVDClickQuitButton()
+    {
+        _whiteFadeScreen.gameObject.SetActive(true);
+        FadeToWhite(false);
+        FadeMusicOut();
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
 
@@ -140,7 +148,7 @@ public class WVDMainMenuManager : MonoBehaviour
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
 
-    async void FadeToWhite()
+    async void FadeToWhite(bool loadGame)
     {
         float fadeInTimer = 0.0f;
         while (fadeInTimer < _whiteFadeDuration)
@@ -151,7 +159,14 @@ public class WVDMainMenuManager : MonoBehaviour
             await Task.Yield();
         }
         _whiteFadeScreen.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-        SceneManager.LoadScene("GameScene");
+        if (loadGame)
+        {
+            SceneManager.LoadScene("GameScene");
+        }
+        else
+        {
+            Application.Quit();
+        }
     }
 
     async void FadeMusicOut()
