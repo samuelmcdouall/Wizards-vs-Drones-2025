@@ -34,6 +34,7 @@ TagManager:
   - BossShield
   - HelpDroneUIParent
   - CameraRotatePoint
+  - UpgradesBar
   layers:
   - Default
   - TransparentFX

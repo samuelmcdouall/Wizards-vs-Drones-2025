@@ -16,6 +16,9 @@ public class WVDShopUIManager : MonoBehaviour
     [SerializeField]
     TMP_Text _batteriesText;
     WVDSoundManager _soundManager;
+    [SerializeField]
+    Image[] _boughtUpgradeIcons;
+    int _totalBoughtUpgrades;
 
     [Header("Three Arc")]
     [SerializeField]
@@ -30,6 +33,8 @@ public class WVDShopUIManager : MonoBehaviour
     GameObject _threeArcDisabledImage;
     [SerializeField]
     GameObject _threeArcPurchasedImage;
+    [SerializeField]
+    Sprite _threeArcSprite;
 
     [Header("Stun")]
     [SerializeField]
@@ -44,6 +49,8 @@ public class WVDShopUIManager : MonoBehaviour
     GameObject _stunDisabledImage;
     [SerializeField]
     GameObject _stunPurchasedImage;
+    [SerializeField]
+    Sprite _stunSprite;
 
     [Header("Drop Rate Increase")]
     [SerializeField]
@@ -58,6 +65,8 @@ public class WVDShopUIManager : MonoBehaviour
     GameObject _dropRateIncreaseDisabledImage;
     [SerializeField]
     GameObject _dropRateIncreasePurchasedImage;
+    [SerializeField]
+    Sprite _dropRateIncreasedSprite;
 
     [Header("Slow")]
     [SerializeField]
@@ -72,6 +81,8 @@ public class WVDShopUIManager : MonoBehaviour
     GameObject _slowDisabledImage;
     [SerializeField]
     GameObject _slowPurchasedImage;
+    [SerializeField]
+    Sprite _slowSprite;
 
     [Header("DOT")]
     [SerializeField]
@@ -86,6 +97,8 @@ public class WVDShopUIManager : MonoBehaviour
     GameObject _dotDisabledImage;
     [SerializeField]
     GameObject _dotPurchasedImage;
+    [SerializeField]
+    Sprite _dotSprite;
 
     [Header("Pierce")]
     [SerializeField]
@@ -100,6 +113,8 @@ public class WVDShopUIManager : MonoBehaviour
     GameObject _pierceDisabledImage;
     [SerializeField]
     GameObject _piercePurchasedImage;
+    [SerializeField]
+    Sprite _pierceSprite;
 
     [Header("Explode On Death")]
     [SerializeField]
@@ -114,6 +129,8 @@ public class WVDShopUIManager : MonoBehaviour
     GameObject _explodeOnDeathDisabledImage;
     [SerializeField]
     GameObject _explodeOnDeathPurchasedImage;
+    [SerializeField]
+    Sprite _explodeOnDeathSprite;
 
     [Header("Critical")]
     [SerializeField]
@@ -128,6 +145,8 @@ public class WVDShopUIManager : MonoBehaviour
     GameObject _criticalDisabledImage;
     [SerializeField]
     GameObject _criticalPurchasedImage;
+    [SerializeField]
+    Sprite _criticalSprite;
 
     [Header("Health Increase")]
     [SerializeField]
@@ -142,6 +161,8 @@ public class WVDShopUIManager : MonoBehaviour
     GameObject _healthIncreaseDisabledImage;
     [SerializeField]
     GameObject _healthIncreasePurchasedImage;
+    [SerializeField]
+    Sprite _healthIncreasedSprite;
 
     [Header("Attack Speed")]
     [SerializeField]
@@ -156,6 +177,8 @@ public class WVDShopUIManager : MonoBehaviour
     GameObject _attackSpeedDisabledImage;
     [SerializeField]
     GameObject _attackSpeedPurchasedImage;
+    [SerializeField]
+    Sprite _attackSpeedSprite;
 
     [Header("Dash Recharge")]
     [SerializeField]
@@ -170,6 +193,8 @@ public class WVDShopUIManager : MonoBehaviour
     GameObject _dashRechargeDisabledImage;
     [SerializeField]
     GameObject _dashRechargePurchasedImage;
+    [SerializeField]
+    Sprite _dashRechargeSprite;
 
     [Header("Low Health Damage")]
     [SerializeField]
@@ -184,6 +209,8 @@ public class WVDShopUIManager : MonoBehaviour
     GameObject _lowHealthDamageDisabledImage;
     [SerializeField]
     GameObject _lowHealthDamagePurchasedImage;
+    [SerializeField]
+    Sprite _lowHealthDamageSprite;
 
     void Awake()
     {
@@ -225,8 +252,24 @@ public class WVDShopUIManager : MonoBehaviour
         _threeArcPurchaseButton.enabled = false;
         _threeArcPurchasedImage.SetActive(true);
         UpdateBuyableItems();
+        AddSpriteToPurchasedIcons(_threeArcSprite);
         _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
-        
+
+    }
+
+    private void AddSpriteToPurchasedIcons(Sprite sprite)
+    {
+        _boughtUpgradeIcons[_totalBoughtUpgrades].gameObject.SetActive(true);
+        _boughtUpgradeIcons[_totalBoughtUpgrades].sprite = sprite;
+        if (sprite == _threeArcSprite)
+        {
+            _boughtUpgradeIcons[_totalBoughtUpgrades].color = new Color(0.7f, 0.0f, 0.0f);
+        }
+        else if (sprite == _stunSprite)
+        {
+            _boughtUpgradeIcons[_totalBoughtUpgrades].color = new Color(0.0f, 0.2f, 0.45f);
+        }
+        _totalBoughtUpgrades++;
     }
 
     public void PurchaseStun()
@@ -236,6 +279,7 @@ public class WVDShopUIManager : MonoBehaviour
         _playerScript.PurchasedUpgrades.StunAttackDuration = 0.5f;
         _stunPurchaseButton.enabled = false;
         _stunPurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_stunSprite);
         UpdateBuyableItems();
         _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
@@ -246,6 +290,7 @@ public class WVDShopUIManager : MonoBehaviour
         _playerScript.PurchasedUpgrades.DropRateIncrease = 0.25f;
         _dropRateIncreasePurchaseButton.enabled = false;
         _dropRateIncreasePurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_dropRateIncreasedSprite);
         UpdateBuyableItems();
         _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
@@ -258,6 +303,7 @@ public class WVDShopUIManager : MonoBehaviour
         _playerScript.PurchasedUpgrades.SlowAttackDuration = 1.0f;
         _slowPurchaseButton.enabled = false;
         _slowPurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_slowSprite);
         UpdateBuyableItems();
         _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
@@ -271,6 +317,7 @@ public class WVDShopUIManager : MonoBehaviour
         _playerScript.PurchasedUpgrades.DOTAttackDamage = 1;
         _dotPurchaseButton.enabled = false;
         _dotPurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_dotSprite);
         UpdateBuyableItems();
         _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
@@ -281,6 +328,7 @@ public class WVDShopUIManager : MonoBehaviour
         _playerScript.PurchasedUpgrades.Pierce = true;
         _piercePurchaseButton.enabled = false;
         _piercePurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_pierceSprite);
         UpdateBuyableItems();
         _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
@@ -291,6 +339,7 @@ public class WVDShopUIManager : MonoBehaviour
         _playerScript.PurchasedUpgrades.ExplodeOnDeathChance = 0.25f;
         _explodeOnDeathPurchaseButton.enabled = false;
         _explodeOnDeathPurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_explodeOnDeathSprite);
         UpdateBuyableItems();
         _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
@@ -301,6 +350,7 @@ public class WVDShopUIManager : MonoBehaviour
         _playerScript.PurchasedUpgrades.CriticalChance = 0.25f;
         _criticalPurchaseButton.enabled = false;
         _criticalPurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_criticalSprite);
         UpdateBuyableItems();
         _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
@@ -313,6 +363,7 @@ public class WVDShopUIManager : MonoBehaviour
         _playerScript.CurrentHealth = _playerScript.MaxHealth;
         _healthIncreasePurchaseButton.enabled = false;
         _healthIncreasePurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_healthIncreasedSprite);
         UpdateBuyableItems();
         _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
@@ -324,6 +375,7 @@ public class WVDShopUIManager : MonoBehaviour
         _playerScript.UpgradeAttackSpeedAnimation();
         _attackSpeedPurchaseButton.enabled = false;
         _attackSpeedPurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_attackSpeedSprite);
         UpdateBuyableItems();
         _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
@@ -334,6 +386,7 @@ public class WVDShopUIManager : MonoBehaviour
         _playerScript.PurchasedUpgrades.DashRechargeModifier = 1.25f;
         _dashRechargePurchaseButton.enabled = false;
         _dashRechargePurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_dashRechargeSprite);
         UpdateBuyableItems();
         _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
@@ -344,6 +397,7 @@ public class WVDShopUIManager : MonoBehaviour
         _playerScript.PurchasedUpgrades.LowHealthDamageBonus = 2;
         _lowHealthDamagePurchaseButton.enabled = false;
         _lowHealthDamagePurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_lowHealthDamageSprite);
         UpdateBuyableItems();
         _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
     }
