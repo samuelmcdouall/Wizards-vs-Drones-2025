@@ -29,7 +29,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     [SerializeField]
     GameObject _droneRemainingHelpUIPrefab;
     GameObject _droneRemainingHelpUIInstance;
-    float _remainingDroneStuckTime = 120.0f;
+    float _remainingDroneStuckTime = 60.0f;
     float _remainingDroneStuckTimer;
     
     [Header("Movement - Base Drone")]
@@ -171,10 +171,13 @@ public abstract class WVDBaseDrone : WVDBaseEntity
 
     public void SpawnDroneRemainingHelpUI()
     {
-        print("One of the last few drones, spawning UI helper for: " + gameObject.name);
-        _droneRemainingHelpUIInstance = Instantiate(_droneRemainingHelpUIPrefab, transform.position, Quaternion.identity);
-        _droneRemainingHelpUIInstance.transform.SetParent(GameObject.FindGameObjectWithTag("HelpDroneUIParent").transform, false);
-        _droneRemainingHelpUIInstance.GetComponent<WVDDroneRemainingHelpUI>().SetDroneTransform(transform);
+        if (!_droneRemainingHelpUIInstance)
+        {
+            print("One of the last few drones, spawning UI helper for: " + gameObject.name);
+            _droneRemainingHelpUIInstance = Instantiate(_droneRemainingHelpUIPrefab, transform.position, Quaternion.identity);
+            _droneRemainingHelpUIInstance.transform.SetParent(GameObject.FindGameObjectWithTag("HelpDroneUIParent").transform, false);
+            _droneRemainingHelpUIInstance.GetComponent<WVDDroneRemainingHelpUI>().SetDroneTransform(transform);
+        }
     }
 
     void DetermineDroneBuff()

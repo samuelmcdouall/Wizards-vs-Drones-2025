@@ -95,6 +95,7 @@ public class WVDDroneSpawner : MonoBehaviour
             _levelDronesRemainingUI.text = "Drones remaining: " + _levelDronesRemaining;
             if (!_triggeredHelpUIThisLevel && _levelDronesRemaining <= DronesRemainingHelpUIThreshold) // If the drones reach below threshold then all ones already spawned must show their UI
             {
+                print($"Below threshold in level {_levelManagerScript.Level}, need to spawn in the help UI!");
                 foreach (IWVDDamageable drone in _playerScript.Drones)
                 {
                     drone.GetTransform().gameObject.GetComponent<WVDBaseDrone>().SpawnDroneRemainingHelpUI();
@@ -170,6 +171,7 @@ public class WVDDroneSpawner : MonoBehaviour
         AddDroneNumberToPool(_teleportDrone, (int)(modifier * dronesForThisRound.MinTeleport), (int)(modifier * dronesForThisRound.MaxTeleport));
         AddDroneNumberToPool(_tankDrone, (int)(modifier * dronesForThisRound.MinTank), (int)(modifier * dronesForThisRound.MaxTank));
         LevelDronesRemaining = _spawnPool.Count;
+        _triggeredHelpUIThisLevel = false;
 
     }
 
