@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDExplosion : MonoBehaviour
@@ -12,16 +10,15 @@ public class WVDExplosion : MonoBehaviour
     bool _canDamageEnemies;
     [SerializeField]
     bool _canDamagePlayer;
-    private void Start()
+    void Start()
     {
         Destroy(gameObject, _lifetime);
     }
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (_canDamageEnemies && other.gameObject.CompareTag("Enemy") && other.transform.root.gameObject.GetComponent<IWVDDamageable>() != null)
         {
             other.transform.root.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(_damage, new WVDAttackEffects());
-            print("hit enemy with explosive trap");
         }
         if (_canDamagePlayer && other.gameObject.CompareTag("Player"))
         {

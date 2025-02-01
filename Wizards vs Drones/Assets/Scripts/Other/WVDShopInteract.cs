@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDShopInteract : MonoBehaviour
 {
+    [Header("Interaction")]
     [SerializeField]
     Transform _player;
     [SerializeField]
@@ -13,12 +12,6 @@ public class WVDShopInteract : MonoBehaviour
     [SerializeField]
     GameObject _shopUI;
 
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (Vector3.Distance(transform.position, _player.position) <= _interactThreshold)
@@ -29,10 +22,13 @@ public class WVDShopInteract : MonoBehaviour
         {
             _interactIcon.SetActive(false);
         }
+
+        // If in shop, exit shop
         if (_shopUI.activeSelf && (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Escape)))
         {
             _shopUI.SetActive(false);
         }
+        // If nearby, enter shop
         else if (_interactIcon.activeSelf && Input.GetKeyDown(KeyCode.E))
         {
             _shopUI.SetActive(true);

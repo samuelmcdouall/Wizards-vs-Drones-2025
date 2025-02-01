@@ -1,11 +1,10 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
 public class WVDFlammable : MonoBehaviour
 {
+    [Header("Burning")]
     [SerializeField]
     float _burnTime;
     [SerializeField]
@@ -15,23 +14,16 @@ public class WVDFlammable : MonoBehaviour
     Material _material;
     bool _burning;
 
+    [Header("Other Objects")]
     [SerializeField]
-    List<GameObject> _otherObjectsToDestroy;
+    List<GameObject> _otherObjectsToDestroy; // E.g. this is a table and all objects on top of the table must be destroyed so they aren't left floating
 
     void Start()
     {
         _material = GetComponent<Renderer>().material;
     }
-
-    // Update is called once per frame
-    void Update()
+    public async void BurnObject(Vector3 flameFXPos) // Slowly turning the object black from its starting colour
     {
-        
-    }
-
-    public async void BurnObject(Vector3 flameFXPos)
-    {
-
         GameObject flame = Instantiate(_flameFX, flameFXPos, Quaternion.identity);
         flame.transform.parent = transform; // parenting it
         if (!_burning)
@@ -50,7 +42,6 @@ public class WVDFlammable : MonoBehaviour
             _material?.SetColor("_Color", Color.black);
         }
     }
-
     void DestroyAllObjects()
     {
         foreach(GameObject obj in _otherObjectsToDestroy)
@@ -59,5 +50,4 @@ public class WVDFlammable : MonoBehaviour
         }
         Destroy(gameObject);
     }
-
 }

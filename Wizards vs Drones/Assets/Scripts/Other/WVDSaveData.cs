@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class WVDSaveData
+public class WVDSaveData // Tutorail tips played and challenge mode unlocked
 {
     public bool IntroBeenPlayedBefore;
     public bool ElectricDroneBeenPlayedBefore;
@@ -22,37 +18,13 @@ public class WVDSaveData
     public bool LibraryBeenPlayedBefore;
     public bool DungeonBeenPlayedBefore;
     public bool BossBeenPlayedBefore;
-    public bool ChallengeModeUnlocked;
     public bool BatteryPlayedBefore;
     public bool NewAreasPlayedBefore;
-
-    public void ResetTutorialTips()
-    {
-        IntroBeenPlayedBefore = false;
-        ElectricDroneBeenPlayedBefore = false;
-        LaserDroneBeenPlayedBefore = false;
-        FastDroneBeenPlayedBefore = false;
-        TeleportDroneBeenPlayedBefore = false;
-        SpawnOnDeathBuffBeenPlayedBefore = false;
-        ShieldBuffBeenPlayedBefore = false;
-        SlowBuffBeenPlayedBefore = false;
-        ShopBeenPlayedBefore = false;
-        AttackPowerUpBeenPlayedBefore = false;
-        ShieldPowerUpBeenPlayedBefore = false;
-        HealPowerUpBeenPlayedBefore = false;
-        TrapPowerUpBeenPlayedBefore = false;
-        TomeBeenPlayedBefore = false;
-        GreatHallBeenPlayedBefore = false;
-        LibraryBeenPlayedBefore = false;
-        DungeonBeenPlayedBefore = false;
-        BossBeenPlayedBefore = false;
-        BatteryPlayedBefore = false;
-        NewAreasPlayedBefore = false;
-    }
+    public bool ChallengeModeUnlocked;
 
     public WVDSaveData() { }
 
-    public WVDSaveData(bool challengeModeUnlocked) // For resetting tutorial tips
+    public WVDSaveData(bool challengeModeUnlocked) // For resetting tutorial tips, don't want to override whether or not challenge mode has been unlocked
     {
         IntroBeenPlayedBefore = false;
         ElectricDroneBeenPlayedBefore = false;

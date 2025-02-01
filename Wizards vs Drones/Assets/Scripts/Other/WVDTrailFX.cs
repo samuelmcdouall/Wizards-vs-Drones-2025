@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDTrailFX : MonoBehaviour
@@ -8,11 +6,7 @@ public class WVDTrailFX : MonoBehaviour
     float _lifetime;
     [SerializeField]
     ParticleSystem _ps;
-    private void Start()
-    {
-        
-    }
-    private void OnEnable()
+    void OnEnable() // Once set to active, set to inactive after a time so its ready to be taken from the pool to be used again in another position
     {
         _ps.time = 0.0f;
         Invoke("DisableObject", _lifetime);
