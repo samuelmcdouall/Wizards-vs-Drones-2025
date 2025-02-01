@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using TMPro;
 
 public class WVDBoss : WVDBaseEntity
@@ -135,7 +132,7 @@ public class WVDBoss : WVDBaseEntity
     [SerializeField]
     int _stageThreeHealthThreshold;
     [SerializeField]
-    GameObject _healElementRotateBaseObject; // put the animation rotate script on this 
+    GameObject _healElementRotateBaseObject;
     [SerializeField]
     float _healingInterval; // Each interval, heal 1 health
     float _healTimer;
@@ -175,12 +172,12 @@ public class WVDBoss : WVDBaseEntity
         }
     }
 
-    private void FixedUpdate() // these states have been moved here so that the boss does not overshoot its waypoint before it comes into combat
+    void FixedUpdate() // these states have been moved here so that the boss does not overshoot its waypoint before it comes into combat
     {
         switch (_currentBossState)
         {
             case BossState.DungeonFlying:
-                if (Vector3.Distance(transform.position, _chosenDungeonWayPoint.position) < _wayPointThreshold) // todo sometimes boss overflies so best to make this in fixedupdate
+                if (Vector3.Distance(transform.position, _chosenDungeonWayPoint.position) < _wayPointThreshold)
                 {
                     SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
                     _currentBossState = BossState.DungeonIdle;
@@ -220,9 +217,8 @@ public class WVDBoss : WVDBaseEntity
         }
     }
 
-    public override void Update()
+    new void Update()
     {
-        //base.Update(); todo probably don't need this as boss cannot be slowed/stunned or invul
         switch (_currentBossState)
         {
             case BossState.DungeonIdle:
@@ -248,31 +244,6 @@ public class WVDBoss : WVDBaseEntity
 
                     break;
                 }
-
-            //case BossState.DungeonFlying:
-            //    if (Vector3.Distance(transform.position, _chosenDungeonWayPoint.position) < _wayPointThreshold) // todo sometimes boss overflies so best to make this in fixedupdate
-            //    {
-            //        SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
-            //        _currentBossState = BossState.DungeonIdle;
-            //    }
-            //    else
-            //    {
-            //        transform.position += _movementVector * MaxNormalSpeed * Time.deltaTime;
-            //    }
-            //    break;
-            //case BossState.DungeonFlyToDoor:
-            //    if (Vector3.Distance(transform.position, _dungeonEscapeWayPoint1.position) < _wayPointThreshold)
-            //    {
-            //        SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
-            //        TransitionToStateAfterDelay(BossState.DungeonBreakingDoorPart1, _waitAtDoorDelay);
-            //        SoundManager.PlaySFXAtPlayer(SoundManager.BossEvilShortLaughSFX);
-            //    }
-            //    else
-            //    {
-            //        transform.LookAt(_dungeonEscapeWayPoint1);
-            //        transform.position += _movementVector * MaxNormalSpeed * Time.deltaTime;
-            //    }
-            //    break;
             case BossState.DungeonBreakingDoorPart1:
                 transform.LookAt(_dungeonEscapeWayPoint2);
                 _movementVector = (_dungeonEscapeWayPoint2.position - _dungeonEscapeWayPoint1.position).normalized;
