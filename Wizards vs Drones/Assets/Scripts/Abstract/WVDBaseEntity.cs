@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
-public abstract class WVDBaseEntity : MonoBehaviour, IWVDAffectable
+public abstract class WVDBaseEntity : MonoBehaviour
 {
     [Header("Health - General")]
     [SerializeField] // just to see in inspector
