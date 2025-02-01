@@ -350,7 +350,7 @@ public class WVDLevelManager : MonoBehaviour
     public enum UnlockableSections
     {
         GreatHall,
-        Tower,
+        Tower, // Called Library in game
         Battlements, // Unused section
         Dungeon
     }
