@@ -51,7 +51,10 @@ public class WVDFadeFromWhiteScreen : MonoBehaviour
         }
         _whiteFadeScreen.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
         _whiteFadeScreen.gameObject.SetActive(false);
-        _tutorialManager?.DisplayTutorial(WVDTutorialManager.TutorialPart.Intro, 1.0f);
+        if (_tutorialManager)
+        {
+            WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.GreatHall, 2.0f));
+        }
         WVDFunctionsCheck.WhiteScreenFading = false;
     }
 }

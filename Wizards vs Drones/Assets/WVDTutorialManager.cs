@@ -25,6 +25,8 @@ public class WVDTutorialManager : MonoBehaviour
 
     private void Start()
     {
+        WVDEventBus.Subscribe<WVDDisplayTutorialEventData>(DisplayTutorial);
+
         WVDSaveData saveData = _saveDataManager.SaveData;
 
         _tutorialDictionary.Add(TutorialPart.Intro, new WVDTutorialDetails("Oh no! Looks like almost everyone is away from the castle and these weird flying boxes called <color=#EE8322>drones</color> are invading! You'll need to defend the castle with that <color=#EE8322>fireball spell</color> you learnt recently (left click). <color=#EE8322>Navigate round the castle</color> (WASD) and don't forget you can make a quick escape with the <color=#EE8322>blink spell</color> (space + WASD). Look out for those <color=#EE8322>power up gems</color> scattered around, they'll give you a nifty bonus (right click). I'll come and find you when things have died down a bit... good luck!", saveData.IntroBeenPlayedBefore));
@@ -72,14 +74,14 @@ public class WVDTutorialManager : MonoBehaviour
         NewAreas
     }
 
-    public async void DisplayTutorial(TutorialPart part, float delay)
+    public async void DisplayTutorial(WVDDisplayTutorialEventData data)
     {
         WVDTutorialDetails details = new WVDTutorialDetails("DEFAULT", false);
-        _tutorialDictionary.TryGetValue(part, out details);
+        _tutorialDictionary.TryGetValue(data.Part, out details);
         if (details.TutorialInformation != "DEFAULT" && !details.BeenPlayedBefore)
         {
             float timer = 0.0f;
-            while (timer < delay)
+            while (timer < data.Delay)
             {
                 timer += Time.deltaTime;
                 await Task.Yield();
@@ -119,10 +121,10 @@ public class WVDTutorialManager : MonoBehaviour
             _tutorialText.text += "\nPress space to continue";
             _canPressContinue = true;
 
-            _tutorialDictionary[part] = new WVDTutorialDetails(_tutorialDictionary[part].TutorialInformation, true); // for this session of the tutorial manager set to true
+            _tutorialDictionary[data.Part] = new WVDTutorialDetails(_tutorialDictionary[data.Part].TutorialInformation, true); // for this session of the tutorial manager set to true
 
 
-            switch (part)
+            switch (data.Part)
             {
                 case TutorialPart.Intro:
                     _saveDataManager.SaveData.IntroBeenPlayedBefore = true;

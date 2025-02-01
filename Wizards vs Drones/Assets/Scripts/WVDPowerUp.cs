@@ -21,16 +21,20 @@ public class WVDPowerUp : MonoBehaviour
         switch (_selectedPowerUpType)
         {
             case WVDPlayerPowerUpManager.PowerUpType.Attack:
-                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.AttackPowerUp, 1.0f);
+                //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.AttackPowerUp, 1.0f);
+                WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.AttackPowerUp, 1.0f));
                 break;
             case WVDPlayerPowerUpManager.PowerUpType.Shield:
-                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.ShieldPowerUp, 1.0f);
+                //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.ShieldPowerUp, 1.0f);
+                WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.ShieldPowerUp, 1.0f));
                 break;
             case WVDPlayerPowerUpManager.PowerUpType.Heal:
-                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.HealPowerUp, 1.0f);
+                //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.HealPowerUp, 1.0f);
+                WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.HealPowerUp, 1.0f));
                 break;
             case WVDPlayerPowerUpManager.PowerUpType.Trap:
-                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.TrapPowerUp, 1.0f);
+                //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.TrapPowerUp, 1.0f);
+                WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.TrapPowerUp, 1.0f));
                 break;
         }
     }
@@ -54,7 +58,7 @@ public class WVDPowerUp : MonoBehaviour
                 }
                 _powerUpSpawner.TomeSpawned = false;
                 _soundManager.PlaySFXAtPlayer(_soundManager.TomePowerUpSFX);
-                _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.Tome, 1.0f);
+                WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.Tome, 1.0f));
             }
             else if (_selectedPowerUpType == WVDPlayerPowerUpManager.PowerUpType.Upgrade)
             {

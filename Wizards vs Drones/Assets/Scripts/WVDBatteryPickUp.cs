@@ -49,7 +49,8 @@ public class WVDBatteryPickUp : MonoBehaviour
     {
         if (other.gameObject.CompareTag("PickUpTrigger"))
         {
-            _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.Battery, 1.0f);
+            //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.Battery, 1.0f);
+            WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.Battery, 1.0f));
             other.gameObject.transform.parent.gameObject.GetComponent<WVDPlayer>().BatteryCount += _value;
             _soundManager.PlaySFXAtPlayer(_soundManager.PickupBatterySFX);
             _statsManager.BatteriesCollected += _value;
