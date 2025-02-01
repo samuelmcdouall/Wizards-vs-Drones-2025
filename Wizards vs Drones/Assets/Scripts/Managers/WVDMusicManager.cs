@@ -1,10 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
 public class WVDMusicManager : MonoBehaviour
 {
+    [Header("General")]
     [SerializeField]
     AudioSource _musicAS;
     [SerializeField]
@@ -23,25 +23,12 @@ public class WVDMusicManager : MonoBehaviour
     float _musicFadePeriod;
     [SerializeField]
     WVDOptionsManager _optionsManagerScript;
-    void Start()
-    {
 
-        //FadeNewMusicIn(PickNewRandomCombatMusicClip());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void InitialMusicSetup() // called from other Start function
+    public void InitialMusicSetup() // called from other Start function in LevelManager
     {        
         _currentCombatMusicIndex = Random.Range(0, _combatMusic.Count);
         _currentShopMusicIndex = Random.Range(0, _shopMusic.Count);
-
     }
-
     public void FadeCurrentMusicOutAndBossMusicIn()
     {
         FadeCurrentMusicOutAndNewMusicIn(_bossMusic);
@@ -56,11 +43,10 @@ public class WVDMusicManager : MonoBehaviour
         }
         FadeCurrentMusicOutAndNewMusicIn(_victoryMusic);
     }
-
-    public AudioClip PickNewRandomCombatMusicClip() // Randomise each time but not same one
+    public AudioClip PickNewRandomCombatMusicClip()
     {
         int newIndex = _currentCombatMusicIndex;
-        if (Random.Range(0.0f, 1.0f) < 0.5f)
+        if (Random.Range(0.0f, 1.0f) < 0.5f) // Randomise each time but not same one
         {
             newIndex--;
         }
@@ -105,7 +91,6 @@ public class WVDMusicManager : MonoBehaviour
         _musicAS.Stop();
         FadeNewMusicIn(clip);
     }
-
     async void FadeNewMusicIn(AudioClip clip)
     {
         _musicAS.clip = clip;

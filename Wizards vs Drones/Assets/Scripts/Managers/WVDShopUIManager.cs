@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -228,185 +226,6 @@ public class WVDShopUIManager : MonoBehaviour
         SetDiscountPrice(_lowHealthDamageBasePrice, ref _lowHealthDamageFinalPrice, _lowHealthDamagePriceText);
         _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
     }
-    void UpdateBuyableItems()
-    {
-        print("Checking prices");
-        CheckPlayerCanBuyUpgrade(_threeArcFinalPrice, _threeArcPurchasedImage, _threeArcPurchaseButton, _threeArcDisabledImage);
-        CheckPlayerCanBuyUpgrade(_stunFinalPrice, _stunPurchasedImage, _stunPurchaseButton, _stunDisabledImage);
-        CheckPlayerCanBuyUpgrade(_dropRateIncreaseFinalPrice, _dropRateIncreasePurchasedImage, _dropRateIncreasePurchaseButton, _dropRateIncreaseDisabledImage);
-        CheckPlayerCanBuyUpgrade(_slowFinalPrice, _slowPurchasedImage, _slowPurchaseButton, _slowDisabledImage);
-        CheckPlayerCanBuyUpgrade(_dotFinalPrice, _dotPurchasedImage, _dotPurchaseButton, _dotDisabledImage);
-        CheckPlayerCanBuyUpgrade(_pierceFinalPrice, _piercePurchasedImage, _piercePurchaseButton, _pierceDisabledImage);
-        CheckPlayerCanBuyUpgrade(_explodeOnDeathFinalPrice, _explodeOnDeathPurchasedImage, _explodeOnDeathPurchaseButton, _explodeOnDeathDisabledImage);
-        CheckPlayerCanBuyUpgrade(_criticalFinalPrice, _criticalPurchasedImage, _criticalPurchaseButton, _criticalDisabledImage);
-        CheckPlayerCanBuyUpgrade(_healthIncreaseFinalPrice, _healthIncreasePurchasedImage, _healthIncreasePurchaseButton, _healthIncreaseDisabledImage);
-        CheckPlayerCanBuyUpgrade(_attackSpeedFinalPrice, _attackSpeedPurchasedImage, _attackSpeedPurchaseButton, _attackSpeedDisabledImage);
-        CheckPlayerCanBuyUpgrade(_dashRechargeFinalPrice, _dashRechargePurchasedImage, _dashRechargePurchaseButton, _dashRechargeDisabledImage);
-        CheckPlayerCanBuyUpgrade(_lowHealthDamageFinalPrice, _lowHealthDamagePurchasedImage, _lowHealthDamagePurchaseButton, _lowHealthDamageDisabledImage);
-        _batteriesText.text = "" + _playerScript.BatteryCount;
-    }
-    public void PurchaseThreeArc()
-    {
-        _playerScript.BatteryCount -= _threeArcFinalPrice;
-        _playerScript.PurchasedUpgrades.ShootThreeArc = true;
-        _threeArcPurchaseButton.enabled = false;
-        _threeArcPurchasedImage.SetActive(true);
-        UpdateBuyableItems();
-        AddSpriteToPurchasedIcons(_threeArcSprite);
-        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
-
-    }
-
-    private void AddSpriteToPurchasedIcons(Sprite sprite)
-    {
-        _boughtUpgradeIcons[_totalBoughtUpgrades].gameObject.SetActive(true);
-        _boughtUpgradeIcons[_totalBoughtUpgrades].sprite = sprite;
-        if (sprite == _threeArcSprite)
-        {
-            _boughtUpgradeIcons[_totalBoughtUpgrades].color = new Color(0.7f, 0.0f, 0.0f);
-        }
-        else if (sprite == _stunSprite)
-        {
-            _boughtUpgradeIcons[_totalBoughtUpgrades].color = new Color(0.0f, 0.2f, 0.45f);
-        }
-        _totalBoughtUpgrades++;
-    }
-
-    public void PurchaseStun()
-    {
-        _playerScript.BatteryCount -= _stunFinalPrice;
-        _playerScript.PurchasedUpgrades.StunAttacks = true;
-        _playerScript.PurchasedUpgrades.StunAttackDuration = 0.5f;
-        _stunPurchaseButton.enabled = false;
-        _stunPurchasedImage.SetActive(true);
-        AddSpriteToPurchasedIcons(_stunSprite);
-        UpdateBuyableItems();
-        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
-    }
-
-    public void PurchaseDropRateIncrease()
-    {
-        _playerScript.BatteryCount -= _dropRateIncreaseFinalPrice;
-        _playerScript.PurchasedUpgrades.DropRateIncrease = 0.25f;
-        _dropRateIncreasePurchaseButton.enabled = false;
-        _dropRateIncreasePurchasedImage.SetActive(true);
-        AddSpriteToPurchasedIcons(_dropRateIncreasedSprite);
-        UpdateBuyableItems();
-        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
-    }
-
-    public void PurchaseSlow()
-    {
-        _playerScript.BatteryCount -= _slowFinalPrice;
-        _playerScript.PurchasedUpgrades.SlowAttacks = true;
-        _playerScript.PurchasedUpgrades.SlowAttackPercentage = 0.5f;
-        _playerScript.PurchasedUpgrades.SlowAttackDuration = 1.0f;
-        _slowPurchaseButton.enabled = false;
-        _slowPurchasedImage.SetActive(true);
-        AddSpriteToPurchasedIcons(_slowSprite);
-        UpdateBuyableItems();
-        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
-    }
-
-    public void PurchaseDOT()
-    {
-        _playerScript.BatteryCount -= _dotFinalPrice;
-        _playerScript.PurchasedUpgrades.DOTAttacks = true;
-        _playerScript.PurchasedUpgrades.DOTAttackDuration = 3.0f;
-        _playerScript.PurchasedUpgrades.DOTAttackInterval = 1.0f;
-        _playerScript.PurchasedUpgrades.DOTAttackDamage = 1;
-        _dotPurchaseButton.enabled = false;
-        _dotPurchasedImage.SetActive(true);
-        AddSpriteToPurchasedIcons(_dotSprite);
-        UpdateBuyableItems();
-        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
-    }
-
-    public void PurchasePierce()
-    {
-        _playerScript.BatteryCount -= _pierceFinalPrice;
-        _playerScript.PurchasedUpgrades.Pierce = true;
-        _piercePurchaseButton.enabled = false;
-        _piercePurchasedImage.SetActive(true);
-        AddSpriteToPurchasedIcons(_pierceSprite);
-        UpdateBuyableItems();
-        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
-    }
-
-    public void PurchaseExplodeOnDeath()
-    {
-        _playerScript.BatteryCount -= _explodeOnDeathFinalPrice;
-        _playerScript.PurchasedUpgrades.ExplodeOnDeathChance = 0.25f;
-        _explodeOnDeathPurchaseButton.enabled = false;
-        _explodeOnDeathPurchasedImage.SetActive(true);
-        AddSpriteToPurchasedIcons(_explodeOnDeathSprite);
-        UpdateBuyableItems();
-        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
-    }
-
-    public void PurchaseCritical()
-    {
-        _playerScript.BatteryCount -= _criticalFinalPrice;
-        _playerScript.PurchasedUpgrades.CriticalChance = 0.25f;
-        _criticalPurchaseButton.enabled = false;
-        _criticalPurchasedImage.SetActive(true);
-        AddSpriteToPurchasedIcons(_criticalSprite);
-        UpdateBuyableItems();
-        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
-    }
-
-    public void PurchaseHealthIncrease()
-    {
-        _playerScript.BatteryCount -= _healthIncreaseFinalPrice;
-        _playerScript.PurchasedUpgrades.HealthIncrease = true;
-        _playerScript.MaxHealth += 3;
-        _playerScript.CurrentHealth = _playerScript.MaxHealth;
-        _healthIncreasePurchaseButton.enabled = false;
-        _healthIncreasePurchasedImage.SetActive(true);
-        AddSpriteToPurchasedIcons(_healthIncreasedSprite);
-        UpdateBuyableItems();
-        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
-    }
-
-    public void PurchaseAttackSpeed()
-    {
-        _playerScript.BatteryCount -= _attackSpeedFinalPrice;
-        _playerScript.PurchasedUpgrades.AttackSpeedModifier = 1.5f;
-        _playerScript.UpgradeAttackSpeedAnimation();
-        _attackSpeedPurchaseButton.enabled = false;
-        _attackSpeedPurchasedImage.SetActive(true);
-        AddSpriteToPurchasedIcons(_attackSpeedSprite);
-        UpdateBuyableItems();
-        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
-    }
-
-    public void PurchaseDashRecharge()
-    {
-        _playerScript.BatteryCount -= _dashRechargeFinalPrice;
-        _playerScript.PurchasedUpgrades.DashRechargeModifier = 1.25f;
-        _dashRechargePurchaseButton.enabled = false;
-        _dashRechargePurchasedImage.SetActive(true);
-        AddSpriteToPurchasedIcons(_dashRechargeSprite);
-        UpdateBuyableItems();
-        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
-    }
-
-    public void PurchaseLowHealthDamage()
-    {
-        _playerScript.BatteryCount -= _lowHealthDamageFinalPrice;
-        _playerScript.PurchasedUpgrades.LowHealthDamageBonus = 2;
-        _lowHealthDamagePurchaseButton.enabled = false;
-        _lowHealthDamagePurchasedImage.SetActive(true);
-        AddSpriteToPurchasedIcons(_lowHealthDamageSprite);
-        UpdateBuyableItems();
-        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
-    }
-
-
-
-
-
-
     void SetDiscountPrice(int basePrice, ref int finalPrice, TMP_Text priceText)
     {
         float rand = Random.Range(0.0f, 1.0f);
@@ -424,7 +243,166 @@ public class WVDShopUIManager : MonoBehaviour
             finalPrice = basePrice;
         }
     }
-
+    public void PurchaseThreeArc()
+    {
+        _playerScript.BatteryCount -= _threeArcFinalPrice;
+        _playerScript.PurchasedUpgrades.ShootThreeArc = true;
+        _threeArcPurchaseButton.enabled = false;
+        _threeArcPurchasedImage.SetActive(true);
+        UpdateBuyableItems();
+        AddSpriteToPurchasedIcons(_threeArcSprite);
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
+    }
+    public void PurchaseStun()
+    {
+        _playerScript.BatteryCount -= _stunFinalPrice;
+        _playerScript.PurchasedUpgrades.StunAttacks = true;
+        _playerScript.PurchasedUpgrades.StunAttackDuration = 0.5f;
+        _stunPurchaseButton.enabled = false;
+        _stunPurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_stunSprite);
+        UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
+    }
+    public void PurchaseDropRateIncrease()
+    {
+        _playerScript.BatteryCount -= _dropRateIncreaseFinalPrice;
+        _playerScript.PurchasedUpgrades.DropRateIncrease = 0.25f;
+        _dropRateIncreasePurchaseButton.enabled = false;
+        _dropRateIncreasePurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_dropRateIncreasedSprite);
+        UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
+    }
+    public void PurchaseSlow()
+    {
+        _playerScript.BatteryCount -= _slowFinalPrice;
+        _playerScript.PurchasedUpgrades.SlowAttacks = true;
+        _playerScript.PurchasedUpgrades.SlowAttackPercentage = 0.5f;
+        _playerScript.PurchasedUpgrades.SlowAttackDuration = 1.0f;
+        _slowPurchaseButton.enabled = false;
+        _slowPurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_slowSprite);
+        UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
+    }
+    public void PurchaseDOT()
+    {
+        _playerScript.BatteryCount -= _dotFinalPrice;
+        _playerScript.PurchasedUpgrades.DOTAttacks = true;
+        _playerScript.PurchasedUpgrades.DOTAttackDuration = 3.0f;
+        _playerScript.PurchasedUpgrades.DOTAttackInterval = 1.0f;
+        _playerScript.PurchasedUpgrades.DOTAttackDamage = 1;
+        _dotPurchaseButton.enabled = false;
+        _dotPurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_dotSprite);
+        UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
+    }
+    public void PurchasePierce()
+    {
+        _playerScript.BatteryCount -= _pierceFinalPrice;
+        _playerScript.PurchasedUpgrades.Pierce = true;
+        _piercePurchaseButton.enabled = false;
+        _piercePurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_pierceSprite);
+        UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
+    }
+    public void PurchaseExplodeOnDeath()
+    {
+        _playerScript.BatteryCount -= _explodeOnDeathFinalPrice;
+        _playerScript.PurchasedUpgrades.ExplodeOnDeathChance = 0.25f;
+        _explodeOnDeathPurchaseButton.enabled = false;
+        _explodeOnDeathPurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_explodeOnDeathSprite);
+        UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
+    }
+    public void PurchaseCritical()
+    {
+        _playerScript.BatteryCount -= _criticalFinalPrice;
+        _playerScript.PurchasedUpgrades.CriticalChance = 0.25f;
+        _criticalPurchaseButton.enabled = false;
+        _criticalPurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_criticalSprite);
+        UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
+    }
+    public void PurchaseHealthIncrease()
+    {
+        _playerScript.BatteryCount -= _healthIncreaseFinalPrice;
+        _playerScript.PurchasedUpgrades.HealthIncrease = true;
+        _playerScript.MaxHealth += 3;
+        _playerScript.CurrentHealth = _playerScript.MaxHealth;
+        _healthIncreasePurchaseButton.enabled = false;
+        _healthIncreasePurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_healthIncreasedSprite);
+        UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
+    }
+    public void PurchaseAttackSpeed()
+    {
+        _playerScript.BatteryCount -= _attackSpeedFinalPrice;
+        _playerScript.PurchasedUpgrades.AttackSpeedModifier = 1.5f;
+        _playerScript.UpgradeAttackSpeedAnimation();
+        _attackSpeedPurchaseButton.enabled = false;
+        _attackSpeedPurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_attackSpeedSprite);
+        UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
+    }
+    public void PurchaseDashRecharge()
+    {
+        _playerScript.BatteryCount -= _dashRechargeFinalPrice;
+        _playerScript.PurchasedUpgrades.DashRechargeModifier = 1.25f;
+        _dashRechargePurchaseButton.enabled = false;
+        _dashRechargePurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_dashRechargeSprite);
+        UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
+    }
+    public void PurchaseLowHealthDamage()
+    {
+        _playerScript.BatteryCount -= _lowHealthDamageFinalPrice;
+        _playerScript.PurchasedUpgrades.LowHealthDamageBonus = 2;
+        _lowHealthDamagePurchaseButton.enabled = false;
+        _lowHealthDamagePurchasedImage.SetActive(true);
+        AddSpriteToPurchasedIcons(_lowHealthDamageSprite);
+        UpdateBuyableItems();
+        _soundManager.PlaySFXAtPlayer(_soundManager.BuyButtonSFX);
+    }
+    void AddSpriteToPurchasedIcons(Sprite sprite)
+    {
+        _boughtUpgradeIcons[_totalBoughtUpgrades].gameObject.SetActive(true);
+        _boughtUpgradeIcons[_totalBoughtUpgrades].sprite = sprite;
+        if (sprite == _threeArcSprite)
+        {
+            _boughtUpgradeIcons[_totalBoughtUpgrades].color = new Color(0.7f, 0.0f, 0.0f);
+        }
+        else if (sprite == _stunSprite)
+        {
+            _boughtUpgradeIcons[_totalBoughtUpgrades].color = new Color(0.0f, 0.2f, 0.45f);
+        }
+        _totalBoughtUpgrades++;
+    }
+    void UpdateBuyableItems()
+    {
+        print("Checking prices after purchasing item");
+        CheckPlayerCanBuyUpgrade(_threeArcFinalPrice, _threeArcPurchasedImage, _threeArcPurchaseButton, _threeArcDisabledImage);
+        CheckPlayerCanBuyUpgrade(_stunFinalPrice, _stunPurchasedImage, _stunPurchaseButton, _stunDisabledImage);
+        CheckPlayerCanBuyUpgrade(_dropRateIncreaseFinalPrice, _dropRateIncreasePurchasedImage, _dropRateIncreasePurchaseButton, _dropRateIncreaseDisabledImage);
+        CheckPlayerCanBuyUpgrade(_slowFinalPrice, _slowPurchasedImage, _slowPurchaseButton, _slowDisabledImage);
+        CheckPlayerCanBuyUpgrade(_dotFinalPrice, _dotPurchasedImage, _dotPurchaseButton, _dotDisabledImage);
+        CheckPlayerCanBuyUpgrade(_pierceFinalPrice, _piercePurchasedImage, _piercePurchaseButton, _pierceDisabledImage);
+        CheckPlayerCanBuyUpgrade(_explodeOnDeathFinalPrice, _explodeOnDeathPurchasedImage, _explodeOnDeathPurchaseButton, _explodeOnDeathDisabledImage);
+        CheckPlayerCanBuyUpgrade(_criticalFinalPrice, _criticalPurchasedImage, _criticalPurchaseButton, _criticalDisabledImage);
+        CheckPlayerCanBuyUpgrade(_healthIncreaseFinalPrice, _healthIncreasePurchasedImage, _healthIncreasePurchaseButton, _healthIncreaseDisabledImage);
+        CheckPlayerCanBuyUpgrade(_attackSpeedFinalPrice, _attackSpeedPurchasedImage, _attackSpeedPurchaseButton, _attackSpeedDisabledImage);
+        CheckPlayerCanBuyUpgrade(_dashRechargeFinalPrice, _dashRechargePurchasedImage, _dashRechargePurchaseButton, _dashRechargeDisabledImage);
+        CheckPlayerCanBuyUpgrade(_lowHealthDamageFinalPrice, _lowHealthDamagePurchasedImage, _lowHealthDamagePurchaseButton, _lowHealthDamageDisabledImage);
+        _batteriesText.text = "" + _playerScript.BatteryCount;
+    }
     void CheckPlayerCanBuyUpgrade(int finalPrice, GameObject purchasedImage, Button purchaseButton, GameObject disabledImage)
     {
         if (!purchasedImage.activeSelf) // If haven't bought the item
@@ -446,17 +424,14 @@ public class WVDShopUIManager : MonoBehaviour
             disabledImage.SetActive(false);
         }
     }
-
-
-
-    private void OnEnable()
+    void OnEnable()
     {
         UpdateBuyableItems();
         WVDFunctionsCheck.InShopMenu = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
-    private void OnDisable()
+    void OnDisable()
     {
         WVDFunctionsCheck.InShopMenu = false;
         Cursor.lockState = CursorLockMode.Locked;

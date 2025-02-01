@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class WVDChallengeModeManager : MonoBehaviour
+public class WVDDifficultySettingsManager : MonoBehaviour
 {
-    public static WVDChallengeModeManager Instance;
+    public static WVDDifficultySettingsManager Instance;
     public bool ChallengeModeActive;
     public Difficulty SelectedDifficulty;
 
@@ -19,9 +17,7 @@ public class WVDChallengeModeManager : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
-
     }
-
     public enum Difficulty
     {
         Easy,

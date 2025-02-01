@@ -13,7 +13,7 @@ public class WVDDroneSpawner : MonoBehaviour
     Transform _player;
     [SerializeField]
     WVDPlayer _playerScript;
-    WVDChallengeModeManager _challengeModeManager;
+    WVDDifficultySettingsManager _challengeModeManager;
 
     [Header("Drones Spawn Stats")]
     [SerializeField]
@@ -118,7 +118,7 @@ public class WVDDroneSpawner : MonoBehaviour
     void Start()
     {
         _spawnTimer = 4.0f; // need time to show tutorial before drones start spawning in
-        _challengeModeManager = GameObject.FindGameObjectWithTag("ChallengeModeManager").GetComponent<WVDChallengeModeManager>();
+        _challengeModeManager = GameObject.FindGameObjectWithTag("ChallengeModeManager").GetComponent<WVDDifficultySettingsManager>();
     }
 
     // Update is called once per frame
@@ -154,11 +154,11 @@ public class WVDDroneSpawner : MonoBehaviour
         WVDDroneSpawnRound dronesForThisRound = _dronesPerRound[level];
 
         float modifier = 1.0f;
-        if (_challengeModeManager.SelectedDifficulty == WVDChallengeModeManager.Difficulty.Medium)
+        if (_challengeModeManager.SelectedDifficulty == WVDDifficultySettingsManager.Difficulty.Medium)
         {
             modifier = 0.75f;
         }
-        else if (_challengeModeManager.SelectedDifficulty == WVDChallengeModeManager.Difficulty.Easy)
+        else if (_challengeModeManager.SelectedDifficulty == WVDDifficultySettingsManager.Difficulty.Easy)
         {
             modifier = 0.5f;
         }

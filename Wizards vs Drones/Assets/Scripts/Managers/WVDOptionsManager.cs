@@ -5,14 +5,17 @@ using UnityEngine.UI;
 
 public class WVDOptionsManager : MonoBehaviour
 {
+    [Header("Values")]
     public float MusicVolume;
     public float SFXVolume;
     public float MouseSensitivity;
 
+    [Header("Sliders")]
     public Slider MusicSlider;
     public Slider SFXSlider;
     public Slider MouseSlider;
 
+    [Header("Optional Main Menu Manager")]
     [SerializeField]
     WVDMainMenuManager _mainMenuManagerScript;
 

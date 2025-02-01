@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,6 +5,7 @@ using UnityEngine.UI;
 
 public class WVDPauseMenuManager : MonoBehaviour
 {
+    [Header("Screens")]
     [SerializeField]
     GameObject _pauseMenuScreen;
     [SerializeField]
@@ -15,6 +14,8 @@ public class WVDPauseMenuManager : MonoBehaviour
     Image _whiteFadeScreen;
     [SerializeField]
     float _whiteFadeDuration;
+
+    [Header("Music/SFX")]
     [SerializeField]
     AudioSource _musicAS;
     [SerializeField]
@@ -28,18 +29,16 @@ public class WVDPauseMenuManager : MonoBehaviour
         _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
         Time.timeScale = 1.0f;
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (_pauseOptionsMenuScreen.activeSelf)
+            if (_pauseOptionsMenuScreen.activeSelf) // in options of pause menu
             {
                 _pauseMenuScreen.SetActive(true);
                 _pauseOptionsMenuScreen.SetActive(false);
             }
-            else if (_pauseMenuScreen.activeSelf && !WVDFunctionsCheck.WhiteScreenFading)
+            else if (_pauseMenuScreen.activeSelf && !WVDFunctionsCheck.WhiteScreenFading) // in pause menu and not changing/reloading scenes
             {
                 _pauseMenuScreen.SetActive(false);
                 WVDFunctionsCheck.InPauseMenu = false;
@@ -47,7 +46,7 @@ public class WVDPauseMenuManager : MonoBehaviour
                 Cursor.visible = false;
                 Time.timeScale = 1.0f;
             }
-            else if (!WVDFunctionsCheck.WhiteScreenFading && 
+            else if (!WVDFunctionsCheck.WhiteScreenFading && // i.e all except pause menu, playing game
                      !WVDFunctionsCheck.IsDead && 
                      !WVDFunctionsCheck.InCutscene && 
                      !WVDFunctionsCheck.HasWon && 
@@ -59,7 +58,6 @@ public class WVDPauseMenuManager : MonoBehaviour
             }
         }
     }
-
     void ShowOptionsMenu()
     {
         _pauseMenuScreen.SetActive(true);
@@ -68,7 +66,6 @@ public class WVDPauseMenuManager : MonoBehaviour
         Cursor.visible = true;
         Time.timeScale = 0.0f;
     }
-
     public void WVDClickResumeButton()
     {
         _pauseMenuScreen.SetActive(false);
@@ -78,7 +75,6 @@ public class WVDPauseMenuManager : MonoBehaviour
         Time.timeScale = 1.0f;
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
-
     public void WVDClickOptionsButton()
     {
         _pauseMenuScreen.SetActive(false);
@@ -87,7 +83,6 @@ public class WVDPauseMenuManager : MonoBehaviour
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
         Time.timeScale = 0.0f;
     }
-
     public void WVDClickOptionsBackButton()
     {
         _pauseMenuScreen.SetActive(true);
@@ -96,7 +91,6 @@ public class WVDPauseMenuManager : MonoBehaviour
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
         Time.timeScale = 0.0f;
     }
-
     public void WVDClickQuitToMenuButton()
     {
         _whiteFadeScreen.gameObject.SetActive(true);
@@ -107,7 +101,6 @@ public class WVDPauseMenuManager : MonoBehaviour
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
         Time.timeScale = 0.0f;
     }
-
     public void WVDChangeMusicSlider()
     {
         _optionsManagerScript.MusicVolume = _optionsManagerScript.MusicSlider.value;
@@ -115,7 +108,6 @@ public class WVDPauseMenuManager : MonoBehaviour
         PlayerPrefs.SetFloat(WVDOptionsStrings.MusicVolume, _optionsManagerScript.MusicVolume);
         PlayerPrefs.Save();
     }
-
     public void WVDChangeSFXSlider()
     {
         _optionsManagerScript.SFXVolume = _optionsManagerScript.SFXSlider.value;
@@ -128,7 +120,6 @@ public class WVDPauseMenuManager : MonoBehaviour
         PlayerPrefs.SetFloat(WVDOptionsStrings.MouseSensitivity, _optionsManagerScript.MouseSensitivity);
         PlayerPrefs.Save();
     }
-
     async void FadeToWhite()
     {
         float fadeInTimer = 0.0f;
@@ -142,7 +133,6 @@ public class WVDPauseMenuManager : MonoBehaviour
         _whiteFadeScreen.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         SceneManager.LoadScene("MainMenuScene");
     }
-
     async void FadeMusicOut()
     {
         float fadeOutTimer = 0.0f;

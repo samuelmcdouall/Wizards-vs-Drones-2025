@@ -25,7 +25,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     protected DroneType SelectedDroneType;
     protected WVDStatsManager StatsManager;
     WVDTutorialManager _tutorialManager;
-    WVDChallengeModeManager _challengeModeManager;
+    WVDDifficultySettingsManager _challengeModeManager;
     [SerializeField]
     GameObject _droneRemainingHelpUIPrefab;
     GameObject _droneRemainingHelpUIInstance;
@@ -128,7 +128,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         SoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
         StatsManager = GameObject.FindGameObjectWithTag("StatsManager").GetComponent<WVDStatsManager>();
         _tutorialManager = GameObject.FindGameObjectWithTag("TutorialManager").GetComponent<WVDTutorialManager>();
-        _challengeModeManager = GameObject.FindGameObjectWithTag("ChallengeModeManager").GetComponent<WVDChallengeModeManager>();
+        _challengeModeManager = GameObject.FindGameObjectWithTag("DifficultyModeManager").GetComponent<WVDDifficultySettingsManager>();
         SoundManager.PlaySFXAtPoint(SoundManager.DroneSpawnSFX, transform.position);
 
         if (_challengeModeManager.ChallengeModeActive)

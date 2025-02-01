@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,14 +36,6 @@ public class WVDBossCutsceneManager : MonoBehaviour
     {
         _tutorialManager = GameObject.FindGameObjectWithTag("TutorialManager").GetComponent<WVDTutorialManager>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
     public void StartBossCutscene()
     {
         WVDFunctionsCheck.InCutscene = true;
@@ -57,11 +48,9 @@ public class WVDBossCutsceneManager : MonoBehaviour
         _player.transform.position = _playerStartingPosition.position;
         _player.GetComponent<CharacterController>().enabled = true;
     }
-
     public void EndBossCutscene()
     {
         // i.e. put player next to main gate and boss in random corner and switch cameras back
-
         WVDFunctionsCheck.InCutscene = false;
         foreach(GameObject barrier in _barriers)
         {
@@ -76,7 +65,6 @@ public class WVDBossCutsceneManager : MonoBehaviour
         _bossHealthBar.SetActive(true);
         _powerUpIcon.SetActive(false);
         _powerUpManager.ResetPowerUps();
-        //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.Boss, 1.0f);
         WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.Boss, 1.0f));
     }
 }

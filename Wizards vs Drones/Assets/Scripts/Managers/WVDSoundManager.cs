@@ -1,17 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDSoundManager : MonoBehaviour
 {
+    [Header("General")]
     [SerializeField]
     AudioSource _SFXAS;
     [SerializeField]
     WVDOptionsManager _optionsManager;
+
+    [Header("Player")]
     public AudioClip PlayerProjectileLaunchSFX1;
     public AudioClip PlayerProjectileLaunchSFX2;
     public AudioClip PlayerProjectileImpactSFX;
     public AudioClip PlayerDashSFX;
+    public AudioClip PlayerHitSFX1;
+    public AudioClip PlayerHitSFX2;
+    public AudioClip PlayerHitSFX3;
+    public AudioClip PlayerDeathSFX1;
+    public AudioClip PlayerDeathSFX2;
+    public AudioClip PlayerDeathSFX3;
+
+    [Header("Power Ups")]
     public AudioClip HealPowerUpSFX;
     public AudioClip LifestealPowerUpSFX;
     public AudioClip InvulnerablePowerUpSFX;
@@ -23,20 +32,20 @@ public class WVDSoundManager : MonoBehaviour
     public AudioClip ShieldPowerUpSFX;
     public AudioClip PickupPowerUpSFX;
     public AudioClip TomePowerUpSFX;
+
+    [Header("Battery")]
     public AudioClip PickupBatterySFX;
-    public AudioClip PlayerHitSFX1;
-    public AudioClip PlayerHitSFX2;
-    public AudioClip PlayerHitSFX3;
-    public AudioClip PlayerDeathSFX1;
-    public AudioClip PlayerDeathSFX2;
-    public AudioClip PlayerDeathSFX3;
+
+    [Header("Drones")]
     public AudioClip DroneSpawnSFX;
     public AudioClip DroneZapSFX;
     public AudioClip DroneLaserLauchSFX;
-    public AudioClip DroneLaserCollideSFX; // yet to find
+    public AudioClip DroneLaserCollideSFX;
     public AudioClip DroneTeleportSFX;
     public AudioClip DroneTakeDamageSFX1;
     public AudioClip DroneTakeDamageSFX2;
+
+    [Header("Boss")]
     public AudioClip BossBlowUpGateSFX;
     public AudioClip BossEvilShortLaughSFX; // blowing up gate
     public AudioClip BossEvilLongLaughSFX; // healing
@@ -46,14 +55,12 @@ public class WVDSoundManager : MonoBehaviour
     public AudioClip BossProjectileImpactSFX;
     public AudioClip BossSpawnFireElementSFX;
     public AudioClip BossDeathSFX;
+
+    [Header("UI")]
     public AudioClip UIButtonSFX;
     public AudioClip BuyButtonSFX;
 
-
-
-    
-
-    public void PlaySFXAtPlayer(AudioClip clip, float volumeModifier = 1.0f) // to be played on the audio listener, otherwise define a point
+    public void PlaySFXAtPlayer(AudioClip clip, float volumeModifier = 1.0f)
     {
         _SFXAS.PlayOneShot(clip, _optionsManager.SFXVolume * volumeModifier);
     }
@@ -61,12 +68,12 @@ public class WVDSoundManager : MonoBehaviour
     {
         AudioSource.PlayClipAtPoint(clip, position, _optionsManager.SFXVolume * volumeModifier);
     }
-    public void PlayRandomSFXAtPlayer(AudioClip[] clips, float volumeModifier = 1.0f) // to be played on the audio listener, otherwise define a point
+    public void PlayRandomSFXAtPlayer(AudioClip[] clips, float volumeModifier = 1.0f)
     {
         AudioClip chosenClip = clips[Random.Range(0, clips.Length)];
         _SFXAS.PlayOneShot(chosenClip, _optionsManager.SFXVolume * volumeModifier);
     }
-    public void PlayRandomSFXAtPoint(AudioClip[] clips, Vector3 position, float volumeModifier = 1.0f)
+    public void PlayRandomSFXAtPoint(AudioClip[] clips, Vector3 position, float volumeModifier = 1.0f) // For completeness but this isn't actually used
     {
         AudioClip chosenClip = clips[Random.Range(0, clips.Length)];
         AudioSource.PlayClipAtPoint(chosenClip, position, _optionsManager.SFXVolume * volumeModifier);

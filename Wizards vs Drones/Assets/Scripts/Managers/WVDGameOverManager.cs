@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
@@ -8,6 +7,7 @@ using UnityEngine.UI;
 
 public class WVDGameOverManager : MonoBehaviour
 {
+    [Header("UI")]
     [SerializeField] 
     List<GameObject> _UIElementsToTurnOff;
     [SerializeField]
@@ -17,22 +17,26 @@ public class WVDGameOverManager : MonoBehaviour
     [SerializeField]
     float _gameOverMenuDelay;
     [SerializeField]
-    GameObject _gameOverMenu; 
+    GameObject _gameOverMenu;
+    [SerializeField]
+    GameObject _victoryScreen;
+    [SerializeField]
+    TMP_Text _victoryText;
+    [SerializeField]
+    WVDStatsManager _statsManager;
+    [SerializeField]
+    TMP_Text _statsText;
+
+    [Header("Music")]
     [SerializeField]
     AudioSource _musicAS;
     [SerializeField]
     float _musicFadePeriod;
     [SerializeField]
     WVDOptionsManager _optionsManagerScript;
-    [SerializeField]
-    GameObject _victoryScreen;
-    [SerializeField]
-    TMP_Text _victoryText;
     WVDSoundManager _soundManager;
-    [SerializeField]
-    WVDStatsManager _statsManager;
-    [SerializeField]
-    TMP_Text _statsText;
+
+    [Header("Other")]
     [SerializeField]
     WVDSaveDataManager _saveDataManager;
 
@@ -40,30 +44,6 @@ public class WVDGameOverManager : MonoBehaviour
     {
         _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void TriggerGameOver()
-    {
-        WVDFunctionsCheck.IsDead = true;
-        foreach (GameObject ui in _UIElementsToTurnOff)
-        {
-            ui.SetActive(false);
-        }
-        Invoke("ShowGameOverMenu", _gameOverMenuDelay);
-    }
-
-    void ShowGameOverMenu()
-    {
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        _gameOverMenu.SetActive(true);
-    }
-
     public void WVDClickTryAgainButton() // Also play again if victory
     {
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
@@ -76,12 +56,25 @@ public class WVDGameOverManager : MonoBehaviour
         FadeMusicOut();
         FadeToWhiteAndLoadScene("MainMenuScene");
     }
-
+    public void TriggerGameOver()
+    {
+        WVDFunctionsCheck.IsDead = true;
+        foreach (GameObject ui in _UIElementsToTurnOff)
+        {
+            ui.SetActive(false);
+        }
+        Invoke("ShowGameOverMenu", _gameOverMenuDelay);
+    }
+    void ShowGameOverMenu()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        _gameOverMenu.SetActive(true);
+    }
     public void ShowVictoryScreenAfterDelay(float delay)
     {
         Invoke("ShowVictoryScreen", delay);
     }
-
     void ShowVictoryScreen()
     {
         WVDFunctionsCheck.HasWon = true;
@@ -122,8 +115,6 @@ public class WVDGameOverManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
 
     }
-
-
     async void FadeToWhiteAndLoadScene(string sceneToLoad)
     {
         _whiteFadeScreen.gameObject.SetActive(true);
@@ -139,7 +130,6 @@ public class WVDGameOverManager : MonoBehaviour
         _whiteFadeScreen.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         SceneManager.LoadScene(sceneToLoad);
     }
-
     async void FadeMusicOut()
     {
         float fadeOutTimer = 0.0f;

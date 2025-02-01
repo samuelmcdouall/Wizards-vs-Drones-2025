@@ -143,7 +143,7 @@ public class WVDBoss : WVDBaseEntity
     [System.NonSerialized]
     public bool BossInBattle;
     Color _bossHealthUIOriginalColor;
-    WVDChallengeModeManager _challengeModeManager;
+    WVDDifficultySettingsManager _challengeModeManager;
 
     public BossState CurrentBossState 
     { 
@@ -162,7 +162,7 @@ public class WVDBoss : WVDBaseEntity
         _combatIdleTimer = Random.Range(_minCombatIdleTime, _maxCombatIdleTime);
         _chosenDungeonWayPoint = _dungeonIdleWayPoints[Random.Range(0, _dungeonIdleWayPoints.Count)];
         _bossHealthUIOriginalColor = HealthUIFill.color;
-        _challengeModeManager = GameObject.FindGameObjectWithTag("ChallengeModeManager").GetComponent<WVDChallengeModeManager>();
+        _challengeModeManager = GameObject.FindGameObjectWithTag("DifficultyModeManager").GetComponent<WVDDifficultySettingsManager>();
         if (_challengeModeManager.ChallengeModeActive)
         {
             MaxHealth = 90;

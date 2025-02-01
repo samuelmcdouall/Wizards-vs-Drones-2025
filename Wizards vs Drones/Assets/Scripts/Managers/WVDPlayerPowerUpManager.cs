@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,10 +17,9 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
     [SerializeField]
     float _invulnerableDuration;
 
-    [Header("Shield")] // todo should probably move the shield + other power up deploying here
+    [Header("Shield")]
     [SerializeField]
     float _shieldDuration;
-    [Header("Traps")]
     [Header("Attack")]
     [SerializeField]
     GameObject _grenadePrefab;
@@ -36,13 +33,22 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
     float _circleSpawnOffset;
     [SerializeField]
     GameObject _homingAttackPrefab;
-    [Header("Explosion")]
+
+    [Header("Traps")]
+    [SerializeField]
+    GameObject _trapSlowPrefab;
+    [SerializeField]
+    GameObject _trapDamagePrefab;
+    [SerializeField]
+    GameObject _trapExplosivePrefab;
+    readonly float _trapDeploymentOffset = 2.0f;
+
 
     [Header("UI")]
     [SerializeField]
-    GameObject _primaryPowerUpIcon;
+    Image _primaryPowerUpIcon;
     [SerializeField]
-    GameObject[] _secondaryPowerUpIcons;
+    Image[] _secondaryPowerUpIcons;
     WVDSoundManager _soundManager;
 
     public PowerUpType PrimaryPowerUpHeld
@@ -50,34 +56,31 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
         get => _primaryPowerUpHeld;
         set 
         {
-            _primaryPowerUpIcon.SetActive(true);
+            _primaryPowerUpIcon.gameObject.SetActive(true);
             _primaryPowerUpHeld = value;
             switch (value)
             {
                 case PowerUpType.Heal:
-                    _primaryPowerUpIcon.GetComponent<Image>().color = Color.green;
+                    _primaryPowerUpIcon.color = Color.green;
                     break;
                 case PowerUpType.Shield:
-                    _primaryPowerUpIcon.GetComponent<Image>().color = new Color(0.35f, 0.72f, 1.0f);
+                    _primaryPowerUpIcon.color = new Color(0.35f, 0.72f, 1.0f);
                     break;
                 case PowerUpType.Trap:
-                    _primaryPowerUpIcon.GetComponent<Image>().color = Color.yellow;
+                    _primaryPowerUpIcon.color = Color.yellow;
                     break;
                 case PowerUpType.Attack:
-                    _primaryPowerUpIcon.GetComponent<Image>().color = Color.red;
-                    break;
-                case PowerUpType.Explosion:
-                    _primaryPowerUpIcon.GetComponent<Image>().color = new Color(0.5f, 0.0f, 1.0f);
+                    _primaryPowerUpIcon.color = Color.red;
                     break;
                 case PowerUpType.Upgrade:
                 case PowerUpType.None:
                     Debug.LogError($"ERROR: Should not have been given the {value} power up type here");
-                    _primaryPowerUpIcon.GetComponent<Image>().color = Color.white;
+                    _primaryPowerUpIcon.color = Color.white;
                     break;
             }
         }
     }
-    public int SecondaryPowerUpCountHeld
+    public int SecondaryPowerUpCountHeld // Can only hold up to 2
     {
         get => _secondaryPowerUpCountHeld;
         set
@@ -92,7 +95,7 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
             }
             else
             {
-                _secondaryPowerUpIcons[_secondaryPowerUpCountHeld].SetActive(true);
+                _secondaryPowerUpIcons[_secondaryPowerUpCountHeld].gameObject.SetActive(true);
                 _secondaryPowerUpCountHeld = value;
             }
         }
@@ -100,10 +103,9 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
 
     void Start()
     {
-        ResetPowerUps();
         _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
+        ResetPowerUps();
     }
-
     void Update()
     {
         if (Input.GetMouseButtonDown(1) && WVDFunctionsCheck.PlayerInputsAllowed())
@@ -147,13 +149,13 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
                 switch (_secondaryPowerUpCountHeld)
                 {
                     case 0:
-                        _playerScript.DeployTrap(WVDPlayer.TrapVersion.Slow);
+                        DeployTrap(TrapVersion.Slow);
                         break;
                     case 1:
-                        _playerScript.DeployTrap(WVDPlayer.TrapVersion.Damage);
+                        DeployTrap(TrapVersion.Damage);
                         break;
                     case 2:
-                        _playerScript.DeployTrap(WVDPlayer.TrapVersion.Explosive);
+                        DeployTrap(TrapVersion.Explosive);
                         break;
                 }
                 _soundManager.PlaySFXAtPlayer(_soundManager.TrapPowerUpSFX);
@@ -176,30 +178,29 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
                         break;
                 }
             }
-            else if (_primaryPowerUpHeld == PowerUpType.Explosion)
-            {
-                switch (_secondaryPowerUpCountHeld)
-                {
-                    case 0:
-                        break;
-                    case 1:
-                        break;
-                    case 2:
-                        break;
-                }
-            }
             ResetPowerUps();
-        }    
+        }
     }
+    void DeployTrap(TrapVersion trap)
+    {
+        GameObject chosenTrap = _trapSlowPrefab; // set to default
+        if (trap == TrapVersion.Damage)
+        {
+            chosenTrap = _trapDamagePrefab;
+        }
+        else if (trap == TrapVersion.Explosive)
+        {
+            chosenTrap = _trapExplosivePrefab;
+        }
 
+        Instantiate(chosenTrap, transform.position + _playerScript.PlayerModel.transform.forward * _trapDeploymentOffset + new Vector3(0.0f, -1.0f, 0.0f), _playerScript.PlayerModel.transform.rotation);
+    }
     void DeployGrenade()
     {
         GameObject grenade = Instantiate(_grenadePrefab, _redPowerUpFirePoint.position, _grenadePrefab.transform.rotation);
         Vector3 arcDirection = new Vector3(_redPowerUpFirePoint.forward.x, 0.5f, _redPowerUpFirePoint.forward.z);
         grenade.GetComponent<WVDGrenadePowerUpProjectile>().SetProjectileDirection(arcDirection);
-        // model transform forwards, slight elevation, gravity on to give arc
     }
-
     void FullCircleAttack()
     {
         float degreeIncrement = 360.0f / (float)_numAttacksInCircle;
@@ -212,36 +213,37 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
             projectile.transform.rotation = Quaternion.LookRotation(new Vector3(projectileDirection.x, 0.0f, projectileDirection.z));
         }
     }
-
     void DeployHomingAttack()
     {
         GameObject homingAttack = Instantiate(_homingAttackPrefab, _redPowerUpFirePoint.position, _homingAttackPrefab.transform.rotation);
         homingAttack.GetComponent<WVDHomingProjectile>().DroneTargets = _playerScript.Drones;
         homingAttack.GetComponent<WVDHomingProjectile>().SetProjectileDirection(_redPowerUpFirePoint.forward); // unless there are no enemies currently out, this will immediately change, but just gives it something so it doesn't sit there in this scenario
     }
-
     public void ResetPowerUps()
     {
         _primaryPowerUpHeld = PowerUpType.None;
         _secondaryPowerUpCountHeld = 0;
-        _primaryPowerUpIcon.SetActive(false);
-        foreach (GameObject icon in _secondaryPowerUpIcons)
+        _primaryPowerUpIcon.gameObject.SetActive(false);
+        foreach (Image icon in _secondaryPowerUpIcons)
         {
-            icon.SetActive(false);
+            icon.gameObject.SetActive(false);
         }
     }
-
-
-
     public enum PowerUpType
     {
         Heal, // Green
         Shield, // Blue
         Trap, // Yellow
         Attack, // Red
-        Explosion, // Purple
-        Upgrade, // white/black/silver?
+        //Explosion, // Purple, not used
+        Upgrade, // black
         Tome, // One off nuke
         None,
+    }
+    public enum TrapVersion
+    {
+        Slow,
+        Damage,
+        Explosive
     }
 }

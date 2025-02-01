@@ -35,6 +35,7 @@ TagManager:
   - HelpDroneUIParent
   - CameraRotatePoint
   - UpgradesBar
+  - DifficultyModeManager
   layers:
   - Default
   - TransparentFX

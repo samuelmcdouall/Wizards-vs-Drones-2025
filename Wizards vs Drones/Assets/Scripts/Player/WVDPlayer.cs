@@ -41,13 +41,6 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     readonly float _shieldAttackOffset = 2.8f;
 
     [Header("Traps - Player")]
-    [SerializeField]
-    GameObject _trapSlowPrefab;
-    [SerializeField]
-    GameObject _trapDamagePrefab;
-    [SerializeField]
-    GameObject _trapExplosivePrefab;
-    readonly float _trapDeploymentOffset = 2.0f;
 
     [Header("Heal - Player")]
     [SerializeField]
@@ -174,6 +167,8 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
             _batteryCountUI.text = "" + _batteryCount;
         }
     }
+
+    public GameObject PlayerModel { get => _playerModel; set => _playerModel = value; }
 
     public override void Start()
     {
@@ -415,20 +410,6 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         return gameObject.transform;
     }
 
-    public void DeployTrap(TrapVersion trap)
-    {
-        GameObject chosenTrap = _trapSlowPrefab; // set to default
-        if (trap == TrapVersion.Damage)
-        {
-            chosenTrap = _trapDamagePrefab;
-        }
-        else if (trap == TrapVersion.Explosive)
-        {
-            chosenTrap = _trapExplosivePrefab;
-        }
-
-        Instantiate(chosenTrap, transform.position + _playerModel.transform.forward * _trapDeploymentOffset + new Vector3(0.0f, -1.0f, 0.0f), _playerModel.transform.rotation);
-    }
 
     public void ApplyLifeStealForSeconds(float time)
     {
@@ -539,10 +520,4 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         Electric
     }
 
-    public enum TrapVersion
-    {
-        Slow,
-        Damage,
-        Explosive
-    }
 }

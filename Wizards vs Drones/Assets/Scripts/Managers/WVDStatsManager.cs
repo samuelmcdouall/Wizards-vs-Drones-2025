@@ -1,16 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDStatsManager : MonoBehaviour
 {
+    [Header("Drones")]
     public int ElectricDronesDestroyed;
     public int LaserDronesDestroyed;
     public int FastDronesDestroyed;
     public int TeleportDronesDestroyed;
-    public int BatteriesCollected;
-    public float TimeTaken;
 
+    [Header("Batteries")]
+    public int BatteriesCollected;
+
+    [Header("Timer")]
+    public float TimeTaken;
     public bool TimerStopped;
     void Start()
     {
@@ -23,7 +25,6 @@ public class WVDStatsManager : MonoBehaviour
         TimerStopped = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!TimerStopped)

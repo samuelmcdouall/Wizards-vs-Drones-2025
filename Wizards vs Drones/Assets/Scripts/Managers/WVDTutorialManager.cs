@@ -1,16 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class WVDTutorialManager : MonoBehaviour
+public class WVDTutorialManager : MonoBehaviour // Idea with this tutorial manager is that the tips should only play once, not every time they're triggered. This can be reset from the main menu (resets all)
 {
+    [Header("General")]
+    [SerializeField]
+    WVDSaveDataManager _saveDataManager;
     Dictionary<TutorialPart, WVDTutorialDetails> _tutorialDictionary = new Dictionary<TutorialPart, WVDTutorialDetails>();
+
+    [Header("UI")]
     [SerializeField]
     GameObject _tutorialBackground;
     [SerializeField]
@@ -18,16 +18,13 @@ public class WVDTutorialManager : MonoBehaviour
     [SerializeField]
     float _delayPerCharacter;
     bool _canPressContinue;
-    [SerializeField]
-    WVDSaveDataManager _saveDataManager;
 
-
-
-    private void Start()
+    void Start()
     {
         WVDEventBus.Subscribe<WVDEventDataDisplayTutorial>(DisplayTutorial);
-
         WVDSaveData saveData = _saveDataManager.SaveData;
+
+        // Adding all the tutorial tips and marking them as whether or not have been played before according to the save data
 
         _tutorialDictionary.Add(TutorialPart.Intro, new WVDTutorialDetails("Oh no! Looks like almost everyone is away from the castle and these weird flying boxes called <color=#EE8322>drones</color> are invading! You'll need to defend the castle with that <color=#EE8322>fireball spell</color> you learnt recently (left click). <color=#EE8322>Navigate round the castle</color> (WASD) and don't forget you can make a quick escape with the <color=#EE8322>blink spell</color> (space + WASD). Look out for those <color=#EE8322>power up gems</color> scattered around, they'll give you a nifty bonus (right click). I'll come and find you when things have died down a bit... good luck!", saveData.IntroBeenPlayedBefore));
         _tutorialDictionary.Add(TutorialPart.ElectricDrone, new WVDTutorialDetails("These <color=#EE8322>brown drones</color> will try to <color=#EE8322>zap</color> you. Should be easy enough to deal with, but there are a lot of them!", saveData.ElectricDroneBeenPlayedBefore));
@@ -50,37 +47,24 @@ public class WVDTutorialManager : MonoBehaviour
         _tutorialDictionary.Add(TutorialPart.Battery, new WVDTutorialDetails("Interesting! Looks like you just picked up some sort of power source called a <color=#EE8322>battery</color>. Bring me some and I can <color=#EE8322>upgrade</color> your power.", saveData.BatteryPlayedBefore));
         _tutorialDictionary.Add(TutorialPart.NewAreas, new WVDTutorialDetails("The castle is mostly locked down by <color=#EE8322>magical fire</color> but I'll dispel it as soon as I can. Once I do, make sure to <color=#EE8322>look around</color> these areas for any <color=#EE8322>battery caches</color> the drones have left behind.", false));
     }
-    public enum TutorialPart
+    void Update()
     {
-        Intro,
-        ElectricDrone,
-        LaserDrone,
-        FastDrone,
-        TeleportDrone,
-        SpawnOnDeathBuff,
-        ShieldBuff,
-        SlowBuff,
-        Shop,
-        AttackPowerUp,
-        ShieldPowerUp,
-        HealPowerUp,
-        TrapPowerUp,
-        Tome,
-        GreatHall,
-        Library,
-        Dungeon,
-        Boss,
-        Battery,
-        NewAreas
+        if (Input.GetKeyDown(KeyCode.Space) && _canPressContinue) // Once tutorial tip is done, can remove it
+        {
+            _tutorialBackground.SetActive(false);
+            _canPressContinue = false;
+            Time.timeScale = 1.0f;
+            WVDFunctionsCheck.InTutorial = false;
+        }
     }
 
-    public async void DisplayTutorial(WVDEventDataDisplayTutorial data)
+    public async void DisplayTutorial(WVDEventDataDisplayTutorial data) // This is the main function the event bus is useful for
     {
         WVDTutorialDetails details = new WVDTutorialDetails("DEFAULT", false);
         _tutorialDictionary.TryGetValue(data.Part, out details);
-        if (details.TutorialInformation != "DEFAULT" && !details.BeenPlayedBefore)
+        if (details.TutorialInformation != "DEFAULT" && !details.BeenPlayedBefore) // Make sure we got something and it hasn't been played before
         {
-            float timer = 0.0f;
+            float timer = 0.0f; // Initial delay before the tip appears after the event is triggered
             while (timer < data.Delay)
             {
                 timer += Time.deltaTime;
@@ -98,7 +82,7 @@ public class WVDTutorialManager : MonoBehaviour
             string fullInfo = details.TutorialInformation;
             for (int i = 0; i < fullInfo.Length; i++)
             {
-                if (fullInfo[i] == '<')
+                if (fullInfo[i] == '<') // Combine the <'color'> parts of the string as we don't want that literally appearing
                 {
                     while (fullInfo[i] != '>')
                     {
@@ -110,7 +94,7 @@ public class WVDTutorialManager : MonoBehaviour
                 else
                 {
                     float letterTimer = 0.0f;
-                    while (letterTimer < _delayPerCharacter)
+                    while (letterTimer < _delayPerCharacter) // Play each character after a delay to show the tip coming in slowly
                     {
                         letterTimer += Time.unscaledDeltaTime;
                         await Task.Yield();
@@ -122,7 +106,6 @@ public class WVDTutorialManager : MonoBehaviour
             _canPressContinue = true;
 
             _tutorialDictionary[data.Part] = new WVDTutorialDetails(_tutorialDictionary[data.Part].TutorialInformation, true); // for this session of the tutorial manager set to true
-
 
             switch (data.Part)
             {
@@ -188,20 +171,29 @@ public class WVDTutorialManager : MonoBehaviour
                     break;
             }
             _saveDataManager.SaveNewData(); // for future sessions saving into JSON
-
-
         }
-
     }
-
-    private void Update()
+    public enum TutorialPart
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _canPressContinue)
-        {
-            _tutorialBackground.SetActive(false);
-            _canPressContinue = false;
-            Time.timeScale = 1.0f;
-            WVDFunctionsCheck.InTutorial = false;
-        }
+        Intro,
+        ElectricDrone,
+        LaserDrone,
+        FastDrone,
+        TeleportDrone,
+        SpawnOnDeathBuff,
+        ShieldBuff,
+        SlowBuff,
+        Shop,
+        AttackPowerUp,
+        ShieldPowerUp,
+        HealPowerUp,
+        TrapPowerUp,
+        Tome,
+        GreatHall,
+        Library,
+        Dungeon,
+        Boss,
+        Battery,
+        NewAreas
     }
 }

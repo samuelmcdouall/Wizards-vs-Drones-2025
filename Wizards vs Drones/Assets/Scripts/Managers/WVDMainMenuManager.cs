@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,6 +5,7 @@ using UnityEngine.UI;
 
 public class WVDMainMenuManager : MonoBehaviour
 {
+    [Header("Screens")]
     [SerializeField]
     GameObject _mainMenuScreen;
     [SerializeField]
@@ -15,10 +14,14 @@ public class WVDMainMenuManager : MonoBehaviour
     GameObject _difficultyScreen;
     [SerializeField]
     GameObject _optionsScreen;
+
+    [Header("White Fade")]
     [SerializeField]
     Image _whiteFadeScreen;
     [SerializeField]
     float _whiteFadeDuration;
+
+    [Header("Music/SFX")]
     [SerializeField]
     AudioSource _musicAS;
     [SerializeField]
@@ -26,20 +29,21 @@ public class WVDMainMenuManager : MonoBehaviour
     [SerializeField]
     WVDOptionsManager _optionsManagerScript;
     WVDSoundManager _soundManager;
+
+    [Header("Challenge Mode Locked/Unlocked")]
     [SerializeField]
     WVDSaveDataManager _saveDataManager;
     [SerializeField]
     GameObject _challengeModeLocked;
     [SerializeField]
     GameObject _challengeModeUnlocked;
-    WVDChallengeModeManager _challengeModeManager;
-
+    WVDDifficultySettingsManager _difficultySettingsManager;
 
     void Start()
     {
         Time.timeScale = 1.0f;
         _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
-        _challengeModeManager = GameObject.FindGameObjectWithTag("ChallengeModeManager").GetComponent<WVDChallengeModeManager>();
+        _difficultySettingsManager = GameObject.FindGameObjectWithTag("ChallengeModeManager").GetComponent<WVDDifficultySettingsManager>();
         if (_saveDataManager.SaveData.ChallengeModeUnlocked)
         {
             _challengeModeUnlocked.SetActive(true);
@@ -58,44 +62,40 @@ public class WVDMainMenuManager : MonoBehaviour
     public void WVDClickEasyButton()
     {
         ToGameModeScreen();
-        _challengeModeManager.SelectedDifficulty = WVDChallengeModeManager.Difficulty.Easy;
+        _difficultySettingsManager.SelectedDifficulty = WVDDifficultySettingsManager.Difficulty.Easy;
     }
-
     public void WVDClickMediumButton()
     {
         ToGameModeScreen();
-        _challengeModeManager.SelectedDifficulty = WVDChallengeModeManager.Difficulty.Medium;
+        _difficultySettingsManager.SelectedDifficulty = WVDDifficultySettingsManager.Difficulty.Medium;
     }
     public void WVDClickHardButton()
     {
         ToGameModeScreen();
-        _challengeModeManager.SelectedDifficulty = WVDChallengeModeManager.Difficulty.Hard;
+        _difficultySettingsManager.SelectedDifficulty = WVDDifficultySettingsManager.Difficulty.Hard;
     }
-
-    private void ToGameModeScreen()
+    void ToGameModeScreen()
     {
         _difficultyScreen.SetActive(false);
         _gameModeScreen.SetActive(true);
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
-
     public void WVDClickNormalModeButton()
     {
         _whiteFadeScreen.gameObject.SetActive(true);
-        _challengeModeManager.ChallengeModeActive = false;
+        _difficultySettingsManager.ChallengeModeActive = false;
         FadeToWhite(true);
         FadeMusicOut();
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
-    public void WVDClickChallengeModeButton() // todo add challenge mode going into
+    public void WVDClickChallengeModeButton()
     {
         _whiteFadeScreen.gameObject.SetActive(true);
-        _challengeModeManager.ChallengeModeActive = true;
+        _difficultySettingsManager.ChallengeModeActive = true;
         FadeToWhite(true);
         FadeMusicOut();
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
-
     public void WVDClickBackButton()
     {
         _mainMenuScreen.SetActive(true);
@@ -104,14 +104,12 @@ public class WVDMainMenuManager : MonoBehaviour
         _optionsScreen.SetActive(false);
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
-
     public void WVDClickOptionsButton()
     {
         _mainMenuScreen.SetActive(false);
         _optionsScreen.SetActive(true);
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
-
     public void WVDClickQuitButton()
     {
         _whiteFadeScreen.gameObject.SetActive(true);
@@ -119,7 +117,6 @@ public class WVDMainMenuManager : MonoBehaviour
         FadeMusicOut();
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
-
     public void WVDChangeMusicSlider()
     {
         _optionsManagerScript.MusicVolume = _optionsManagerScript.MusicSlider.value;
@@ -127,7 +124,6 @@ public class WVDMainMenuManager : MonoBehaviour
         PlayerPrefs.SetFloat(WVDOptionsStrings.MusicVolume, _optionsManagerScript.MusicVolume);
         PlayerPrefs.Save();
     }
-
     public void WVDChangeSFXSlider()
     {
         _optionsManagerScript.SFXVolume = _optionsManagerScript.SFXSlider.value;
@@ -140,14 +136,12 @@ public class WVDMainMenuManager : MonoBehaviour
         PlayerPrefs.SetFloat(WVDOptionsStrings.MouseSensitivity, _optionsManagerScript.MouseSensitivity);
         PlayerPrefs.Save();
     }
-
     public void WVDResetTutorialTipsButton()
     {
         WVDSaveData saveData = new WVDSaveData(_saveDataManager.SaveData.ChallengeModeUnlocked);
         _saveDataManager.SaveNewData(saveData);
         _soundManager.PlaySFXAtPlayer(_soundManager.UIButtonSFX);
     }
-
     async void FadeToWhite(bool loadGame)
     {
         float fadeInTimer = 0.0f;
@@ -168,7 +162,6 @@ public class WVDMainMenuManager : MonoBehaviour
             Application.Quit();
         }
     }
-
     async void FadeMusicOut()
     {
         float fadeOutTimer = 0.0f;
@@ -193,12 +186,5 @@ public class WVDMainMenuManager : MonoBehaviour
         //    await Task.Yield();
         //}
         _musicAS.volume = _optionsManagerScript.MusicVolume; 
-
     }
-
-
-
-
-
-
 }
