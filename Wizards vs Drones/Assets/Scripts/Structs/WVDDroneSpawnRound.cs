@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 [System.Serializable]
 public struct WVDDroneSpawnRound
 {
@@ -17,12 +13,10 @@ public struct WVDDroneSpawnRound
     public int MinTeleport;
     public int MaxTeleport;
 
-    public int MinTank;
-    public int MaxTank;
-
     public int MaxDroneLimit;
 
-    public float SpawnOnDeathChance;
+    // Upgrades
+    public float SpawnOnDeathChance; 
     public float ShieldChance;
     public float SlowChance;
 }

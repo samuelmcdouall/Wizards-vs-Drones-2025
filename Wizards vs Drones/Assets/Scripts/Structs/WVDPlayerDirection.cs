@@ -1,21 +1,16 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public struct WVDPlayerDirection : IEquatable<WVDPlayerDirection>
 {
-    public Vector3 DirectionVector;
-    public Vector3 InputVector;
+    public Vector3 DirectionVector; // Actual movement direction
+    public Vector3 InputVector; // Keys being input for animation
 
     public WVDPlayerDirection(Vector3 directionVector, Vector3 inputVector)
     {
         DirectionVector = directionVector;
         InputVector = inputVector;
     }
-
     public bool Equals(WVDPlayerDirection other)
     {
         return DirectionVector.x == other.DirectionVector.x &&
@@ -30,6 +25,4 @@ public struct WVDPlayerDirection : IEquatable<WVDPlayerDirection>
         return $"Direction Vector: ({DirectionVector.x}, {DirectionVector.y}, {DirectionVector.z})" +
                $"Input Vector: ({InputVector.x}, {InputVector.y}, {InputVector.z})";
     }
-
-
 }
