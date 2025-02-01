@@ -1,16 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class WVDFadeFromWhiteScreen : MonoBehaviour
 {
+    [Header("General")]
     [SerializeField]
     Image _whiteFadeScreen;
     [SerializeField]
     float _whiteFadeDuration;
+
+    [Header("Other")]
     [SerializeField]
     bool _cursorVisibleAtStart;
     WVDTutorialManager _tutorialManager;
@@ -29,16 +29,9 @@ public class WVDFadeFromWhiteScreen : MonoBehaviour
         }
         WVDFunctionsCheck.IsDead = false;
         Invoke("FadeFromWhite", 1.0f);
-        _tutorialManager = GameObject.FindGameObjectWithTag("TutorialManager")?.GetComponent<WVDTutorialManager>();
+        _tutorialManager = GameObject.FindGameObjectWithTag("TutorialManager")?.GetComponent<WVDTutorialManager>(); // If we have a tutorial manager (i.e. in the game scene)
         WVDFunctionsCheck.WhiteScreenFading = true;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public async void FadeFromWhite()
     {
         float fadeInTimer = 0.0f;

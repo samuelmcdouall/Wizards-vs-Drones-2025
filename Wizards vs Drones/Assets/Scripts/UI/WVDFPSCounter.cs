@@ -1,22 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class WVDFPSCounter : MonoBehaviour
+public class WVDFPSCounter : MonoBehaviour // Used for Debug purposes
 {
+    [Header("General")]
     [SerializeField]
     float _interval;
     float _counter;
     TMP_Text _text;
-    // Start is called before the first frame update
+
     void Start()
     {
         _text = GetComponent<TMP_Text>();
         _counter = _interval;
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (_counter < 0.0f)
