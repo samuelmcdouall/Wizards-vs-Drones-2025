@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 639366454093624677}
   - component: {fileID: 4499382826080542669}
   - component: {fileID: 200807995679916783}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BatteryCachePickUp
   m_TagString: Battery
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 6636525259377411545}
   - component: {fileID: 7347693789097798767}
   - component: {fileID: 6370354887797239069}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: FX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
