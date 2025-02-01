@@ -116,13 +116,13 @@ public class WVDLevelManager : MonoBehaviour
                 _greatHallBarrier.SetActive(false);
                 _availableShops.Add(_greatHallShop);
                 //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.GreatHall, 2.0f);
-                WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.GreatHall, 2.0f));
+                WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.GreatHall, 2.0f));
                 break;
             case UnlockableSections.Tower:
                 _towerBarrier.SetActive(false);
                 _availableShops.Add(_towerShop);
                 //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.Library, 2.0f);
-                WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.Library, 2.0f));
+                WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.Library, 2.0f));
                 break;
             case UnlockableSections.Battlements:
                 _battlementsBarrier.SetActive(false);
@@ -132,7 +132,7 @@ public class WVDLevelManager : MonoBehaviour
                 _dungeonBarrier.SetActive(false);
                 _availableShops.Add(_dungeonShop);
                 //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.Dungeon, 2.0f);
-                WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.Dungeon, 2.0f));
+                WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.Dungeon, 2.0f));
                 break;
         }
 
@@ -146,7 +146,7 @@ public class WVDLevelManager : MonoBehaviour
 
     }
 
-    public void LevelCompleted(WVDLevelCompleteEventData data)
+    public void LevelCompleted(WVDEventDataLevelComplete data)
     {
         _shopOpen = true;
         _chosenShop = _availableShops[Random.Range(0, _availableShops.Count)];
@@ -169,7 +169,7 @@ public class WVDLevelManager : MonoBehaviour
         if (_level == 0)
         {
             //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.Shop, 1.0f);
-            WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.Shop, 1.0f));
+            WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.Shop, 1.0f));
         }
     }
 
@@ -210,7 +210,7 @@ public class WVDLevelManager : MonoBehaviour
         if (_level == 1)
         {
             //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.NewAreas, 1.0f);
-            WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.NewAreas, 1.0f));
+            WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.NewAreas, 1.0f));
         }
 
 
@@ -254,7 +254,7 @@ public class WVDLevelManager : MonoBehaviour
         _shopTimer = _shopTime;
         _musicManagerScript.InitialMusicSetup();
         WVDFunctionsCheck.SetToDefault();
-        WVDEventBus.Subscribe<WVDLevelCompleteEventData>(LevelCompleted);
+        WVDEventBus.Subscribe<WVDEventDataLevelComplete>(LevelCompleted);
         //WVDEventBus.Subscribe(WVDEventBus.EventType.LevelComplete, LevelCompleted);
         StartNewLevel();
 

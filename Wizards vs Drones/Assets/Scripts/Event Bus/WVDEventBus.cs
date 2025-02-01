@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 // This is useful for certain methods that need to be called lots of times in multiple scripts.
@@ -43,10 +41,5 @@ public static class WVDEventBus
         {
             _assignedActions[type] = Delegate.Remove(_assignedActions[type], action);
         }
-    }
-
-    public enum EventType
-    {
-        LevelComplete
     }
 }

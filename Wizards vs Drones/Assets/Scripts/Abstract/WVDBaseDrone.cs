@@ -104,7 +104,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             {
                 _shieldObject.SetActive(false);
                 //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.ShieldBuff, 1.0f);
-                WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.ShieldBuff, 1.0f));
+                WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.ShieldBuff, 1.0f));
                 Invoke("SwitchShieldBackOn", _shieldRechargeDelay);
             }
         }
@@ -151,19 +151,19 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         {
             case DroneType.Electric:
                 //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.ElectricDrone, 1.0f);
-                WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.ElectricDrone, 1.0f));
+                WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.ElectricDrone, 1.0f));
                 break;
             case DroneType.Laser:
                 //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.LaserDrone, 1.0f);
-                WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.LaserDrone, 1.0f));
+                WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.LaserDrone, 1.0f));
                 break;
             case DroneType.Fast:
                 //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.FastDrone, 1.0f);
-                WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.FastDrone, 1.0f));
+                WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.FastDrone, 1.0f));
                 break;
             case DroneType.Teleport:
                 //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.TeleportDrone, 1.0f);
-                WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.TeleportDrone, 1.0f));
+                WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.TeleportDrone, 1.0f));
                 break;
         }
 
@@ -249,7 +249,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
                     if (!_slowTutorialBeenChecked)
                     {
                         //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.SlowBuff, 1.0f); // Need a work around as this may end up queueing multiple tutorial displays of the same type due to when this is played
-                        WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.SlowBuff, 1.0f));
+                        WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.SlowBuff, 1.0f));
                         _slowTutorialBeenChecked = true;
                     }
                 }
@@ -302,7 +302,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             SpawnDroneFromBuff();
             SpawnDroneFromBuff();
             //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.SpawnOnDeathBuff, 1.0f);
-            WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.SpawnOnDeathBuff, 1.0f));
+            WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.SpawnOnDeathBuff, 1.0f));
         }
 
         switch (SelectedDroneType)

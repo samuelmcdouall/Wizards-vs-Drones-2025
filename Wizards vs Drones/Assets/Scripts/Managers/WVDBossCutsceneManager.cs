@@ -77,6 +77,6 @@ public class WVDBossCutsceneManager : MonoBehaviour
         _powerUpIcon.SetActive(false);
         _powerUpManager.ResetPowerUps();
         //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.Boss, 1.0f);
-        WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.Boss, 1.0f));
+        WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.Boss, 1.0f));
     }
 }

@@ -25,7 +25,7 @@ public class WVDTutorialManager : MonoBehaviour
 
     private void Start()
     {
-        WVDEventBus.Subscribe<WVDDisplayTutorialEventData>(DisplayTutorial);
+        WVDEventBus.Subscribe<WVDEventDataDisplayTutorial>(DisplayTutorial);
 
         WVDSaveData saveData = _saveDataManager.SaveData;
 
@@ -74,7 +74,7 @@ public class WVDTutorialManager : MonoBehaviour
         NewAreas
     }
 
-    public async void DisplayTutorial(WVDDisplayTutorialEventData data)
+    public async void DisplayTutorial(WVDEventDataDisplayTutorial data)
     {
         WVDTutorialDetails details = new WVDTutorialDetails("DEFAULT", false);
         _tutorialDictionary.TryGetValue(data.Part, out details);

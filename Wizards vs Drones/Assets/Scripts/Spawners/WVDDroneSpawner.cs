@@ -78,7 +78,7 @@ public class WVDDroneSpawner : MonoBehaviour
             {
                 // todo try event bus here for level complete, publish
                 //_levelManagerScript.LevelCompleted();
-                WVDEventBus.Raise(new WVDLevelCompleteEventData());
+                WVDEventBus.Raise(new WVDEventDataLevelComplete());
             }
         }
     }

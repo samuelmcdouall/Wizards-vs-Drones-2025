@@ -53,7 +53,7 @@ public class WVDFadeFromWhiteScreen : MonoBehaviour
         _whiteFadeScreen.gameObject.SetActive(false);
         if (_tutorialManager)
         {
-            WVDEventBus.Raise(new WVDDisplayTutorialEventData(WVDTutorialManager.TutorialPart.Intro, 1.0f));
+            WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.Intro, 1.0f));
         }
         WVDFunctionsCheck.WhiteScreenFading = false;
     }
