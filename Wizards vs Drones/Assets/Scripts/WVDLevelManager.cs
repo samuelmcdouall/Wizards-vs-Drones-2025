@@ -249,6 +249,7 @@ public class WVDLevelManager : MonoBehaviour
         _shopTimer = _shopTime;
         _musicManagerScript.InitialMusicSetup();
         WVDFunctionsCheck.SetToDefault();
+        WVDEventBus.Subscribe(WVDEventBus.EventType.LevelComplete, LevelCompleted);
         StartNewLevel();
 
     }

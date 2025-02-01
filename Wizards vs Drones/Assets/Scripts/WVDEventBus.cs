@@ -1,40 +1,43 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public static class WVDEventBus
 {
-    private static Dictionary<EventNames, Delegate> events = new Dictionary<EventNames, Delegate>();
+    private static Dictionary<EventType, Action> _assignedActions = new Dictionary<EventType, Action>();
 
-    public static void Subscribe<T>(EventNames eventName, Action<T> listener)
+    public static void Raise(EventType eventType)
     {
-        if (!events.ContainsKey(eventName))
+        if (_assignedActions.TryGetValue(eventType, out Action exisitingAction))
         {
-            events[eventName] = null;
-        }
-
-        events[eventName] = (Action<T>)events[eventName] + listener;
-    }
-
-    public static void Unsubscribe<T>(EventNames eventName, Action<T> listener)
-    {
-        if (events.ContainsKey(eventName))
-        {
-            events[eventName] = (Action<T>)events[eventName] - listener;
-        }
-
-    }
-
-    public static void Publish<T>(EventNames eventName, T data)
-    {
-        if (events.ContainsKey(eventName))
-        {
-            ((Action<T>)events[eventName])?.Invoke(data);
+            Debug.Log($"Raised event {eventType} and found {exisitingAction.GetInvocationList().Length} actions to execute");
+            exisitingAction?.Invoke();
         }
     }
 
-    public enum EventNames
+    public static void Subscribe(EventType eventType, Action action)
+    {
+        if (_assignedActions.ContainsKey(eventType))
+        {
+            _assignedActions[eventType] += action;
+        }
+        else
+        {
+            _assignedActions[eventType] = action;
+        }
+    }
+
+    public static void Unsubscribe(EventType eventType, Action action)
+    {
+        if (_assignedActions.ContainsKey(eventType))
+        {
+            _assignedActions[eventType] -= action;
+        }
+    }
+
+    public enum EventType
     {
         LevelComplete
     }
