@@ -43,7 +43,7 @@ public class WVDMainMenuManager : MonoBehaviour
     {
         Time.timeScale = 1.0f;
         _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
-        _difficultySettingsManager = GameObject.FindGameObjectWithTag("ChallengeModeManager").GetComponent<WVDDifficultySettingsManager>();
+        _difficultySettingsManager = GameObject.FindGameObjectWithTag("DifficultyModeManager").GetComponent<WVDDifficultySettingsManager>();
         if (_saveDataManager.SaveData.ChallengeModeUnlocked)
         {
             _challengeModeUnlocked.SetActive(true);

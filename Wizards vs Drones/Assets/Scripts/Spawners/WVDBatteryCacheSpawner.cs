@@ -1,9 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDBatteryCacheSpawner : MonoBehaviour
 {
+    [Header("Spawning")]
     [SerializeField]
     List<Transform> _availableSpawnPositions;
     [SerializeField]
@@ -12,6 +12,7 @@ public class WVDBatteryCacheSpawner : MonoBehaviour
     int _maxTotalNumCacheSpawns;
     [SerializeField]
     GameObject _cachePrefab;
+
     void Start()
     {
         int totalNumCacheSpawns = Random.Range(_minTotalNumCacheSpawns, _maxTotalNumCacheSpawns + 1);

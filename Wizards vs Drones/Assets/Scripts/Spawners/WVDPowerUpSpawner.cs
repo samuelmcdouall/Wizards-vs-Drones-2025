@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class WVDPowerUpSpawner : MonoBehaviour
 {
+    [Header("General")]
     [SerializeField]
     bool _spawning;
-
     public List<WVDPowerUp> SpawnedPowerUps = new List<WVDPowerUp>();
 
     [Header("Spawn Positions")]
@@ -37,10 +37,12 @@ public class WVDPowerUpSpawner : MonoBehaviour
     float _chanceSpawnColouredPowerUp;
     [SerializeField]
     WVDLevelManager _levelManagerScript;
+
+    [Header("Tome")]
     [SerializeField]
     GameObject _tome;
     [SerializeField]
-    float _chanceSpawnTome; // Tome instead of power up (power up could then be coloured or upgrade)
+    float _chanceSpawnTome; // Tome instead of power up (if spawn power up could then be coloured or upgrade)
     [SerializeField]
     int _minLevelTomeCanSpawn;
     bool _tomeSpawned; // Counts towards the max number of power ups but can only have one of these out at a time
@@ -87,7 +89,6 @@ public class WVDPowerUpSpawner : MonoBehaviour
         _currentPowerUpsSpawned = 0;
         _firstSpawn = true;
     }
-
     void Update()
     {
         if (_spawning)
@@ -95,7 +96,7 @@ public class WVDPowerUpSpawner : MonoBehaviour
             if (_spawnTimer < 0.0f)
             {
                 _spawnTimer = Random.Range(_spawnTimeMin, _spawnTimeMax);
-                if (_currentPowerUpsSpawned < _maxPowerUpsSpawned && _availableSpawnPositions.Count > 0 && !WVDFunctionsCheck.IsDead) // todo bug with power ups not spawning, for one of these reasons
+                if (_currentPowerUpsSpawned < _maxPowerUpsSpawned && _availableSpawnPositions.Count > 0 && !WVDFunctionsCheck.IsDead)
                 {
                     SpawnRandomPowerUp();
                 }
@@ -106,59 +107,14 @@ public class WVDPowerUpSpawner : MonoBehaviour
             }
         }
     }
-
-    public void AddRandomColouredPowerUpToList() // should be triggered with each X level increases
-    {
-        if (!_firstPowerUpAdded) // first power up should always be the first in the list (i.e. green, set this in the inspector)
-        {
-            _availableColouredPowerUps.Add(_unavailableColouredPowerUps[0]);
-            _unavailableColouredPowerUps.Remove(_unavailableColouredPowerUps[0]);
-            _firstPowerUpAdded = true;
-        }
-        else if (_unavailableColouredPowerUps.Count > 0)
-        {
-            int randIndex = Random.Range(0, _unavailableColouredPowerUps.Count);
-            GameObject chosenPowerUp = _unavailableColouredPowerUps[randIndex];
-            _availableColouredPowerUps.Add(chosenPowerUp);
-            _unavailableColouredPowerUps.Remove(chosenPowerUp);
-        }
-    }
-
-    public void AddSpawnPositionsToListFromSection(WVDLevelManager.UnlockableSections section)
-    {
-        switch (section)
-        {
-            case WVDLevelManager.UnlockableSections.GreatHall:
-                AddSpawnPositionsToList(_greatHallSpawnPositions);
-                break;
-            case WVDLevelManager.UnlockableSections.Tower:
-                AddSpawnPositionsToList(_towerSpawnPositions);
-                break;
-            case WVDLevelManager.UnlockableSections.Battlements:
-                AddSpawnPositionsToList(_battlementsSpawnPositions);
-                break;
-            case WVDLevelManager.UnlockableSections.Dungeon:
-                AddSpawnPositionsToList(_dungeonSpawnPositions);
-                break;
-        }
-    }
-
-    void AddSpawnPositionsToList(List<Transform> spawnPositions)
-    {
-        foreach(Transform position in spawnPositions)
-        {
-            _availableSpawnPositions.Add(position);
-        }
-    }
-
     void SpawnRandomPowerUp() // Includes potential to spawn a tome
     {
         GameObject chosenPowerUp = null;
         Vector3 spawnOffset = Vector3.zero;
-        
+
         float rand = Random.Range(0.0f, 1.0f);
-        if (_levelManagerScript.Level >= _minLevelTomeCanSpawn && 
-            rand < _chanceSpawnTome && 
+        if (_levelManagerScript.Level >= _minLevelTomeCanSpawn &&
+            rand < _chanceSpawnTome &&
             !_tomeSpawned
             )
         {
@@ -178,7 +134,10 @@ public class WVDPowerUpSpawner : MonoBehaviour
                 chosenPowerUp = _upgradePowerUp;
             }
         }
-
+        SpawnChosenPowerUp(chosenPowerUp, spawnOffset);
+    }
+    void SpawnChosenPowerUp(GameObject chosenPowerUp, Vector3 spawnOffset)
+    {
         int randIndex = Random.Range(0, _availableSpawnPositions.Count);
         Transform spawnedTransform = _availableSpawnPositions[randIndex];
         WVDPowerUp powerUp = Instantiate(chosenPowerUp, spawnedTransform.position + spawnOffset, chosenPowerUp.transform.rotation).GetComponent<WVDPowerUp>();
@@ -186,6 +145,47 @@ public class WVDPowerUpSpawner : MonoBehaviour
         SpawnedPowerUps.Add(powerUp);
         _availableSpawnPositions.Remove(spawnedTransform);
         _currentPowerUpsSpawned++;
+    }
 
+    public void AddRandomColouredPowerUpToList()
+    {
+        if (!_firstPowerUpAdded) // first power up should always be the first in the list (i.e. green, set this in the inspector)
+        {
+            _availableColouredPowerUps.Add(_unavailableColouredPowerUps[0]);
+            _unavailableColouredPowerUps.Remove(_unavailableColouredPowerUps[0]);
+            _firstPowerUpAdded = true;
+        }
+        else if (_unavailableColouredPowerUps.Count > 0)
+        {
+            int randIndex = Random.Range(0, _unavailableColouredPowerUps.Count);
+            GameObject chosenPowerUp = _unavailableColouredPowerUps[randIndex];
+            _availableColouredPowerUps.Add(chosenPowerUp);
+            _unavailableColouredPowerUps.Remove(chosenPowerUp);
+        }
+    }
+    public void AddSpawnPositionsToListFromSection(WVDLevelManager.UnlockableSections section)
+    {
+        switch (section)
+        {
+            case WVDLevelManager.UnlockableSections.GreatHall:
+                AddSpawnPositionsToList(_greatHallSpawnPositions);
+                break;
+            case WVDLevelManager.UnlockableSections.Tower:
+                AddSpawnPositionsToList(_towerSpawnPositions);
+                break;
+            case WVDLevelManager.UnlockableSections.Battlements:
+                AddSpawnPositionsToList(_battlementsSpawnPositions);
+                break;
+            case WVDLevelManager.UnlockableSections.Dungeon:
+                AddSpawnPositionsToList(_dungeonSpawnPositions);
+                break;
+        }
+    }
+    void AddSpawnPositionsToList(List<Transform> spawnPositions)
+    {
+        foreach(Transform position in spawnPositions)
+        {
+            _availableSpawnPositions.Add(position);
+        }
     }
 }
