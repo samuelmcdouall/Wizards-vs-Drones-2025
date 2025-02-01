@@ -1,28 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDBatteryCachePickUp : MonoBehaviour
 {
-    WVDSoundManager _soundManager;
-    WVDStatsManager _statsManager;
-    WVDTutorialManager _tutorialManager;
+    [Header("Value")]
     [SerializeField]
     int _minValue;
     [SerializeField]
     int _maxValue;
     int _value;
 
-    // Start is called before the first frame update
+    [Header("Other")]
+    WVDSoundManager _soundManager;
+    WVDStatsManager _statsManager;
+
     void Start()
     {
         _value = Random.Range(_minValue, _maxValue + 1);
         _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
         _statsManager = GameObject.FindGameObjectWithTag("StatsManager").GetComponent<WVDStatsManager>();
-        _tutorialManager = GameObject.FindGameObjectWithTag("TutorialManager").GetComponent<WVDTutorialManager>();
     }
-
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("PickUpTrigger"))
         {

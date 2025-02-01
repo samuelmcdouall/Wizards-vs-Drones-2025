@@ -1,12 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDBatteryPickUp : MonoBehaviour
 {
+    [Header("Value")]
     [SerializeField]
     int _value;
-    Rigidbody _rb;
+
+    [Header("Flashing Animation")]
     [SerializeField]
     bool _dontTimeOut;
     [SerializeField]
@@ -19,12 +20,14 @@ public class WVDBatteryPickUp : MonoBehaviour
     [SerializeField]
     GameObject _batteryModel;
     Coroutine _flashCoroutine;
-    WVDSoundManager _soundManager;
 
+    [Header("Other")]
+    WVDSoundManager _soundManager;
     WVDStatsManager _statsManager;
     WVDTutorialManager _tutorialManager;
+    Rigidbody _rb;
 
-    private void Start()
+    void Start()
     {
         _timer = _lifeTime;
         if (!_dontTimeOut)
@@ -32,33 +35,12 @@ public class WVDBatteryPickUp : MonoBehaviour
             Destroy(gameObject, _lifeTime);
         }
         _rb = GetComponent<Rigidbody>();
-        float randX = Random.Range(-200.0f, 200.0f);
-        float randY = Random.Range(200.0f, 300.0f);
-        float randZ = Random.Range(-200.0f, 200.0f);
-        _rb.AddForce(new Vector3(randX, randY, randZ));
-        randX = Random.Range(-100.0f, 100.0f);
-        randY = Random.Range(-100.0f, 100.0f);
-        randZ = Random.Range(-100.0f, 100.0f);
-        _rb.AddTorque(new Vector3(randX, randY, randZ));
+        AddRandomForceAndTorque();
         _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
         _statsManager = GameObject.FindGameObjectWithTag("StatsManager").GetComponent<WVDStatsManager>();
         _tutorialManager = GameObject.FindGameObjectWithTag("TutorialManager").GetComponent<WVDTutorialManager>();
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("PickUpTrigger"))
-        {
-            //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.Battery, 1.0f);
-            WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.Battery, 1.0f));
-            other.gameObject.transform.parent.gameObject.GetComponent<WVDPlayer>().BatteryCount += _value;
-            _soundManager.PlaySFXAtPlayer(_soundManager.PickupBatterySFX);
-            _statsManager.BatteriesCollected += _value;
-            Destroy(gameObject);
-        }
-    }
-
-    private void Update()
+    void Update()
     {
         if (!_dontTimeOut)
         {
@@ -71,13 +53,34 @@ public class WVDBatteryPickUp : MonoBehaviour
             }
             _timer -= Time.deltaTime;
         }
-
     }
-
+    void AddRandomForceAndTorque()
+    {
+        float randX = Random.Range(-200.0f, 200.0f);
+        float randY = Random.Range(200.0f, 300.0f);
+        float randZ = Random.Range(-200.0f, 200.0f);
+        _rb.AddForce(new Vector3(randX, randY, randZ));
+        randX = Random.Range(-100.0f, 100.0f);
+        randY = Random.Range(-100.0f, 100.0f);
+        randZ = Random.Range(-100.0f, 100.0f);
+        _rb.AddTorque(new Vector3(randX, randY, randZ));
+    }
     IEnumerator ChangeAfterFlashPeriod()
     {
         yield return new WaitForSeconds(_flashPeriod);
         _batteryModel.SetActive(!_batteryModel.activeSelf);
         _flashCoroutine = null;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("PickUpTrigger"))
+        {
+            WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.Battery, 1.0f));
+            other.gameObject.transform.parent.gameObject.GetComponent<WVDPlayer>().BatteryCount += _value;
+            _soundManager.PlaySFXAtPlayer(_soundManager.PickupBatterySFX);
+            _statsManager.BatteriesCollected += _value;
+            Destroy(gameObject);
+        }
     }
 }
