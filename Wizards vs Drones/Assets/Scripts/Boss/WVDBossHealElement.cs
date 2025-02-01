@@ -1,15 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDBossHealElement : MonoBehaviour
 {
+    [Header("General")]
     Vector3 _direction;
     WVDBoss _bossScript;
     [SerializeField]
     GameObject _explodePrefab;
 
-
+    [Header("Flying to position")]
     [SerializeField]
     float _timePeriodHealElementsFlyOut;
     [SerializeField]
@@ -18,14 +17,13 @@ public class WVDBossHealElement : MonoBehaviour
     [SerializeField]
     float _flyOutLerpParamater;
     bool _flyingOut;
+
     void Start()
     {
         _targetPoint = transform.position + _direction * _targetDistance;
         _flyingOut = true;
         Invoke("StopFlyingOut", _timePeriodHealElementsFlyOut);
     }
-
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (_flyingOut)
@@ -33,20 +31,17 @@ public class WVDBossHealElement : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, _targetPoint, _flyOutLerpParamater);
         }
     }
-
     void StopFlyingOut()
     {
         _flyingOut = false;
     }
-
     public void SetParameters(Vector3 direction, WVDBoss bossScript)
     {
         _direction = direction.normalized;
         _bossScript = bossScript;
 
     }
-
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("PlayerProjectile"))
         {

@@ -222,28 +222,26 @@ public class WVDBoss : WVDBaseEntity
         switch (_currentBossState)
         {
             case BossState.DungeonIdle:
+                if (_dungeonIdleTimer < 0.0f)
                 {
-                    if (_dungeonIdleTimer < 0.0f)
+                    _dungeonIdleTimer = Random.Range(_minDungeonIdleTime, _maxDungeonIdleTime);
+                    Transform initialChosenWayPoint = _dungeonIdleWayPoints[Random.Range(0, _dungeonIdleWayPoints.Count)];
+                    while (initialChosenWayPoint == _chosenDungeonWayPoint)
                     {
-                        _dungeonIdleTimer = Random.Range(_minDungeonIdleTime, _maxDungeonIdleTime);
-                        Transform initialChosenWayPoint = _dungeonIdleWayPoints[Random.Range(0, _dungeonIdleWayPoints.Count)];
-                        while (initialChosenWayPoint == _chosenDungeonWayPoint)
-                        {
-                            initialChosenWayPoint = _dungeonIdleWayPoints[Random.Range(0, _dungeonIdleWayPoints.Count)]; // making sure we don't choose the same one
-                        }
-                        _chosenDungeonWayPoint = initialChosenWayPoint;
-                        _movementVector = (_chosenDungeonWayPoint.position - transform.position).normalized;
-                        transform.LookAt(_chosenDungeonWayPoint);
-                        SwitchToAnimation(WVDAnimationStrings.BossFlyingAnimation);
-                        _currentBossState = BossState.DungeonFlying;
+                        initialChosenWayPoint = _dungeonIdleWayPoints[Random.Range(0, _dungeonIdleWayPoints.Count)]; // making sure we don't choose the same one
                     }
-                    else
-                    {
-                        _dungeonIdleTimer -= Time.deltaTime;
-                    }
-
-                    break;
+                    _chosenDungeonWayPoint = initialChosenWayPoint;
+                    _movementVector = (_chosenDungeonWayPoint.position - transform.position).normalized;
+                    transform.LookAt(_chosenDungeonWayPoint);
+                    SwitchToAnimation(WVDAnimationStrings.BossFlyingAnimation);
+                    _currentBossState = BossState.DungeonFlying;
                 }
+                else
+                {
+                    _dungeonIdleTimer -= Time.deltaTime;
+                }
+
+                break;
             case BossState.DungeonBreakingDoorPart1:
                 transform.LookAt(_dungeonEscapeWayPoint2);
                 _movementVector = (_dungeonEscapeWayPoint2.position - _dungeonEscapeWayPoint1.position).normalized;
@@ -260,20 +258,6 @@ public class WVDBoss : WVDBaseEntity
                 SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
                 TransitionToStateAfterDelay(BossState.DungeonEscaping, _waitBeforeEscapingDelay);
                 break;
-            //case BossState.DungeonEscaping:
-            //    if (Vector3.Distance(transform.position, _dungeonEscapeWayPoint2.position) < _wayPointThreshold)
-            //    {
-            //        SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
-            //        _currentBossState = BossState.Idle;
-            //        BossInBattle = true;
-            //        _bossCutsceneManagerScript.EndBossCutscene();
-            //    }
-            //    else
-            //    {
-            //        SwitchToAnimation(WVDAnimationStrings.BossFlyingAnimation);
-            //        transform.position += _movementVector * MaxNormalSpeed * Time.deltaTime;
-            //    }
-            //    break;
             case BossState.Transitional:
                 // Don't do anything, will move to another state shortly
                 break;
@@ -322,9 +306,7 @@ public class WVDBoss : WVDBaseEntity
                     _combatIdleTimer -= Time.deltaTime;
                 }
                 break;
-
             case BossState.FireballAttack:
-
                 if (Vector3.Distance(transform.position, _chosenBattleWayPoint.position) < _wayPointThreshold)
                 {
                     SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
@@ -338,30 +320,26 @@ public class WVDBoss : WVDBaseEntity
                     switch (_currentBossFireballAttackState)
                     {
                         case BossFireballAttackState.BetweenAttacks:
+                            SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
+                            int currentFireballsNumber = _fireballAttacksNumberStageOne;
+                            if (_currentBossFightStage == BossFightStage.StageTwo)
                             {
-                                SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
-                                int currentFireballsNumber = _fireballAttacksNumberStageOne;
-                                if (_currentBossFightStage == BossFightStage.StageTwo)
-                                {
-                                    currentFireballsNumber = _fireballAttacksNumberStageTwo;
-                                }
-                                else if (_currentBossFightStage == BossFightStage.StageThree)
-                                {
-                                    currentFireballsNumber = _fireballAttacksNumberStageThree;
-                                }
-                                if (_currentFireballAttackNumber < currentFireballsNumber)
-                                {
-                                    _currentFireballAttackNumber++;
-                                    TransitionToStateAfterDelay(BossFireballAttackState.ChargingUpFireball, _fireballInBetweenAttacksDelay);
-                                }
-                                else
-                                {
-                                    // remain in BetweenAttacks state, will do so until reached waypoint
-                                }
-
-                                break;
+                                currentFireballsNumber = _fireballAttacksNumberStageTwo;
                             }
-
+                            else if (_currentBossFightStage == BossFightStage.StageThree)
+                            {
+                                currentFireballsNumber = _fireballAttacksNumberStageThree;
+                            }
+                            if (_currentFireballAttackNumber < currentFireballsNumber)
+                            {
+                                _currentFireballAttackNumber++;
+                                TransitionToStateAfterDelay(BossFireballAttackState.ChargingUpFireball, _fireballInBetweenAttacksDelay);
+                            }
+                            else
+                            {
+                                // remain in BetweenAttacks state, will do so until reached waypoint
+                            }
+                            break;
                         case BossFireballAttackState.ChargingUpFireball:
                             SwitchToAnimation(WVDAnimationStrings.BossFireballAttackAnimation);
                             TransitionToStateAfterDelay(BossFireballAttackState.LaunchingFireball, _fireballPreLaunchDelay);
@@ -385,49 +363,33 @@ public class WVDBoss : WVDBaseEntity
                 }
                 break;
             case BossState.FireStreamAttack:
-                //if (Vector3.Distance(transform.position, _chosenBattleWayPoint.position) < _wayPointThreshold) // keeping this here for the moment in case decide need to move
-                //{
-                //    SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
-                //    _currentBossState = BossState.Idle;
-                //    _currentBossFireballAttackState = BossFireballAttackState.BetweenAttacks;
-                //}
-                //else
-                //{
-                //transform.position += _movementVector * MaxNormalSpeed * Time.deltaTime;
-                //LookAtPlayer();
                 LookAtPlayer();
                 switch (_currentBossFireStreamAttackState)
                 {
                     case BossFireStreamAttackState.BetweenAttacks:
+                        SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
+                        int currentFireStreamsNumber = _fireStreamsNumberStageOne;
+                        if (_currentBossFightStage == BossFightStage.StageTwo)
                         {
-                            SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
-                            int currentFireStreamsNumber = _fireStreamsNumberStageOne;
-                            if (_currentBossFightStage == BossFightStage.StageTwo)
-                            {
-                                currentFireStreamsNumber = _fireStreamsNumberStageTwo;
-                            }
-                            else if (_currentBossFightStage == BossFightStage.StageThree)
-                            {
-                                currentFireStreamsNumber = _fireStreamsNumberStageThree;
-                            }
-                            if (_currentFireStreamAttackNumber < currentFireStreamsNumber)
-                            {
-                                _currentFireStreamAttackNumber++;
-                                TransitionToStateAfterDelay(BossFireStreamAttackState.ChargingUpFireStream, _fireStreamInBetweenAttacksDelay);
-                            }
-                            else
-                            {
-                                _currentBossState = BossState.Idle;
-                            }
-
-                            break;
+                            currentFireStreamsNumber = _fireStreamsNumberStageTwo;
                         }
-
+                        else if (_currentBossFightStage == BossFightStage.StageThree)
+                        {
+                            currentFireStreamsNumber = _fireStreamsNumberStageThree;
+                        }
+                        if (_currentFireStreamAttackNumber < currentFireStreamsNumber)
+                        {
+                            _currentFireStreamAttackNumber++;
+                            TransitionToStateAfterDelay(BossFireStreamAttackState.ChargingUpFireStream, _fireStreamInBetweenAttacksDelay);
+                        }
+                        else
+                        {
+                            _currentBossState = BossState.Idle;
+                        }
+                        break;
                     case BossFireStreamAttackState.ChargingUpFireStream:
                         SwitchToAnimation(WVDAnimationStrings.BossTridentAttackAnimation);
                         SoundManager.PlaySFXAtPlayer(SoundManager.BossSpawnFireElementSFX);
-                            //Player.transform.position + (transform.position - Player.transform.position).normalized * 1.0f
-                            //);
                         TransitionToStateAfterDelay(BossFireStreamAttackState.LaunchingFireStream, _fireStreamPreLaunchDelay);
                         break;
                     case BossFireStreamAttackState.LaunchingFireStream:
@@ -448,7 +410,6 @@ public class WVDBoss : WVDBaseEntity
                             break;
                         }
                 }
-                //}
                 break;
             case BossState.Healing:
                 LookAtPlayer();
@@ -466,13 +427,7 @@ public class WVDBoss : WVDBaseEntity
                 }
                 else
                 {
-                    SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
-                    _currentBossState = BossState.Idle;
-                    Invulnerable = false;
-                    InvulnerableFX.SetActive(false);
-                    HealthUIFill.color = _bossHealthUIOriginalColor;
-                    _healTimer = _healingInterval;
-                    _healElementRotateBaseObject.SetActive(false);
+                    StopHealing();
                 }
                 break;
             case BossState.Victory:
@@ -480,11 +435,20 @@ public class WVDBoss : WVDBaseEntity
                 // nothing else, absorbing state
                 break;
         }
-
-
     }
 
-    private void SwitchToFireStreamAttack()
+    void StopHealing()
+    {
+        SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
+        _currentBossState = BossState.Idle;
+        Invulnerable = false;
+        InvulnerableFX.SetActive(false);
+        HealthUIFill.color = _bossHealthUIOriginalColor;
+        _healTimer = _healingInterval;
+        _healElementRotateBaseObject.SetActive(false);
+    }
+
+    void SwitchToFireStreamAttack()
     {
         _currentBossState = BossState.FireStreamAttack;
         _currentFireStreamAttackNumber = 0;
@@ -492,7 +456,7 @@ public class WVDBoss : WVDBaseEntity
         _consecutiveTimesPlayedFireball = 0;
     }
 
-    private void SwitchToFireballAttack()
+    void SwitchToFireballAttack()
     {
         _currentBossState = BossState.FireballAttack;
         _currentFireballAttackNumber = 0;
@@ -544,7 +508,7 @@ public class WVDBoss : WVDBaseEntity
         }
     }
 
-    private void LookAtPlayer()
+    void LookAtPlayer()
     {
         transform.LookAt(new Vector3(_player.transform.position.x, transform.position.y, _player.transform.position.z));
     }
@@ -596,8 +560,6 @@ public class WVDBoss : WVDBaseEntity
     {
         SoundManager.PlayRandomSFXAtPlayer(
             new AudioClip[] { SoundManager.BossSpawnProjectileSFX1, SoundManager.BossSpawnProjectileSFX2, SoundManager.BossSpawnProjectileSFX3 });
-            //Player.transform.position + (transform.position - Player.transform.position).normalized * 1.0f
-            //);
 
         float timeIncrement = _fireballTotalLaunchInterval / numFireballs;
         float arcIncrement = _fireballLaunchArc / (numFireballs - 1);
@@ -621,7 +583,7 @@ public class WVDBoss : WVDBaseEntity
             }
         }
     }
-    public void TakeDamage(int damage) // Boss will be immune to effects so just takes damage
+    public void TakeDamage(int damage) // Boss will be immune to effects so just takes damage, no ResolveAttack
     {
         if (BossInBattle)
         {
@@ -646,7 +608,6 @@ public class WVDBoss : WVDBaseEntity
                 SoundManager.PlaySFXAtPlayer(SoundManager.BossDeathSFX);
                 _musicManagerScript.FadeCurrentMusicOutAndVictoryMusicIn();
                 _gameOverManager.ShowVictoryScreenAfterDelay(_victoryScreenDelay);
-                // todo put in victory screen
             }
         }
     }

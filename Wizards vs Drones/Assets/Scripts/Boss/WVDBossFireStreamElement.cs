@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDBossFireStreamElement : MonoBehaviour
 {
+    [Header("General")]
     Vector3 _direction;
     float _timeIntervalToSpawnNextElement;
     int _elementNumber;
@@ -16,6 +15,7 @@ public class WVDBossFireStreamElement : MonoBehaviour
     [SerializeField]
     GameObject _fireStreamElementPrefab;
 
+    [Header("Damage")]
     bool _canDamage;
     [SerializeField]
     float _canDamageInterval;
@@ -32,20 +32,17 @@ public class WVDBossFireStreamElement : MonoBehaviour
             Invoke("SpawnNextElement", _timeIntervalToSpawnNextElement);
         }
     }
-
     public void SetParameters(Vector3 direction, float timeInterval, int elementNumber)
     {
         _direction = direction.normalized;
         _timeIntervalToSpawnNextElement = timeInterval;
         _elementNumber = elementNumber;
     }
-    
     void SpawnNextElement()
     {
         WVDBossFireStreamElement fireStreamElement = Instantiate(_fireStreamElementPrefab, transform.position + _direction * _distance, Quaternion.identity).GetComponent<WVDBossFireStreamElement>();
         fireStreamElement.SetParameters(_direction, _timeIntervalToSpawnNextElement, _elementNumber++);
     }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player") && _canDamage)
@@ -59,7 +56,6 @@ public class WVDBossFireStreamElement : MonoBehaviour
             other.gameObject.GetComponent<WVDFlammable>().BurnObject(transform.position);
         }
     }
-
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player") && _canDamage)
@@ -69,7 +65,6 @@ public class WVDBossFireStreamElement : MonoBehaviour
             Invoke("CanDamageAgain", _canDamageInterval);
         }
     }
-
     void CanDamageAgain()
     {
         _canDamage = true;

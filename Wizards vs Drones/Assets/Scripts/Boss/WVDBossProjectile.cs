@@ -1,16 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDBossProjectile : WVDBaseProjectile
 {
-
     public override void Start()
     {
         base.Start();
     }
-
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         print("PROJECTILE HIT: " + other.gameObject.name);
         if (
@@ -21,12 +17,12 @@ public class WVDBossProjectile : WVDBaseProjectile
         {
             return;
         }
+
         if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("PickUpTrigger"))
         {
             if (!CannotDamageAgain)
             {
-                other.transform.root.gameObject.GetComponent<WVDPlayer>().ResolveAttack(Damage, Effects); // todo might just use IWVDDamageable here as well
-                print("hit player");
+                other.transform.root.gameObject.GetComponent<WVDPlayer>().TakeDamage(Damage, true); // boss has no effects so just TakeDamage, not ResolveAttack
                 CannotDamageAgain = true;
             }
         }
@@ -34,6 +30,7 @@ public class WVDBossProjectile : WVDBaseProjectile
         {
             other.gameObject.GetComponent<WVDFlammable>().BurnObject(transform.position);
         }
+
         if (!other.gameObject.CompareTag("InvisibleWall"))
         {
             Instantiate(ImpactFX, transform.position, Quaternion.identity);
