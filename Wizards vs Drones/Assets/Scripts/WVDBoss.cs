@@ -195,7 +195,7 @@ public class WVDBoss : WVDBaseEntity
                 {
                     SwitchToAnimation(WVDAnimationStrings.BossIdleAnimation);
                     TransitionToStateAfterDelay(BossState.DungeonBreakingDoorPart1, _waitAtDoorDelay);
-                    SoundManager.PlaySFXAtPlayer(SoundManager.BossEvilShortLaughSFX, volumeModifier: 1.25f);
+                    SoundManager.PlaySFXAtPlayer(SoundManager.BossEvilShortLaughSFX, volumeModifier: 1.35f);
                 }
                 else
                 {

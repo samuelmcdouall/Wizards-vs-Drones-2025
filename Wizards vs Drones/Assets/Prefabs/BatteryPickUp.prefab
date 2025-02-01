@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _value: 1
+  _dontTimeOut: 1
   _lifeTime: 10
   _startFlashingThreshold: 3
   _flashPeriod: 0.25

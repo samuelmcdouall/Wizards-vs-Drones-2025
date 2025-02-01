@@ -23,6 +23,8 @@ public class WVDSaveData
     public bool DungeonBeenPlayedBefore;
     public bool BossBeenPlayedBefore;
     public bool ChallengeModeUnlocked;
+    public bool BatteryPlayedBefore;
+    public bool NewAreasPlayedBefore;
 
     public void ResetTutorialTips()
     {
@@ -44,6 +46,8 @@ public class WVDSaveData
         LibraryBeenPlayedBefore = false;
         DungeonBeenPlayedBefore = false;
         BossBeenPlayedBefore = false;
+        BatteryPlayedBefore = false;
+        NewAreasPlayedBefore = false;
     }
 
     public WVDSaveData() { }
@@ -68,6 +72,8 @@ public class WVDSaveData
         LibraryBeenPlayedBefore = false;
         DungeonBeenPlayedBefore = false;
         BossBeenPlayedBefore = false;
+        BatteryPlayedBefore = false;
+        NewAreasPlayedBefore = false;
         ChallengeModeUnlocked = challengeModeUnlocked;
     }
 }

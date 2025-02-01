@@ -331,6 +331,10 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     {
         print("PLAYER DEAD!");
         SwitchToAnimation(WVDAnimationStrings.PlayerDieAnimation);
+        if (_lifeStealFX.activeSelf)
+        {
+            _lifeStealFX.SetActive(false);
+        }
         foreach(IWVDDamageable drone in _drones)
         {
             drone.GetTransform().gameObject.GetComponent<WVDBaseDrone>().CurrentDroneState = WVDBaseDrone.DroneState.Stopped;

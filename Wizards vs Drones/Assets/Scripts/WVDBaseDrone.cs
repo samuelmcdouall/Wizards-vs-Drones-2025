@@ -29,7 +29,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     [SerializeField]
     GameObject _droneRemainingHelpUIPrefab;
     GameObject _droneRemainingHelpUIInstance;
-    float _remainingDroneStuckTime = 60.0f;
+    float _remainingDroneStuckTime = 45.0f;
     float _remainingDroneStuckTimer;
     
     [Header("Movement - Base Drone")]

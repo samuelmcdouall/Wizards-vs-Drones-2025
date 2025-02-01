@@ -137,7 +137,6 @@ public class WVDLevelManager : MonoBehaviour
 
         _droneSpawnerScript.AddSpawnPositionsToListFromSection(chosenSection);
         _powerUpSpawnerScript.AddSpawnPositionsToListFromSection(chosenSection);
-        _powerUpSpawnerScript.AddRandomColouredPowerUpToList();
         _powerUpSpawnerScript.MaxPowerUpsSpawned += 0; // increase the max amount that can be spawned as the map is now larger todo decide if needed
 
         _lockedSections.Remove(_lockedSections[randIndex]);
@@ -191,7 +190,7 @@ public class WVDLevelManager : MonoBehaviour
             trail.SetActive(false);
         }
 
-        /// should unlock new section on levels 3, 5 and 7 (2, 4, 6 in code)
+        // should unlock new section on levels 3, 5 and 7 (2, 4, 6 in code)
         if (_level <= 6 &&
             _level >= 2 &&
             _level % 2 == 0
@@ -199,13 +198,27 @@ public class WVDLevelManager : MonoBehaviour
         {
             AddNewSection();
         }
+        // should unlock new section on levels 2, 4, 6 and 8 (1, 3, 5, 7 in code, won't add any more if there aren't any more to add)
+        if (_level % 2 == 1)
+        {
+            _powerUpSpawnerScript.AddRandomColouredPowerUpToList();
+        }
+        if (_level == 1)
+        {
+            _tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.NewAreas, 1.0f);
+        }
+
+
         if (_level < 8) // normal level
         {
             _droneSpawnerScript.CreatePoolForLevel(_level);
             _droneSpawnerScript.Spawning = true;
-            _powerUpSpawnerScript.Spawning = true;
             _levelUI.text = $"Level: {_level + 1} /8";
             _musicManagerScript.FadeCurrentMusicOutAndNewMusicIn(_musicManagerScript.PickNewRandomCombatMusicClip());
+            if (_level > 0) // i.e. start spawning power ups from level 2
+            {
+                _powerUpSpawnerScript.Spawning = true;
+            }
         }
         else if (_level == 8) // i.e. boss level
         {

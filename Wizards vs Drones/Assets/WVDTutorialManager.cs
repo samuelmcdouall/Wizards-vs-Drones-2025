@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WVDTutorialManager : MonoBehaviour
@@ -26,12 +27,12 @@ public class WVDTutorialManager : MonoBehaviour
     {
         WVDSaveData saveData = _saveDataManager.SaveData;
 
-        _tutorialDictionary.Add(TutorialPart.Intro, new WVDTutorialDetails("Oh no! Looks like almost everyone is away from the castle and these weird flying boxes called <color=#EE8322>drones</color> are invading! You'll need to defend the castle with that <color=#EE8322>fireball spell</color> you learnt recently (left click). <color=#EE8322>Navigate round the castle</color> (WASD) and don't forget you can make a quick escape with the <color=#EE8322>blink spell</color> (spacebar). Look out for those <color=#EE8322>power up gems</color> scattered around, they'll give you a nifty bonus (right click). I'll come and find you when things have died down a bit... good luck!", saveData.IntroBeenPlayedBefore));
+        _tutorialDictionary.Add(TutorialPart.Intro, new WVDTutorialDetails("Oh no! Looks like almost everyone is away from the castle and these weird flying boxes called <color=#EE8322>drones</color> are invading! You'll need to defend the castle with that <color=#EE8322>fireball spell</color> you learnt recently (left click). <color=#EE8322>Navigate round the castle</color> (WASD) and don't forget you can make a quick escape with the <color=#EE8322>blink spell</color> (space + WASD). Look out for those <color=#EE8322>power up gems</color> scattered around, they'll give you a nifty bonus (right click). I'll come and find you when things have died down a bit... good luck!", saveData.IntroBeenPlayedBefore));
         _tutorialDictionary.Add(TutorialPart.ElectricDrone, new WVDTutorialDetails("These <color=#EE8322>brown drones</color> will try to <color=#EE8322>zap</color> you. Should be easy enough to deal with, but there are a lot of them!", saveData.ElectricDroneBeenPlayedBefore));
         _tutorialDictionary.Add(TutorialPart.LaserDrone, new WVDTutorialDetails("The <color=#EE8322>red drones</color> are a bit different and will engage at range. They seem to be firing some sort of <color=#EE8322>laser</color> at you. ", saveData.LaserDroneBeenPlayedBefore));
         _tutorialDictionary.Add(TutorialPart.FastDrone, new WVDTutorialDetails("Things are heating up now, I've spotted some <color=#EE8322>green drones</color> lurking about that <color=#EE8322>move pretty quickly</color>", saveData.FastDroneBeenPlayedBefore));
-        _tutorialDictionary.Add(TutorialPart.TeleportDrone, new WVDTutorialDetails("Thats a neat trick... these <color=#EE8322>orange drones</color> seem to be able to <color=#EE8322>teleport</color>. Are we sure they aren't magic?", saveData.TeleportDroneBeenPlayedBefore));
-        _tutorialDictionary.Add(TutorialPart.Shop, new WVDTutorialDetails("Ah! You made it! Told you I'd be back... once things got a bit safer. Come find me at one of the <color=#EE8322>cauldrons</color> around the castle with <color=#EE8322>green exlir</color> in it. If you ever have a problem finding it, look for a <color=#EE8322>star trail</color>. That'll lead you to straight to it. If you bring me some of those <color=#EE8322>batteries</color> from destroyed drones I can show you some potions to <color=#EE8322>upgrade</color> your power (E). I can't stick around forever, I'm afraid. More drones will be on their way soon, so hurry! The castle is mostly locked down by <color=#EE8322>magical fire</color> but I'll work to best to dispel it as soon as I can.", saveData.ShopBeenPlayedBefore));
+        _tutorialDictionary.Add(TutorialPart.TeleportDrone, new WVDTutorialDetails("Thats a neat trick... these <color=#EE8322>black drones</color> seem to be able to <color=#EE8322>teleport</color>. Are we sure they aren't magic?", saveData.TeleportDroneBeenPlayedBefore));
+        _tutorialDictionary.Add(TutorialPart.Shop, new WVDTutorialDetails("Ah! You made it! Told you I'd be back... once things got a bit safer. Come find me at one of the <color=#EE8322>cauldrons</color> around the castle with <color=#EE8322>green exlir</color> in it and speak to me (E). If you ever have a problem finding it, look for a <color=#EE8322>star trail</color>.", saveData.ShopBeenPlayedBefore)); // That'll lead you to straight to it. I can't stick around forever, I'm afraid. More drones will be on their way soon, so hurry
         _tutorialDictionary.Add(TutorialPart.AttackPowerUp, new WVDTutorialDetails("<color=#EE8322>Red power ups</color> give you an <color=#EE8322>explosive meteor to throw</color>. Combine it with <color=#EE8322>one black power up</color> and you can fling <color=#EE8322>fireballs in all directions</color>. Combine it <color=#EE8322>two black power ups</color> and you'll <color=#EE8322>summon a ghost</color> to attack for you.", saveData.AttackPowerUpBeenPlayedBefore));
         _tutorialDictionary.Add(TutorialPart.ShieldPowerUp, new WVDTutorialDetails("<color=#EE8322>Blue power ups</color> give you a <color=#EE8322>shield</color> that'll protect from <color=#EE8322>ranged attacks</color>. Combine it with <color=#EE8322>one black power up</color> and the shield will <color=#EE8322>reflect any ranged attacks</color>. Combine it with <color=#EE8322>two black power ups</color> and it'll <color=#EE8322>zap any drones close by</color>. These shields are temporary.", saveData.ShieldPowerUpBeenPlayedBefore));
         _tutorialDictionary.Add(TutorialPart.HealPowerUp, new WVDTutorialDetails("<color=#EE8322>Green power ups</color> will <color=#EE8322>heal</color> you. Combine it with <color=#EE8322>one black power up</color> and each <color=#EE8322>hit on an enemy will heal</color> you. Combine it with <color=#EE8322>two black power ups</color> and you'll be <color=#EE8322>immune to damage</color>. The healing from enemy damage and immune to damage effects are temporary.", saveData.HealPowerUpBeenPlayedBefore));
@@ -44,6 +45,8 @@ public class WVDTutorialManager : MonoBehaviour
         _tutorialDictionary.Add(TutorialPart.SpawnOnDeathBuff, new WVDTutorialDetails("Just like a hydra! This drone had an <color=#EE8322>upgrade to summon two more</color> in its place!", saveData.SpawnOnDeathBuffBeenPlayedBefore));
         _tutorialDictionary.Add(TutorialPart.ShieldBuff, new WVDTutorialDetails("That <color=#EE8322>shield upgrade</color> will be back shortly. Smash it whilst it's down!", saveData.ShieldBuffBeenPlayedBefore));
         _tutorialDictionary.Add(TutorialPart.SlowBuff, new WVDTutorialDetails("Brrrrr... whatever is emanating out of that one is freezing! This drone's <color=#EE8322>upgrade is slowing</color> you down.", saveData.SlowBuffBeenPlayedBefore));
+        _tutorialDictionary.Add(TutorialPart.Battery, new WVDTutorialDetails("Interesting! Looks like you just picked up some sort of power source called a <color=#EE8322>battery</color>. Bring me some and I can <color=#EE8322>upgrade</color> your power.", saveData.BatteryPlayedBefore));
+        _tutorialDictionary.Add(TutorialPart.NewAreas, new WVDTutorialDetails("The castle is mostly locked down by <color=#EE8322>magical fire</color> but I'll dispel it as soon as I can. Once I do, make sure to <color=#EE8322>look around</color> these areas for any <color=#EE8322>battery caches</color> the drones have left behind.", false));
     }
     public enum TutorialPart
     {
@@ -64,7 +67,9 @@ public class WVDTutorialManager : MonoBehaviour
         GreatHall,
         Library,
         Dungeon,
-        Boss
+        Boss,
+        Battery,
+        NewAreas
     }
 
     public async void DisplayTutorial(TutorialPart part, float delay)
@@ -111,7 +116,7 @@ public class WVDTutorialManager : MonoBehaviour
                     _tutorialText.text += fullInfo[i];
                 }
             }
-            _tutorialText.text += "\nPress enter to continue";
+            _tutorialText.text += "\nPress space to continue";
             _canPressContinue = true;
 
             _tutorialDictionary[part] = new WVDTutorialDetails(_tutorialDictionary[part].TutorialInformation, true); // for this session of the tutorial manager set to true
@@ -173,6 +178,12 @@ public class WVDTutorialManager : MonoBehaviour
                 case TutorialPart.Boss:
                     _saveDataManager.SaveData.BossBeenPlayedBefore = true;
                     break;
+                case TutorialPart.Battery:
+                    _saveDataManager.SaveData.BatteryPlayedBefore = true;
+                    break;
+                case TutorialPart.NewAreas:
+                    _saveDataManager.SaveData.NewAreasPlayedBefore = true;
+                    break;
             }
             _saveDataManager.SaveNewData(); // for future sessions saving into JSON
 
@@ -183,7 +194,7 @@ public class WVDTutorialManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) && _canPressContinue)
+        if (Input.GetKeyDown(KeyCode.Space) && _canPressContinue)
         {
             _tutorialBackground.SetActive(false);
             _canPressContinue = false;
