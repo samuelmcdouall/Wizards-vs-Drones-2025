@@ -1,11 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDHomingProjectile : WVDBaseProjectile
 {
+    [Header("General")]
     [SerializeField]
     GameObject _spawnFX;
+
+    [Header("Targeting")]
     IWVDDamageable _currentLockedOnDrone;
     List<IWVDDamageable> _droneTargets = new List<IWVDDamageable>(); // On creation give the homing projectile a reference to the drone list from the player script
 
@@ -21,8 +23,7 @@ public class WVDHomingProjectile : WVDBaseProjectile
         Instantiate(_spawnFX, transform.position, Quaternion.identity);
         _currentLockedOnDrone = SelectClosestTarget();
     }
-
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         // If the currently locked on drone has yet to be hit, then move towards it
         if (_currentLockedOnDrone as Object)
@@ -35,15 +36,6 @@ public class WVDHomingProjectile : WVDBaseProjectile
         else
         {
             _currentLockedOnDrone = SelectClosestTarget();
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Enemy") && other.transform.root.gameObject.GetComponent<IWVDDamageable>() != null)
-        {
-            other.transform.root.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
-            print("hit enemy");
         }
     }
 
@@ -61,5 +53,13 @@ public class WVDHomingProjectile : WVDBaseProjectile
             }
         }
         return closestDrone;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy") && other.transform.root.gameObject.GetComponent<IWVDDamageable>() != null)
+        {
+            other.transform.root.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
+        }
     }
 }

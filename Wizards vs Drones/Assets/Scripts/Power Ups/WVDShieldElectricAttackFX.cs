@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class WVDShieldElectricAttackFX : MonoBehaviour
 {
+    [Header("FX")]
     [SerializeField]
     GameObject _startPos;
     [SerializeField]
@@ -13,8 +14,7 @@ public class WVDShieldElectricAttackFX : MonoBehaviour
     {
         Destroy(gameObject, _lifeTime);
     }
-
-    public void SetPositions(Vector3 startPos, Vector3 endPos)
+    public void SetPositions(Vector3 startPos, Vector3 endPos) // Creates a lightning effect between the shield and the drone
     {
         _startPos.transform.position = startPos;
         _endPos.transform.position = endPos;

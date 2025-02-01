@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDGrenadePowerUpProjectile : WVDBaseProjectile
@@ -13,7 +11,7 @@ public class WVDGrenadePowerUpProjectile : WVDBaseProjectile
         base.Start();
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
         SoundManager.PlaySFXAtPlayer(SoundManager.GrenadeImpactPowerUpSFX);

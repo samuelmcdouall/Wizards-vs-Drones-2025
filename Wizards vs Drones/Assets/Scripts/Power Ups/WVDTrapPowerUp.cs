@@ -1,22 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDTrapPowerUp : MonoBehaviour
 {
-    WVDAttackEffects _trapEffects = new WVDAttackEffects();
-
-    [Header("Trap Stats")]
+    [Header("General")]
     [SerializeField]
     TrapType _trapType;
+
+    [Header("Slow Trap")]
     [SerializeField]
     float _slowPercentage;
     [SerializeField]
     float _slowDuration;
+    WVDAttackEffects _trapEffects = new WVDAttackEffects();
+
+    [Header("Damage Trap")]
     [SerializeField]
     int _damage;
+
+    [Header("Explosive Trap")]
     [SerializeField]
     GameObject _explosionPrefab;
+
     void Start()
     {
         _trapEffects.SetToDefault();
@@ -27,8 +31,7 @@ public class WVDTrapPowerUp : MonoBehaviour
             _trapEffects.SlowDuration = _slowDuration;
         }
     }
-
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Enemy") && other.transform.root.gameObject.GetComponent<IWVDDamageable>() != null)
         {
@@ -41,7 +44,6 @@ public class WVDTrapPowerUp : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
     public enum TrapType
     {
         Slow,
