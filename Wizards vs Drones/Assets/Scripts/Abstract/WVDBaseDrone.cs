@@ -180,7 +180,10 @@ public abstract class WVDBaseDrone : WVDBaseEntity
 
         if (Stunned || CurrentDroneState == DroneState.Stopped)
         {
-            DroneNMA.isStopped = true;
+            if (DroneNMA.isOnNavMesh)
+            {
+                DroneNMA.isStopped = true;
+            }
             return;
         }
         else
@@ -188,7 +191,10 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             // If it is in chasing state and is no longer stunned, reenable the movement, if it isn't then it'll be stopped because its charging up/attacking etc. anyway
             if (CurrentDroneState == DroneState.Chasing) 
             {
-                DroneNMA.isStopped = false;
+                if (DroneNMA.isOnNavMesh)
+                {
+                    DroneNMA.isStopped = false;
+                }
             }
         }
         if (_selectedDroneBuff == DroneBuff.Slow)

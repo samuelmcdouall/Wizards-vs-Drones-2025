@@ -54,7 +54,10 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable
             }
             else
             {
-                DroneNMA.SetDestination(Player.transform.position);
+                if (DroneNMA.isOnNavMesh)
+                {
+                    DroneNMA.SetDestination(Player.transform.position);
+                }
             }
         }
     }
