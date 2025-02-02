@@ -90,6 +90,9 @@ public class WVDLaserDrone : WVDBaseDrone, IWVDDamageable
                 break;
             case DroneState.Stopped:
                 break;
+            case DroneState.Dead:
+                // Do nothing absorbing state
+                break;
             default:
                 Debug.LogError("ERROR: Invalid state for Laser Drone");
                 break;

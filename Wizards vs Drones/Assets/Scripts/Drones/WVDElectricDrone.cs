@@ -99,6 +99,9 @@ public class WVDElectricDrone : WVDBaseDrone, IWVDDamageable
             case DroneState.Stopped:
                 _attackHitBox.SetActive(false);
                 break;
+            case DroneState.Dead:
+                // Do nothing absorbing state
+                break;
             default:
                 Debug.LogError("ERROR: Invalid state for Electric Drone");
                 break;

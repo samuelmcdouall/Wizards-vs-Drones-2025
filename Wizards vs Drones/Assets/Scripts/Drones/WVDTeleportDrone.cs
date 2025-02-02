@@ -119,6 +119,9 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable
                 break;
             case DroneState.Stopped:
                 break;
+            case DroneState.Dead:
+                // Do nothing absorbing state
+                break;
             default:
                 Debug.LogError("ERROR: Invalid state for Teleport Drone");
                 break;
