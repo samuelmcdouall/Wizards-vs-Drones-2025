@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Video;
 
 public abstract class WVDBaseEntity : MonoBehaviour
 {
@@ -17,6 +12,35 @@ public abstract class WVDBaseEntity : MonoBehaviour
     Slider _healthUI;
     [SerializeField]
     protected Image HealthUIFill;
+    bool _invulnerable;
+    [SerializeField]
+    protected GameObject InvulnerableFX;
+    float _invulnerableTimer;
+
+    [Header("Speed - General")]
+    [SerializeField]
+    float _maxNormalSpeed;
+    float _initialMaxNormalSpeed;
+    [SerializeField]
+    float _maxSideBackSpeed;
+    float _initialMaxSideBackSpeed;
+    float _slowedTimer;
+    bool _slowed;
+    float _currentSpeedModifier;
+    [SerializeField]
+    GameObject _slowedFX;
+    float _stunnedTimer;
+    bool _stunned;
+
+    [Header("Animations - General")]
+    [SerializeField]
+    Animator _animator;
+    string _currentPlayingAnimation;
+
+    [Header("Other - General")]
+    protected GameObject Player;
+    protected WVDPlayer PlayerScript;
+    protected WVDSoundManager SoundManager;
 
     public int CurrentHealth 
     { 
@@ -60,11 +84,7 @@ public abstract class WVDBaseEntity : MonoBehaviour
         get => _maxHealth; 
         set => _maxHealth = value; 
     }
-    bool _invulnerable;
-    [SerializeField]
-    protected GameObject InvulnerableFX;
-    float _invulnerableTimer;
-    [SerializeField] public bool Invulnerable 
+    public bool Invulnerable 
     { 
         get => _invulnerable;
         set
@@ -74,22 +94,6 @@ public abstract class WVDBaseEntity : MonoBehaviour
 
         }
     }
-
-
-    [Header("Speed - General")]
-    [SerializeField]
-    float _maxNormalSpeed;
-    float _initialMaxNormalSpeed;
-    [SerializeField]
-    float _maxSideBackSpeed;
-    float _initialMaxSideBackSpeed;
-    float _slowedTimer;
-    bool _slowed;
-    float _currentSpeedModifier;
-    [SerializeField]
-    GameObject _slowedFX;
-    float _stunnedTimer;
-    bool _stunned;
     public float MaxNormalSpeed 
     { 
         get => _maxNormalSpeed; 
@@ -110,22 +114,16 @@ public abstract class WVDBaseEntity : MonoBehaviour
         get => _currentSpeedModifier; 
         set => _currentSpeedModifier = value; 
     }
-
-    [Header("Animations - General")]
-    [SerializeField]
-    Animator _animator;
-    string _currentPlayingAnimation;
     public string CurrentPlayingAnimation 
     { 
         get => _currentPlayingAnimation; 
         set => _currentPlayingAnimation = value; 
     }
-    public Animator Animator { get => _animator; set => _animator = value; }
-
-    [Header("Other - General")]
-    protected GameObject Player;
-    protected WVDPlayer PlayerScript;
-    protected WVDSoundManager SoundManager;
+    public Animator Animator 
+    { 
+        get => _animator; 
+        set => _animator = value; 
+    }
 
     public virtual void Start()
     {
@@ -138,7 +136,6 @@ public abstract class WVDBaseEntity : MonoBehaviour
         PlayerScript = Player.GetComponent<WVDPlayer>();
         SoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
     }
-
     public virtual void Update()
     {
         if (_slowed)
@@ -189,7 +186,6 @@ public abstract class WVDBaseEntity : MonoBehaviour
             }
         }
     }
-
     public void SwitchToAnimation(string animation, float speed = 1.0f)
     {
         if (_animator.speed != speed)
@@ -202,7 +198,6 @@ public abstract class WVDBaseEntity : MonoBehaviour
             _animator.Play(animation);
         }
     }
-
     public virtual void ApplyEffects(WVDAttackEffects effects)
     {
         if (effects.Slow)
@@ -214,7 +209,6 @@ public abstract class WVDBaseEntity : MonoBehaviour
             ApplyStun(effects.StunDuration);
         }
     }
-
     public void ApplySlow(float percentage, float time)
     {
         // If a slow is applied that would reduce the speed to lower (accounting for multiple slow sources) then apply new slow
@@ -258,7 +252,6 @@ public abstract class WVDBaseEntity : MonoBehaviour
             _invulnerableTimer = time;
         }
     }
-
     protected virtual bool IsFullyDamaged()
     {
         if (CurrentHealth <= 0.0f)

@@ -1,15 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is similar to the laser drone, possible to combine?
+public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable
 {
     [Header("General - Teleport Drone")]
-    [SerializeField]
-    GameObject _damageMarker;
 
     [Header("Movement - Teleport Drone")]
     [SerializeField]
@@ -21,58 +17,17 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
     [SerializeField]
     GameObject _teleportActivateFXPrefab;
 
-
     [Header("Attacking - Teleport Drone")]
     [SerializeField]
     GameObject _teleportProjectilePrefab;
     [SerializeField]
     Transform _projectileFirePoint;
 
-    public override void DestroyFullyDamaged()
-    {
-        base.DestroyFullyDamaged();
-        PlayerScript.RemoveDroneFromPlayerList(this);
-        Destroy(gameObject);
-    }
-    public void TakeDamage(int damage, bool playDamageSFX)
-    {
-        if (!IsFullyDamaged())
-        {
-            print($"Teleport drone took {damage} damage");
-            CurrentHealth -= damage;
-            Vector3 randomSpawnOffset = new Vector3(Random.Range(-0.4f, 0.4f), 0.0f, Random.Range(-0.4f, 0.4f));
-            TMP_Text text = Instantiate(_damageMarker, transform.position + Vector3.up * 2.0f + randomSpawnOffset, Quaternion.identity).GetComponent<TMP_Text>();
-            if (damage <= 0)
-            {
-                text.text = ""; // i.e. no damage from attack
-            }
-            else if (damage <= 10)
-            {
-                text.text = "" + damage;
-            }
-            // otherwise insta kill and leave as "X"
-            ResetRemainingStuckTimer();
-            if (playDamageSFX)
-            {
-                SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.DroneTakeDamageSFX1, SoundManager.DroneTakeDamageSFX2 });
-            }
-            if (IsFullyDamaged())
-            {
-                if (!DestroySequenceCompleted)
-                {
-                    DestroySequenceCompleted = true;
-                    DestroyFullyDamaged();
-                }
-            }
-        }
-    }
     public override void Start()
     {
         base.Start();
         PlayerScript.AddDroneToPlayerList(this);
     }
-
-    // Update is called once per frame
     public override void Update()
     {
         base.Update();
@@ -95,7 +50,7 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
             {
                 CurrentDroneState = DroneState.ChargingUp;
                 DroneNMA.isStopped = true;
-                StartCoroutine(TransitionToStateAfterDelay(AttackChargeUpDuration));
+                StartCoroutine(TransitionToStateAfterDelay(AttackChargeUpDuration)); // TransitionToStateAfterDelay is different for all the drones so have to do this chunk in each derived class
             }
             else
             {
@@ -103,12 +58,9 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
             }
         }
     }
-
-    IEnumerator TransitionToStateAfterDelay(float delay) // Coroutine over async here because coroutine handles destroyed object easier
+    IEnumerator TransitionToStateAfterDelay(float delay)
     {
-        //yield return new WaitForSeconds(delay);
-
-        // Delay (if charging up, turn to face player)
+        // If charging up, turn to face player for delay
         float endTime = Time.time + delay;
         while (Time.time < endTime)
         {
@@ -120,10 +72,6 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
                 Vector3 direction = (yIndepPlayerPos - yIndepDronePos).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
                 transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * ChargingTurnFactor);
-
-
-                // this snaps immediately to face the player and doesn't look natural
-                //transform.LookAt(new Vector3(Player.transform.position.x, transform.position.y, Player.transform.position.z));
             }
             yield return null;
         }
@@ -163,8 +111,6 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
                 DroneNMA.Warp(pos);
                 _teleportChargingFX.SetActive(false);
                 Instantiate(_teleportActivateFXPrefab, GetModelTransform().position, _teleportActivateFXPrefab.transform.rotation);
-
-
                 CurrentDroneState = DroneState.Chasing;
                 DroneNMA.isStopped = false;
                 break;
@@ -174,10 +120,8 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
                 Debug.LogError("ERROR: Invalid state for Teleport Drone");
                 break;
         }
-
     }
-
-    private Vector3 RandomTeleportPosition()
+    Vector3 RandomTeleportPosition()
     {
         float randX = Random.Range(_teleportRangeMin, _teleportRangeMax);
         float randZ = Random.Range(_teleportRangeMin, _teleportRangeMax);
@@ -192,20 +136,30 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
 
         return new Vector3(randX, 0.0f, randZ);
     }
-
-    public Transform GetTransform()
+    public override void ResolveAttack(int damage, WVDAttackEffects effects)
     {
-        return gameObject.transform;
-    }
-
-    public void ResolveAttack(int damage, WVDAttackEffects effects)
-    {
-        BonusPickUpChanceFromLastHit = effects.DropRateIncrease;
-        ExplodeOnDeathChanceFromLastHit = effects.ExplodeOnDeathChance;
+        base.ResolveAttack(damage, effects);
         TakeDamage(damage, true);
         ApplyEffects(effects);
     }
-
+    public override void TakeDamage(int damage, bool playDamageSFX)
+    {
+        base.TakeDamage(damage, playDamageSFX);
+        if (IsFullyDamaged() && CurrentDroneState != DroneState.Dead)
+        {
+            if (!DestroySequenceCompleted)
+            {
+                DestroySequenceCompleted = true;
+                DestroyFullyDamaged();
+            }
+        }
+    }
+    public override void DestroyFullyDamaged()
+    {
+        base.DestroyFullyDamaged();
+        PlayerScript.RemoveDroneFromPlayerList(this);
+        Destroy(gameObject);
+    }
     public override void ApplyEffects(WVDAttackEffects effects)
     {
         base.ApplyEffects(effects);
@@ -214,7 +168,6 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
             ApplyDOT(effects.DOTDamage, effects.DOTInterval, effects.DOTDuration);
         }
     }
-
     public async void ApplyDOT(int damage, float interval, float duration)
     {
         float endTime = Time.time + duration;
@@ -230,7 +183,10 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable // a lot of this is
         }
         TakeDamage(damage, true); // Final damage to make the last damaging tick of damage
     }
-
+    public Transform GetTransform()
+    {
+        return gameObject.transform;
+    }
     public Transform GetModelTransform()
     {
         return DroneModel.transform;

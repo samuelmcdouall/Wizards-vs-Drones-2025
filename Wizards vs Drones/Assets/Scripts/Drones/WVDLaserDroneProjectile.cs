@@ -1,29 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if theres some common code in the different enemy projectile types in future
+public class WVDLaserDroneProjectile : WVDBaseProjectile
 {
+    [Header("General")]
     public bool Reflected;
     GameObject _parentDrone;
-
 
     public override void Start()
     {
         base.Start();
         Reflected = false;
     }
-
-    private void OnTriggerEnter(Collider other)
+    public void SetParentDrone(GameObject parentDrone)
+    {
+        _parentDrone = parentDrone;
+    }
+    void OnTriggerEnter(Collider other)
     {
         print("Laser drone projectile hit: " + other.name);
+
+        // Ignore these
         if (other.gameObject.CompareTag("Fountain") ||
             other.gameObject.CompareTag("PowerUp") ||
             (other.gameObject.CompareTag("DroneShield") && !Reflected))
         {
             return;
         }
+
+        // Reflect in opposite direction
         if (other.gameObject.CompareTag("ShieldDeflect"))
         {
             print("REBOUND PROJECTILE");
@@ -32,16 +36,17 @@ public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if th
         }
         else
         {
+            // Hit player
             if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("PickUpTrigger"))
             {
                 if (!CannotDamageAgain)
                 {
-                    other.transform.root.gameObject.GetComponent<WVDPlayer>().ResolveAttack(Damage, Effects); // todo might just use IWVDDamageable here as well
-                    print("hit player");
+                    other.transform.root.gameObject.GetComponent<WVDPlayer>().ResolveAttack(Damage, Effects);
                     CannotDamageAgain = true;
                     DestroyProjectile();
                 }
             }
+            // Hit other drone
             else if ((other.gameObject.CompareTag("Enemy")))
             {
                 if (other.transform.root.gameObject.GetComponent<IWVDDamageable>() != null)
@@ -49,29 +54,18 @@ public class WVDLaserDroneProjectile : WVDBaseProjectile // todo maybe see if th
                     if (!CannotDamageAgain && Reflected)
                     {
                         other.transform.root.gameObject.GetComponent<IWVDDamageable>().ResolveAttack(Damage, Effects);
-                        print("hit enemy");
                         CannotDamageAgain = true;
                         DestroyProjectile();
                     }
                 }
             }
+            // Hit another object
             else
             {
                 DestroyProjectile();
             }
-            //if (!(other.gameObject.CompareTag("Enemy") && !Reflected))// || !(other.gameObject.CompareTag("DroneShield") && !Reflected))
-            //{
-
-            //}
         }
-
     }
-
-    public void SetParentDrone(GameObject parentDrone)
-    {
-        _parentDrone = parentDrone;
-    }
-
     void DestroyProjectile()
     {
         Instantiate(ImpactFX, transform.position, Quaternion.identity);

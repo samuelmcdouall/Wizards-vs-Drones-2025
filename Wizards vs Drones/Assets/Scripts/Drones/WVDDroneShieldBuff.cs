@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDDroneShieldBuff : MonoBehaviour
 {
+    [Header("General")]
     [SerializeField]
     WVDBaseDrone _baseDroneScript;
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
+        // Should switch off if its a player projectile or a reflected laser attack
         if (other.gameObject.CompareTag("PlayerProjectile") || (other.gameObject.CompareTag("Projectile") && other.gameObject.GetComponent<WVDLaserDroneProjectile>().Reflected))
         {
             _baseDroneScript.ShieldOn = false;

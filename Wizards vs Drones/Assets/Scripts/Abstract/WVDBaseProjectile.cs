@@ -34,17 +34,16 @@ public abstract class WVDBaseProjectile : MonoBehaviour
         SoundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
         Destroy(gameObject, _lifeTime);
     }
-
     public void SetProjectileDirection(Vector3 direction)
     {
         _direction = direction.normalized;
-        // If it changes later on (when we've been given the RB) then change the velocity as well
+        // If it changes later on (when we've been given the RB) then change the velocity as well.
+        // Main use is for homing projectile and reflected laser attacks
         if (_rb)
         {
             _rb.velocity = _direction * _speed;
         }
     }
-
     public void SetProjectileEffects(WVDAttackEffects effects)
     {
         Effects = effects;

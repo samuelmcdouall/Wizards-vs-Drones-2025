@@ -1,13 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDElectricDroneHitBox : MonoBehaviour
 {
+    [Header("General")]
     [SerializeField]
     WVDElectricDrone _droneScript;
-    public bool CanDamage;
-    private void OnTriggerEnter(Collider other)
+
+    [Header("Damage")]
+    public bool CanDamage; // Can only hit once per turn of being switched on
+    
+    void OnTriggerEnter(Collider other)
     {
         if (CanDamage && other.gameObject.CompareTag("Player"))
         {

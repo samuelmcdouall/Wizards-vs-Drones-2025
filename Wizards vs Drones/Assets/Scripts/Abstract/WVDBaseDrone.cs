@@ -1,37 +1,19 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
 public abstract class WVDBaseDrone : WVDBaseEntity
 {
     [Header("General - Base Drone")]
-    [SerializeField]
-    protected GameObject DestroyPrefab;
-    [SerializeField]
-    protected GameObject BatteryPickUp;
-    protected bool DestroySequenceCompleted;
-    protected Vector3 ExplodeOffset = new Vector3(0.0f, 1.0f, 0.0f);
     DroneState _currentDroneState;
-    [SerializeField]
-    protected float PickUpChance;
-    protected float BonusPickUpChanceFromLastHit;
-    protected float ExplodeOnDeathChanceFromLastHit;
-    [SerializeField]
-    protected GameObject ExplodePrefab;
-    DroneBuff _selectedDroneBuff;
     WVDLevelManager _levelManagerScript;
-    [SerializeField] 
-    WVDDroneSpawner _droneSpawner; // todo just to see if getting ref
+    WVDDroneSpawner _droneSpawner;
     [SerializeField]
     protected DroneType SelectedDroneType;
     protected WVDStatsManager StatsManager;
     WVDTutorialManager _tutorialManager;
     WVDDifficultySettingsManager _challengeModeManager;
-    [SerializeField]
-    GameObject _droneRemainingHelpUIPrefab;
-    GameObject _droneRemainingHelpUIInstance;
-    float _remainingDroneStuckTime = 45.0f;
-    float _remainingDroneStuckTimer;
-    
+
     [Header("Movement - Base Drone")]
     [SerializeField]
     protected float AttackRayCastDistance;
@@ -54,6 +36,9 @@ public abstract class WVDBaseDrone : WVDBaseEntity
 
     [Header("Buffs - Base Drone")]
     [SerializeField]
+    DroneBuff _selectedDroneBuff;
+    [Header("Spawn On Death Buff")]
+    [SerializeField]
     GameObject _spawnDronedFromBuff;
     [SerializeField]
     GameObject _spawnDroneBuffIndicator;
@@ -64,12 +49,14 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     [SerializeField]
     float _spawnDroneRangeMax;
 
+    [Header("Shield Buff")]
     [SerializeField]
     GameObject _shieldObject;
     [SerializeField]
     float _shieldRechargeDelay; // As soon as it goes off, this begins counting
     bool _shieldOn;
 
+    [Header("Slow Buff")]
     [SerializeField]
     GameObject _slowObject;
     [SerializeField]
@@ -81,8 +68,30 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     float _slowBuffCheckTimer;
     [SerializeField]
     float _slowBuffThreshold;
-    bool _slowTutorialBeenChecked;
+    bool _slowTutorialBeenChecked; // To make sure we don't have multiple tutorial tips of this type be queued before any can be played 
 
+    [Header("Destroyed - Base Drone")]
+    [SerializeField]
+    protected GameObject DestroyPrefab;
+    [SerializeField]
+    protected GameObject BatteryPickUp;
+    protected bool DestroySequenceCompleted;
+    protected Vector3 ExplodeOffset = new Vector3(0.0f, 1.0f, 0.0f);
+    [SerializeField]
+    protected float PickUpChance;
+    protected float BonusPickUpChanceFromLastHit;
+    protected float ExplodeOnDeathChanceFromLastHit;
+    [SerializeField]
+    protected GameObject ExplodePrefab;
+
+    [Header("UI - Base Drone")]
+    [SerializeField]
+    GameObject _droneRemainingHelpUIPrefab;
+    GameObject _droneRemainingHelpUIInstance;
+    float _remainingDroneStuckTime = 45.0f;
+    float _remainingDroneStuckTimer;
+    [SerializeField]
+    GameObject _damageMarker;
 
     public DroneState CurrentDroneState 
     { 
@@ -93,7 +102,6 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             print($"{gameObject.name} state now set to: {_currentDroneState}");
         }
     }
-
     public bool ShieldOn 
     { 
         get => _shieldOn;
@@ -103,20 +111,12 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             if (!_shieldOn)
             {
                 _shieldObject.SetActive(false);
-                //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.ShieldBuff, 1.0f);
                 WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.ShieldBuff, 1.0f));
                 Invoke("SwitchShieldBackOn", _shieldRechargeDelay);
             }
         }
     }
 
-    void SwitchShieldBackOn()
-    {
-        _shieldOn = true;
-        _shieldObject.SetActive(true);
-    }
-
-    // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
@@ -137,7 +137,6 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             CurrentHealth *= 2;
         }
 
-
         if (!_isSpawnedFromBuff)
         {
             DetermineDroneBuff();
@@ -150,41 +149,89 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         switch (SelectedDroneType)
         {
             case DroneType.Electric:
-                //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.ElectricDrone, 1.0f);
                 WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.ElectricDrone, 1.0f));
                 break;
             case DroneType.Laser:
-                //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.LaserDrone, 1.0f);
                 WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.LaserDrone, 1.0f));
                 break;
             case DroneType.Fast:
-                //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.FastDrone, 1.0f);
                 WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.FastDrone, 1.0f));
                 break;
             case DroneType.Teleport:
-                //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.TeleportDrone, 1.0f);
                 WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.TeleportDrone, 1.0f));
                 break;
         }
 
-        if (_droneSpawner.LevelDronesRemaining <= _droneSpawner.DronesRemainingHelpUIThreshold) // If a new drone is spawned and we are below threshold then this one must show its UI
+        // If a new drone is spawned and we are below threshold then this one must show its helper UI
+        if (_droneSpawner.LevelDronesRemaining <= _droneSpawner.DronesRemainingHelpUIThreshold)
         {
             SpawnDroneRemainingHelpUI();
         }
         _remainingDroneStuckTimer = _remainingDroneStuckTime;
     }
-
-    public void SpawnDroneRemainingHelpUI()
+    public override void Update()
     {
-        if (!_droneRemainingHelpUIInstance)
+        base.Update();
+        DroneNMA.speed = MaxNormalSpeed;
+        for (int i = 0; i < RayCastPoints.Length; i++)
         {
-            print("One of the last few drones, spawning UI helper for: " + gameObject.name);
-            _droneRemainingHelpUIInstance = Instantiate(_droneRemainingHelpUIPrefab, transform.position, Quaternion.identity);
-            _droneRemainingHelpUIInstance.transform.SetParent(GameObject.FindGameObjectWithTag("HelpDroneUIParent").transform, false);
-            _droneRemainingHelpUIInstance.GetComponent<WVDDroneRemainingHelpUI>().SetDroneTransform(transform);
+            Debug.DrawRay(RayCastPoints[i].position, RayCastPoints[i].forward * AttackRayCastDistance, Color.magenta);
+        }
+
+        if (Stunned || CurrentDroneState == DroneState.Stopped)
+        {
+            DroneNMA.isStopped = true;
+            return;
+        }
+        else
+        {
+            // If it is in chasing state and is no longer stunned, reenable the movement, if it isn't then it'll be stopped because its charging up/attacking etc. anyway
+            if (CurrentDroneState == DroneState.Chasing) 
+            {
+                DroneNMA.isStopped = false;
+            }
+        }
+        if (_selectedDroneBuff == DroneBuff.Slow)
+        {
+            if (_slowBuffCheckTimer < 0.0f)
+            {
+                _slowBuffCheckTimer = _slowBuffCheckInterval;
+                if (Vector3.Distance(transform.position, Player.transform.position) <= _slowBuffThreshold)
+                {
+                    PlayerScript.ApplySlow(_slowBuffPercent, _slowBuffDuration);
+                    if (!_slowTutorialBeenChecked)
+                    {
+                        WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.SlowBuff, 1.0f));
+                        _slowTutorialBeenChecked = true;
+                    }
+                }
+            }
+            else
+            {
+                _slowBuffCheckTimer -= Time.deltaTime;
+            }
+        }
+
+        // As a failsafe if a drone is stuck somewhere and its one of the last ones (i.e. it has spawned its UI helper), it will be teleported to a
+        // random spawn point after a timer to stop the game locking
+        if (_droneRemainingHelpUIInstance)
+        {
+            _remainingDroneStuckTimer -= Time.deltaTime;
+            if (_remainingDroneStuckTimer < 0.0f)
+            {
+                _remainingDroneStuckTimer = _remainingDroneStuckTime;
+                Vector3 randomAvailablePosition = _droneSpawner.AvailableSpawnPositions[Random.Range(0, _droneSpawner.AvailableSpawnPositions.Count)].position;
+                DroneNMA.Warp(randomAvailablePosition);
+                print($"Drone is stuck, teleporting to: {randomAvailablePosition}");
+
+            }
         }
     }
-
+    void SwitchShieldBackOn()
+    {
+        _shieldOn = true;
+        _shieldObject.SetActive(true);
+    }
     void DetermineDroneBuff()
     {
         WVDDroneSpawnRound currentRoundStats = _droneSpawner.DronesPerRound[_levelManagerScript.Level];
@@ -215,81 +262,33 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             _selectedDroneBuff = DroneBuff.None;
         }
     }
-
-    // Update is called once per frame
-    public override void Update()
+    public void SpawnDroneRemainingHelpUI()
     {
-        base.Update();
-        DroneNMA.speed = MaxNormalSpeed;
-        for (int i = 0; i < RayCastPoints.Length; i++)
+        if (!_droneRemainingHelpUIInstance)
         {
-            Debug.DrawRay(RayCastPoints[i].position, RayCastPoints[i].forward * AttackRayCastDistance, Color.magenta);
-        }
-
-        if (Stunned || CurrentDroneState == DroneState.Stopped)
-        {
-            DroneNMA.isStopped = true;
-            return;
-        }
-        else
-        {
-            if (CurrentDroneState == DroneState.Chasing) // If it is chasing, reenable the movement, if it isn't then it'll be stopped because its charging up/attacking etc. todo this should be for all movement states, so if theres another one that involves movement other than chasing then put it here as well
-            {
-                DroneNMA.isStopped = false;
-            }
-        }
-        if (_selectedDroneBuff == DroneBuff.Slow)
-        {
-            if (_slowBuffCheckTimer < 0.0f)
-            {
-                _slowBuffCheckTimer = _slowBuffCheckInterval;
-                if (Vector3.Distance(transform.position, Player.transform.position) <= _slowBuffThreshold)
-                {
-                    PlayerScript.ApplySlow(_slowBuffPercent, _slowBuffDuration);
-                    if (!_slowTutorialBeenChecked)
-                    {
-                        //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.SlowBuff, 1.0f); // Need a work around as this may end up queueing multiple tutorial displays of the same type due to when this is played
-                        WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.SlowBuff, 1.0f));
-                        _slowTutorialBeenChecked = true;
-                    }
-                }
-            }
-            else
-            {
-                _slowBuffCheckTimer -= Time.deltaTime;
-            }
-        }
-
-        // as a failsafe if a drone is stuck somewhere and its one of the last ones (i.e. it has spawned its UI helper), it will be teleported to a random spawn point after a timer to stop the game locking
-        if (_droneRemainingHelpUIInstance) 
-        {
-            _remainingDroneStuckTimer -= Time.deltaTime;
-            if (_remainingDroneStuckTimer < 0.0f)
-            {
-                _remainingDroneStuckTimer = _remainingDroneStuckTime;
-                Vector3 randomAvailablePosition = _droneSpawner.AvailableSpawnPositions[Random.Range(0, _droneSpawner.AvailableSpawnPositions.Count)].position;
-                DroneNMA.Warp(randomAvailablePosition);
-                print($"Drone is stuck, teleporting to: {randomAvailablePosition}");
-
-            }
+            print("One of the last few drones, spawning UI helper for: " + gameObject.name);
+            _droneRemainingHelpUIInstance = Instantiate(_droneRemainingHelpUIPrefab, transform.position, Quaternion.identity);
+            _droneRemainingHelpUIInstance.transform.SetParent(GameObject.FindGameObjectWithTag("HelpDroneUIParent").transform, false);
+            _droneRemainingHelpUIInstance.GetComponent<WVDDroneRemainingHelpUI>().SetDroneTransform(transform);
         }
     }
-
-    protected void ResetRemainingStuckTimer() // If the player damages a drone then they're in combat with it and the timer is reset
+    // If the player damages a drone then they're in combat with it, so the timer is reset
+    void ResetRemainingStuckTimer()
     {
         _remainingDroneStuckTimer = _remainingDroneStuckTime;
     }
-
     public virtual void DestroyFullyDamaged()
     {
-        // todo add in fx
+        CurrentDroneState = DroneState.Dead;
         print($"{gameObject.name} drone destroyed");
         Instantiate(DestroyPrefab, transform.position + ExplodeOffset, DestroyPrefab.transform.rotation);
+        
         DropBattery();
         if (_challengeModeManager.ChallengeModeActive)
         {
             DropBattery(); // possibly drop another if in challenge mode
         }
+        
         float rand = Random.Range(0.0f, 1.0f);
         if (rand < ExplodeOnDeathChanceFromLastHit)
         {
@@ -301,7 +300,6 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         {
             SpawnDroneFromBuff();
             SpawnDroneFromBuff();
-            //_tutorialManager.DisplayTutorial(WVDTutorialManager.TutorialPart.SpawnOnDeathBuff, 1.0f);
             WVDEventBus.Raise(new WVDEventDataDisplayTutorial(WVDTutorialManager.TutorialPart.SpawnOnDeathBuff, 1.0f));
         }
 
@@ -329,8 +327,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             Destroy(_droneRemainingHelpUIInstance);
         }
     }
-
-    private void DropBattery()
+    void DropBattery()
     {
         float rand = Random.Range(0.0f, 1.0f);
         if (rand < PickUpChance + BonusPickUpChanceFromLastHit)
@@ -338,8 +335,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             Instantiate(BatteryPickUp, transform.position + ExplodeOffset, BatteryPickUp.transform.rotation);
         }
     }
-
-    private void SpawnDroneFromBuff()
+    void SpawnDroneFromBuff()
     {
         Vector3 pos = RandomTeleportPosition();
         NavMeshHit hit;
@@ -353,7 +349,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
             }
             i++;
         }
-        if (i == 1000) // this is to stop infintie loop if can't make it out
+        if (i == 1000) // this is to stop infintie loop if can't find place to put drone
         {
             Debug.LogError("Could not find a place to spawn the extra drone");
             return;
@@ -363,13 +359,13 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         WVDBaseDrone drone = Instantiate(_spawnDronedFromBuff, pos, _spawnDronedFromBuff.transform.rotation).GetComponent<WVDBaseDrone>();
         drone.SetSpawnerParameters(_droneSpawner);
         _droneSpawner.CurrentDronesSpawned++;
-        _droneSpawner.LevelDronesRemaining++; // todo adding this back to the total may cause issues but will see
+        _droneSpawner.LevelDronesRemaining++;
     }
-
-    private Vector3 RandomTeleportPosition()
+    Vector3 RandomTeleportPosition()
     {
         float randX = Random.Range(_spawnDroneRangeMin, _spawnDroneRangeMax);
         float randZ = Random.Range(_spawnDroneRangeMin, _spawnDroneRangeMax);
+        
         if (Random.Range(0.0f, 1.0f) < 0.5f)
         {
             randX = -randX;
@@ -381,20 +377,47 @@ public abstract class WVDBaseDrone : WVDBaseEntity
 
         return new Vector3(randX, 0.0f, randZ);
     }
-
-
     public void SetSpawnerParameters(WVDDroneSpawner spawner)
     {
         _droneSpawner = spawner;
     }
-
+    public virtual void ResolveAttack(int damage, WVDAttackEffects effects)
+    {
+        BonusPickUpChanceFromLastHit = effects.DropRateIncrease;
+        ExplodeOnDeathChanceFromLastHit = effects.ExplodeOnDeathChance;
+    }
+    public virtual void TakeDamage(int damage, bool playDamageSFX)
+    {
+        if (!IsFullyDamaged())
+        {
+            print($"{gameObject.name} took {damage} damage");
+            CurrentHealth -= damage;
+            Vector3 randomSpawnOffset = new Vector3(Random.Range(-0.4f, 0.4f), 0.0f, Random.Range(-0.4f, 0.4f));
+            TMP_Text text = Instantiate(_damageMarker, transform.position + Vector3.up * 2.0f + randomSpawnOffset, Quaternion.identity).GetComponent<TMP_Text>();
+            if (damage <= 0)
+            {
+                text.text = ""; // i.e. no damage from attack
+            }
+            else if (damage <= 10)
+            {
+                text.text = "" + damage;
+            }
+            // Otherwise insta kill and leave as "X"
+            ResetRemainingStuckTimer();
+            if (playDamageSFX)
+            {
+                SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.DroneTakeDamageSFX1, SoundManager.DroneTakeDamageSFX2 });
+            }
+        }
+    }
     public enum DroneState
     {
         Chasing,
         ChargingUp,
         Attacking,
         Discharge, // stand still just after attack
-        Stopped // this is when the player is dead, the drones will stop
+        Stopped, // this is when the player is dead, the drones will stop
+        Dead
     }
 
     public enum DroneBuff
@@ -405,7 +428,6 @@ public abstract class WVDBaseDrone : WVDBaseEntity
         Slow
 
     }
-
     public enum DroneType
     {
         Electric,
