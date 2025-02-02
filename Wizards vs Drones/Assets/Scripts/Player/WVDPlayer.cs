@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,27 +6,18 @@ using UnityEngine;
 
 public class WVDPlayer : WVDBaseEntity, IWVDDamageable
 {
+    [Header("General - Player")]
+    [SerializeField]
+    WVDGameOverManager _gameOverManagerScript;
+    [SerializeField]
+    WVDBoss _bossScript;
+    List<IWVDDamageable> _drones = new List<IWVDDamageable>(); // List of all active drones, to be updated as drones are created/destroyed
+
     [Header("Model - Player")]
     [SerializeField]
     GameObject _playerModel;
 
     [Header("Shield - Player")]
-    //[SerializeField]
-    //float _currentShield;
-    //[SerializeField]
-    //float _maxShield;
-    //[SerializeField]
-    //float _rechargeShieldInterval;
-    //float _rechargeShieldIntervalTimer;
-    //[SerializeField]
-    //float _rechargeShieldRate;
-    //bool _activateShield;
-    //[SerializeField]
-    //ShieldState _currentShieldState;
-    //[SerializeField]
-    //GameObject _shieldFX;
-    //[SerializeField]
-    //Slider _shieldUI;
     [SerializeField]
     GameObject _shieldRegularFX;
     [SerializeField]
@@ -40,13 +30,21 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
     GameObject _shieldElectricAttackFXPrefab;
     readonly float _shieldAttackOffset = 2.8f;
 
-    [Header("Traps - Player")]
-
     [Header("Heal - Player")]
     [SerializeField]
     GameObject _lifeStealFX;
     float _lifeStealTimer;
     bool _lifeSteal;
+
+    [Header("Speed - Player")]
+    [SerializeField]
+    float _dashSpeed;
+
+    [Header("Upgrades")]
+    [SerializeField] int _batteryCount;
+    [SerializeField] TMP_Text _batteryCountUI;
+    public WVDPlayerUpgrades PurchasedUpgrades;
+
     public bool LifeSteal 
     { 
         get => _lifeSteal;
@@ -57,97 +55,11 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
             _lifeSteal = value;
         }
     }
-
-    [Header("Speed - Player")]
-    [SerializeField]
-    float _dashSpeed;
     public float DashSpeed
     {
         get => _dashSpeed;
         set => _dashSpeed = value;
     }
-
-    [Header("General - Player")]
-    List<IWVDDamageable> _drones = new List<IWVDDamageable>();
-    [SerializeField]
-    WVDGameOverManager _gameOverManagerScript;
-    [SerializeField]
-    WVDBoss _bossScript;
-
-
-    [Header("Upgrades")]
-    [SerializeField] int _batteryCount;
-    [SerializeField] TMP_Text _batteryCountUI;
-    public WVDPlayerUpgrades PurchasedUpgrades;
-
-    //[Header("Burning")] // maybe list of enemies in flamethrower range, deal damage * number or list of coroutines?
-    //[SerializeField]
-    //GameObject _onFireFX;
-    //Coroutine _burnCoroutine; // 7:41 in video
-    //bool _stoppingBurn;
-
-
-    //public float CurrentShield
-    //{
-    //    get => _currentShield;
-    //    set
-    //    {
-    //        if (value > _maxShield)
-    //        {
-    //            _currentShield = _maxShield;
-    //        }
-    //        else if (value <= 0)
-    //        {
-    //            _currentShield = 0;
-    //        }
-    //        else
-    //        {
-    //            _currentShield = value;
-    //        }
-    //        _shieldUI.value = _currentShield / _maxShield;
-    //    }
-    //}
-
-    //public ShieldState CurrentShieldState
-    //{
-    //    get => _currentShieldState;
-    //    set
-    //    {
-    //        _currentShieldState = value;
-    //        print($"Shield state now set to: {_currentShieldState}");
-    //    }
-    //}
-
-    //public bool ActivateShield
-    //{
-    //    get => _activateShield;
-    //    set
-    //    {
-    //        if (_activateShield != value)
-    //        {
-    //            if (value)
-    //            {
-    //                print("Activate shield");
-    //            }
-
-    //            else
-    //            {
-    //                print("Deactivate shield");
-    //            }
-    //        }
-    //        _activateShield = value;
-    //    }
-    //}
-
-    //public bool ShieldFXOn
-    //{
-    //    get => _shieldFX.activeSelf;
-    //    set
-    //    {
-    //        _shieldFX.SetActive(value);
-    //        Invulnerable = value;
-    //    }
-    //}
     public bool PlayerModelOn
     {
         get => _playerModel.activeSelf;
@@ -167,8 +79,11 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
             _batteryCountUI.text = "" + _batteryCount;
         }
     }
-
-    public GameObject PlayerModel { get => _playerModel; set => _playerModel = value; }
+    public GameObject PlayerModel 
+    { 
+        get => _playerModel; 
+        set => _playerModel = value; 
+    }
 
     public override void Start()
     {
@@ -177,37 +92,16 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         _shieldRegularFX.SetActive(false);
         _shieldReflectFX.SetActive(false);
         _shieldElectricFX.SetActive(false);
-        //PurchasedUpgrades.SetToDefault(); todo put back in here
-        //_currentShieldVersion = CurrentShieldVersion.None;
-        //InitialShieldSetup();
         _batteryCountUI.text = "" + 0;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-
     }
-
-    //private void InitialShieldSetup()
-    //{
-    //    CurrentShield = _maxShield;
-    //    _rechargeShieldIntervalTimer = _rechargeShieldInterval;
-    //    _currentShieldState = ShieldState.FullyCharged;
-    //    _shieldFX.SetActive(false);
-    //}
-
-    // Update is called once per frame
     public override void Update()
     {
         base.Update();
-        if (WVDFunctionsCheck.HasWon)
-        {
-            SwitchToAnimation(WVDAnimationStrings.PlayerIdleAnimation);
-        }
 
-        if (WVDFunctionsCheck.IsDead)
-        {
-            SwitchToAnimation(WVDAnimationStrings.PlayerDieAnimation);
-        }
+        SetAnimationIfWonOrLost();
+
         if (LifeSteal)
         {
             if (_lifeStealTimer <= 0.0f)
@@ -222,163 +116,44 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         }
         if (_shieldElectricFX.activeSelf)
         {
-            foreach (IWVDDamageable drone in _drones.ToList()) // copy value to a separate list, so if something disappears from the list mid forloop shouldn't be an issue. Possible issue if drone gets destroyed before its checked in the list in same update cycle
+            DestroyNearbyDrones();
+        }
+    }
+    void SetAnimationIfWonOrLost()
+    {
+        if (WVDFunctionsCheck.HasWon)
+        {
+            SwitchToAnimation(WVDAnimationStrings.PlayerIdleAnimation);
+        }
+        if (WVDFunctionsCheck.IsDead)
+        {
+            SwitchToAnimation(WVDAnimationStrings.PlayerDieAnimation);
+        }
+    }
+    void DestroyNearbyDrones()
+    {
+        foreach (IWVDDamageable drone in _drones.ToList())
+        {
+            if (Vector3.Distance(drone.GetTransform().position, transform.position) <= _shieldElectricDamageThreshold)
             {
-                if (Vector3.Distance(drone.GetTransform().position, transform.position) <= _shieldElectricDamageThreshold)
-                {
-                    drone.TakeDamage(1000, true); // Insta-kill, something stupidly high
-                    WVDShieldElectricAttackFX attackFX = Instantiate(_shieldElectricAttackFXPrefab, transform.position, Quaternion.identity).GetComponent<WVDShieldElectricAttackFX>();
-                    Vector3 directionToDrone = (drone.GetModelTransform().position - transform.position).normalized;
-                    Vector3 startPos = transform.position + directionToDrone * _shieldAttackOffset;
-                    attackFX.SetPositions(startPos, drone.GetModelTransform().position);
-                }
+                drone.TakeDamage(1000, true); // Insta kill
+                WVDShieldElectricAttackFX attackFX = Instantiate(_shieldElectricAttackFXPrefab, transform.position, Quaternion.identity).GetComponent<WVDShieldElectricAttackFX>();
+                Vector3 directionToDrone = (drone.GetModelTransform().position - transform.position).normalized;
+                Vector3 startPos = transform.position + directionToDrone * _shieldAttackOffset;
+                attackFX.SetPositions(startPos, drone.GetModelTransform().position);
             }
         }
-        //if (IsFullyDamaged())
-        //{
-        //    DestroyFullyDamaged();
-        //}
-        //else
-        //{
-        //    HandleShieldState();
-        //}
     }
-
-    //private void HandleShieldState()
-    //{
-    //    switch (_currentShieldState)
-    //    {
-    //        case ShieldState.FullyCharged:
-    //            if (_activateShield)
-    //            {
-    //                _currentShieldState = ShieldState.Using;
-    //                ShieldFXOn = true;
-    //            }
-    //            break;
-    //        case ShieldState.Using:
-    //            if (!_activateShield || CurrentShield <= 0.0f)
-    //            {
-    //                _currentShieldState = ShieldState.WaitingToRecharge;
-    //                ShieldFXOn = false;
-    //            }
-    //            else
-    //            {
-    //                CurrentShield -= Time.deltaTime;
-    //            }
-    //            break;
-    //        case ShieldState.WaitingToRecharge:
-    //            if (_activateShield)
-    //            {
-    //                if (CurrentShield > 0.0f)
-    //                {
-    //                    _rechargeShieldIntervalTimer = _rechargeShieldInterval;
-    //                    _currentShieldState = ShieldState.Using;
-    //                    ShieldFXOn = true;
-    //                }
-    //                else
-    //                {
-    //                    _rechargeShieldIntervalTimer = _rechargeShieldInterval;
-    //                }
-    //            }
-    //            else if (_rechargeShieldIntervalTimer <= 0.0f)
-    //            {
-    //                _rechargeShieldIntervalTimer = _rechargeShieldInterval;
-    //                _currentShieldState = ShieldState.Recharging;
-    //            }
-    //            else
-    //            {
-    //                _rechargeShieldIntervalTimer -= Time.deltaTime;
-    //            }
-    //            break;
-    //        case ShieldState.Recharging:
-    //            if (_activateShield && CurrentShield > 0.0f)
-    //            {
-    //                _rechargeShieldIntervalTimer = _rechargeShieldInterval; // this line may not be needed
-    //                _currentShieldState = ShieldState.Using;
-    //                ShieldFXOn = true;
-    //            }
-    //            else if (CurrentShield >= _maxShield)
-    //            {
-    //                CurrentShield = _maxShield;
-    //                _currentShieldState = ShieldState.FullyCharged;
-    //            }
-    //            else
-    //            {
-    //                CurrentShield += Time.deltaTime * _rechargeShieldRate;
-    //            }
-    //            break;
-    //    }
-    //}
-
     public void AddDroneToPlayerList(IWVDDamageable drone)
     {
         _drones.Add(drone);
         print($"Drone added, currently keeping track of {_drones.Count}");
     }
-
     public void RemoveDroneFromPlayerList(IWVDDamageable drone)
     {
         _drones.Remove(drone);
         print($"Drone removed, currently keeping track of {_drones.Count}");
     }
-
-    public void PlayerDies()
-    {
-        print("PLAYER DEAD!");
-        SwitchToAnimation(WVDAnimationStrings.PlayerDieAnimation);
-        if (_lifeStealFX.activeSelf)
-        {
-            _lifeStealFX.SetActive(false);
-        }
-        foreach(IWVDDamageable drone in _drones)
-        {
-            drone.GetTransform().gameObject.GetComponent<WVDBaseDrone>().CurrentDroneState = WVDBaseDrone.DroneState.Stopped;
-        }
-        if (_bossScript.BossInBattle)
-        {
-            _bossScript.CurrentBossState = WVDBoss.BossState.Victory;
-        }
-        _gameOverManagerScript.TriggerGameOver();
-
-    }
-
-    public void UpgradeAttackSpeedAnimation() 
-    {
-        Animator.SetFloat("AttackSpeedAnimation", 1.33f);
-    }
-
-
-    // todo implement this, this is next
-    public void TakeDamage(int damage, bool playDamageSFX)
-    {
-        if (!WVDFunctionsCheck.IsDead)
-        {
-            print($"Player took {damage} damage");
-            if (!Invulnerable)
-            {
-                CurrentHealth -= damage;
-            }
-            print($"Player on {CurrentHealth} health");
-            if (IsFullyDamaged())
-            {
-                SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.PlayerDeathSFX1, SoundManager.PlayerDeathSFX2, SoundManager.PlayerDeathSFX3 });
-                PlayerDies();
-            }
-            else if (!Invulnerable)
-            {
-                SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.PlayerHitSFX1, SoundManager.PlayerHitSFX2, SoundManager.PlayerHitSFX3 });
-            }
-        }
-    }
-
-    //public enum ShieldState // todo as moving this to a power up, this may not be needed
-    //{
-    //    Using,
-    //    WaitingToRecharge,
-    //    Recharging,
-    //    FullyCharged
-    //}
-
     public async void SwitchOnShieldForSeconds(ShieldVersion version, float seconds) // todo maybe stuff like this should be put in the power up manager
     {
         switch (version)
@@ -404,13 +179,6 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         _shieldElectricFX.SetActive(false);
         Invulnerable = false;
     }
-
-    public Transform GetTransform()
-    {
-        return gameObject.transform;
-    }
-
-
     public void ApplyLifeStealForSeconds(float time)
     {
         // If a time is applied that would be larger than the time remaining then apply new time
@@ -421,13 +189,54 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
             _lifeStealTimer = time;
         }
     }
-
+    public void UpgradeAttackSpeedAnimation()
+    {
+        Animator.SetFloat("AttackSpeedAnimation", 1.33f);
+    }
     public void ResolveAttack(int damage, WVDAttackEffects effects)
     {
         TakeDamage(damage, true);
         ApplyEffects(effects);
     }
-
+    public void TakeDamage(int damage, bool playDamageSFX) // playDamageSFX is for the interface signature, only really needed for the drones
+    {
+        if (!WVDFunctionsCheck.IsDead)
+        {
+            print($"Player took {damage} damage");
+            if (!Invulnerable)
+            {
+                CurrentHealth -= damage;
+            }
+            print($"Player on {CurrentHealth} health");
+            if (IsFullyDamaged())
+            {
+                SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.PlayerDeathSFX1, SoundManager.PlayerDeathSFX2, SoundManager.PlayerDeathSFX3 });
+                PlayerDies();
+            }
+            else if (!Invulnerable)
+            {
+                SoundManager.PlayRandomSFXAtPlayer(new AudioClip[] { SoundManager.PlayerHitSFX1, SoundManager.PlayerHitSFX2, SoundManager.PlayerHitSFX3 });
+            }
+        }
+    }
+    public void PlayerDies()
+    {
+        print("PLAYER DEAD!");
+        SwitchToAnimation(WVDAnimationStrings.PlayerDieAnimation);
+        if (_lifeStealFX.activeSelf)
+        {
+            _lifeStealFX.SetActive(false);
+        }
+        foreach (IWVDDamageable drone in _drones)
+        {
+            drone.GetTransform().gameObject.GetComponent<WVDBaseDrone>().CurrentDroneState = WVDBaseDrone.DroneState.Stopped;
+        }
+        if (_bossScript.BossInBattle)
+        {
+            _bossScript.CurrentBossState = WVDBoss.BossState.Victory;
+        }
+        _gameOverManagerScript.TriggerGameOver();
+    }
     public override void ApplyEffects(WVDAttackEffects effects)
     {
         base.ApplyEffects(effects);
@@ -436,7 +245,6 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
             ApplyDOT(effects.DOTDamage, effects.DOTInterval, effects.DOTDuration);
         }
     }
-
     public async void ApplyDOT(int damage, float interval, float duration)
     {
         float endTime = Time.time + duration;
@@ -452,59 +260,14 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
         }
         TakeDamage(damage, true); // Final damage to make the last damaging tick of damage
     }
-
-    //public void StartBurning(int damagePerSecond)
-    //{
-    //    _onFireFX.SetActive(true);
-    //    //_stoppingBurn = false;  // If hit again whilst still burning, cancel the stop burn order
-    //    if (_burnCoroutine != null)
-    //    {
-    //        StopCoroutine(_burnCoroutine);
-    //    }
-    //    _burnCoroutine = StartCoroutine(Burn(damagePerSecond));
-    //}
-
-    //IEnumerator Burn(int damagePerSecond)
-    //{
-    //    TakeDamage(damagePerSecond);
-    //    WaitForSeconds waitTime = new WaitForSeconds(1.0f);
-    //    while (_onFireFX.activeSelf)
-    //    {
-    //        yield return waitTime;
-    //        TakeDamage(damagePerSecond);
-    //    }
-    //}
-
-
-    //public IEnumerator StopBurningAfter(float seconds)
-    //{
-    //    _stoppingBurn = true;
-    //    yield return new WaitForSeconds(seconds);
-    //    if (_stoppingBurn)
-    //    {
-    //        StopBurning();
-    //    }
-    //    else
-    //    {
-    //        print("BURN ORDER CANCELLED");
-    //    }
-    //}
-    //public void StopBurning()
-    //{
-    //    _onFireFX.SetActive(false);
-    //    //_stoppingBurn = false;
-    //    if (_burnCoroutine != null)
-    //    {
-    //        StopCoroutine(_burnCoroutine);
-    //    }
-    //}
-
+    public Transform GetTransform()
+    {
+        return gameObject.transform;
+    }
     public Transform GetModelTransform()
     {
         return _playerModel.transform;
     }
-
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Boss") || other.gameObject.CompareTag("BossShield"))
@@ -512,12 +275,10 @@ public class WVDPlayer : WVDBaseEntity, IWVDDamageable
             TakeDamage(100, true); // insta kill if touch boss
         }
     }
-
     public enum ShieldVersion
     {
         Regular,
         Reflect,
         Electric
     }
-
 }

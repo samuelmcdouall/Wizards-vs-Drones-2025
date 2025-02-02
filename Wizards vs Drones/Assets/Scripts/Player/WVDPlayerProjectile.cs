@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class WVDPlayerProjectile : WVDBaseProjectile
 {
+    [Header("General")]
     bool _canPierce;
     [System.NonSerialized]
     public WVDPlayer PlayerScript;
@@ -11,15 +12,13 @@ public class WVDPlayerProjectile : WVDBaseProjectile
     {
         base.Start();
         _canPierce = Effects.Pierce;
-        float randCrit = Random.Range(0.0f, 1.0f); // todo will want some effects/sfx here to indicate crit
+        float randCrit = Random.Range(0.0f, 1.0f);
         if (randCrit < Effects.CriticalChance)
         {
             Damage *= 2;
         }
     }
-
-
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         print("PROJECTILE HIT: " + other.gameObject.name);
         if (CannotDamageAgain)
@@ -30,6 +29,7 @@ public class WVDPlayerProjectile : WVDBaseProjectile
         {
             DestroyProjectile();
         }
+        // Ignore any of these
         else if (other.gameObject.CompareTag("Player") ||
             other.gameObject.CompareTag("PlayerProjectile") ||
             other.gameObject.CompareTag("PickUpTrigger") ||
@@ -90,7 +90,6 @@ public class WVDPlayerProjectile : WVDBaseProjectile
             DestroyProjectile();
         }
     }
-
     void DestroyProjectile()
     {
         CannotDamageAgain = true;

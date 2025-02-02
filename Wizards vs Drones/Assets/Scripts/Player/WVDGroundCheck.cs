@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WVDGroundCheck : MonoBehaviour
 {
+    [Header("General")]
     public bool IsGrounded;
 
-    private void OnTriggerStay(Collider other)
+    void OnTriggerStay(Collider other)
     {
         if (other != null) 
         {
@@ -17,10 +16,8 @@ public class WVDGroundCheck : MonoBehaviour
             IsGrounded = false;
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
         IsGrounded = false;
     }
-
 }
