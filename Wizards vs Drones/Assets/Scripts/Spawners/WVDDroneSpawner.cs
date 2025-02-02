@@ -74,7 +74,7 @@ public class WVDDroneSpawner : MonoBehaviour
             _currentDronesSpawned = value;
             if (_currentDronesSpawned == 0 && _spawnPool.Count == 0) // No more drones currently out or to be spawned, so level must be complete
             {
-                WVDEventBus.Raise(new WVDEventDataLevelComplete());
+                _levelManagerScript.LevelCompleted();
             }
         }
     }

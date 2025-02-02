@@ -107,7 +107,6 @@ public class WVDLevelManager : MonoBehaviour
         _shopTimer = _shopTime;
         _musicManagerScript.InitialMusicSetup();
         WVDFunctionsCheck.SetToDefault();
-        WVDEventBus.Subscribe<WVDEventDataLevelComplete>(LevelCompleted);
         StartNewLevel();
     }
     void Update()
@@ -275,7 +274,7 @@ public class WVDLevelManager : MonoBehaviour
     {
         _bossCutsceneManagerScript.StartBossCutscene();
     }
-    public void LevelCompleted(WVDEventDataLevelComplete data)
+    public void LevelCompleted()
     {
         _shopOpen = true;
         _chosenShop = _availableShops[Random.Range(0, _availableShops.Count)];
