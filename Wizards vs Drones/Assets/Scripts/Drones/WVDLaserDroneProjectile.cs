@@ -22,6 +22,7 @@ public class WVDLaserDroneProjectile : WVDBaseProjectile
         // Ignore these
         if (other.gameObject.CompareTag("Fountain") ||
             other.gameObject.CompareTag("PowerUp") ||
+            other.gameObject.CompareTag("InvisibleWall") ||
             (other.gameObject.CompareTag("DroneShield") && !Reflected))
         {
             return;

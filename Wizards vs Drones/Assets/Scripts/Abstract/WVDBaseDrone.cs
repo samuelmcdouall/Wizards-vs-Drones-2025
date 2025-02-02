@@ -88,7 +88,7 @@ public abstract class WVDBaseDrone : WVDBaseEntity
     [SerializeField]
     GameObject _droneRemainingHelpUIPrefab;
     GameObject _droneRemainingHelpUIInstance;
-    float _remainingDroneStuckTime = 45.0f;
+    float _remainingDroneStuckTime = 30.0f;
     float _remainingDroneStuckTimer;
     [SerializeField]
     GameObject _damageMarker;

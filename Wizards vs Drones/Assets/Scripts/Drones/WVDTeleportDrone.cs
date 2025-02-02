@@ -115,7 +115,10 @@ public class WVDTeleportDrone : WVDBaseDrone, IWVDDamageable
                 _teleportChargingFX.SetActive(false);
                 Instantiate(_teleportActivateFXPrefab, GetModelTransform().position, _teleportActivateFXPrefab.transform.rotation);
                 CurrentDroneState = DroneState.Chasing;
-                DroneNMA.isStopped = false;
+                if (DroneNMA.isOnNavMesh)
+                {
+                    DroneNMA.isStopped = false;
+                }
                 break;
             case DroneState.Stopped:
                 break;

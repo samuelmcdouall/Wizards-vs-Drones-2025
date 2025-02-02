@@ -39,7 +39,8 @@ public class WVDPlayerProjectile : WVDBaseProjectile
             other.gameObject.CompareTag("BossFireStream") ||
             other.gameObject.CompareTag("ShieldRegular") ||
             other.gameObject.CompareTag("ShieldDeflect") ||
-            other.gameObject.CompareTag("ShieldElectric"))
+            other.gameObject.CompareTag("ShieldElectric") ||
+            other.gameObject.CompareTag("InvisibleWall"))
         {
             return;
         }
