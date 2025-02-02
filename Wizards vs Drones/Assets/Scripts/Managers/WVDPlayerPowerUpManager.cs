@@ -226,7 +226,7 @@ public class WVDPlayerPowerUpManager : MonoBehaviour
         _primaryPowerUpIcon.gameObject.SetActive(false);
         foreach (Image icon in _secondaryPowerUpIcons)
         {
-            icon.gameObject.SetActive(false);
+            icon.gameObject?.SetActive(false);
         }
     }
     public enum PowerUpType

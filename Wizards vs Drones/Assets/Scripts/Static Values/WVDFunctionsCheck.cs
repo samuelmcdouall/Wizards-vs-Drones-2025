@@ -8,6 +8,8 @@ public static class WVDFunctionsCheck
     public static bool InTutorial;
     public static bool WhiteScreenFading;
 
+    public static bool BatteryCollected;
+
     public static bool PlayerInputsAllowed()
     {
         return !InShopMenu && !InPauseMenu && !IsDead && !InCutscene && !HasWon && !InTutorial;
@@ -21,5 +23,6 @@ public static class WVDFunctionsCheck
         HasWon = false;
         InTutorial = false;
         WhiteScreenFading = false;
+        BatteryCollected = false;
     }
 }
