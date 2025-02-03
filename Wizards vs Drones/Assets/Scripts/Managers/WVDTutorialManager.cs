@@ -45,7 +45,7 @@ public class WVDTutorialManager : MonoBehaviour // Idea with this tutorial manag
         _tutorialDictionary.Add(TutorialPart.ShieldBuff, new WVDTutorialDetails("That <color=#EE8322>shield upgrade</color> will be back shortly. Smash it whilst it's down!", saveData.ShieldBuffBeenPlayedBefore));
         _tutorialDictionary.Add(TutorialPart.SlowBuff, new WVDTutorialDetails("Brrrrr... whatever is emanating out of that one is freezing! This drone's <color=#EE8322>upgrade is slowing</color> you down.", saveData.SlowBuffBeenPlayedBefore));
         _tutorialDictionary.Add(TutorialPart.Battery, new WVDTutorialDetails("Interesting! Looks like you just picked up some sort of power source called a <color=#EE8322>battery</color>. Bring me some and I can <color=#EE8322>upgrade</color> your power.", saveData.BatteryPlayedBefore));
-        _tutorialDictionary.Add(TutorialPart.NewAreas, new WVDTutorialDetails("The castle is mostly locked down by <color=#EE8322>magical fire</color> but I'll dispel it as soon as I can. Once I do, make sure to <color=#EE8322>look around</color> these areas for any <color=#EE8322>battery caches</color> the drones have left behind.", false));
+        _tutorialDictionary.Add(TutorialPart.NewAreas, new WVDTutorialDetails("The castle is mostly locked down by <color=#EE8322>magical fire</color> but I'll dispel it as soon as I can. Once I do, make sure to <color=#EE8322>look around</color> these areas for any <color=#EE8322>battery caches</color> the drones have left behind.", saveData.NewAreasPlayedBefore));
     }
     void Update()
     {
