@@ -21,11 +21,19 @@ public class WVDBatteryPickUp : MonoBehaviour
     GameObject _batteryModel;
     Coroutine _flashCoroutine;
 
+    [Header("Magnetise")]
+    [SerializeField]
+    float _thresholdToMoveTowardsPlayer;
+    [SerializeField]
+    float _forceTowardsPlayer;
+    Transform _playerTransform;
+
     [Header("Other")]
     WVDSoundManager _soundManager;
     WVDStatsManager _statsManager;
     WVDTutorialManager _tutorialManager;
     Rigidbody _rb;
+
 
     void Start()
     {
@@ -39,6 +47,7 @@ public class WVDBatteryPickUp : MonoBehaviour
         _soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<WVDSoundManager>();
         _statsManager = GameObject.FindGameObjectWithTag("StatsManager").GetComponent<WVDStatsManager>();
         _tutorialManager = GameObject.FindGameObjectWithTag("TutorialManager").GetComponent<WVDTutorialManager>();
+        _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
     void Update()
     {
@@ -52,6 +61,10 @@ public class WVDBatteryPickUp : MonoBehaviour
                 }
             }
             _timer -= Time.deltaTime;
+        }
+        if (Vector3.Distance(transform.position, _playerTransform.position) < _thresholdToMoveTowardsPlayer)
+        {
+            _rb.AddForce((_playerTransform.position - transform.position).normalized * _forceTowardsPlayer);
         }
     }
     void AddRandomForceAndTorque()

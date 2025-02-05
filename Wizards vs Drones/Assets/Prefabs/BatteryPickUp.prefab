@@ -102,6 +102,8 @@ MonoBehaviour:
   _startFlashingThreshold: 3
   _flashPeriod: 0.25
   _batteryModel: {fileID: 4713412198875900444}
+  _thresholdToMoveTowardsPlayer: 3
+  _forceTowardsPlayer: 100
 --- !u!1 &3203747190362693770
 GameObject:
   m_ObjectHideFlags: 0
