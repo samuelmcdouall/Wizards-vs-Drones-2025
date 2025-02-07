@@ -72,6 +72,9 @@ public class WVDLevelManager : MonoBehaviour
     WVDTutorialManager _tutorialManager;
     [SerializeField]
     TMP_Text _dronesAndShopTimerUI;
+    [SerializeField]
+    GameObject _appearFX;
+    Vector3 _appearOffset = new Vector3(0.0f, 0.5f, 0.0f);
 
     [Header("Unlocking Sections")]
     [SerializeField]
@@ -173,7 +176,11 @@ public class WVDLevelManager : MonoBehaviour
     void StartNewLevel()
     {
         _level++;
-        _chosenShop?.SetActive(false);
+        if (_chosenShop)
+        {
+            _chosenShop.SetActive(false);
+            Instantiate(_appearFX, _chosenShop.transform.position + _appearOffset, _appearFX.transform.rotation);
+        }
         _chosenShop = null;
         _shopUI.SetActive(false);
         _skipShopGameObject.SetActive(false);
@@ -279,6 +286,7 @@ public class WVDLevelManager : MonoBehaviour
         _shopOpen = true;
         _chosenShop = _availableShops[Random.Range(0, _availableShops.Count)];
         _chosenShop.SetActive(true);
+        Instantiate(_appearFX, _chosenShop.transform.position + _appearOffset, _appearFX.transform.rotation);
         print($"Chosen shop: {_chosenShop.name}");
 
         foreach (WVDPowerUp powerUp in _powerUpSpawnerScript.SpawnedPowerUps)
